@@ -114,7 +114,7 @@ colors."  The check blocks any other colour on a frame scene.
 | Teal Tint | `#E2F5F1` | `--td-teal-tint` | Backgrounds only: a second row or series next to Orange Tint |
 
 The frame is flat colour on white: no gradients (the photo shade is the one exception), glows, glass or shadows.
-The Copilot gradient belongs to the agent in product scenes, never to the frame.
+The agent gradient belongs to the agent in product scenes, never to the frame.
 
 ### Contrast
 

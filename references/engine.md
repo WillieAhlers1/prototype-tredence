@@ -8,7 +8,7 @@
 <head> ... <script src="kit/proto-style.js"></script> <style>/* this prototype only */</style> </head>
 <body data-concept="Concept demo · Fictitious data">
 <main class="stage">
-  <section class="scene zoom" id="ask" data-title="Ask Copilot">
+  <section class="scene zoom" id="ask" data-title="Ask the agent">
     ...shell markup...
     <aside class="notes">What the presenter says and clicks.</aside>
   </section>
@@ -39,11 +39,11 @@
 | `data-morph="name"` | On an element that hides at beat n and one that appears at beat n: the new one glides from the old one's place (the home prompt becoming the chat prompt). |
 
 Pattern for "user asks, agent works, agent answers" (the shape only; what it looks like and how to write each part
-is in `look-and-feel.md` §Copilot's work, in Fluent):
+is in `look-and-feel.md` §The agent's work, in Fluent):
 
 ```html
 <div class="cp-user" data-beat="1"><span data-type>[the person's question]</span></div>
-<div class="cp-who" data-beat="2" data-auto="900"><span class="oi copilot"></span>Copilot<span class="t-cap">Just now</span></div>
+<div class="cp-who" data-beat="2" data-auto="900"><span class="cp-mark"><i class="ic grad" data-icon="sparkle_filled"></i></span>[agent name]<span class="t-cap">Just now</span></div>
 <div class="work-box" data-beat="2" data-auto="900"><div class="sum"><span class="on-run">Working on it</span><span class="on-done"><span class="n"></span> complete</span><i class="ic" data-icon="chevron_down"></i></div>
   <ul class="work">
     <li data-beat="2" data-auto="900">[step]</li>
@@ -51,7 +51,7 @@ is in `look-and-feel.md` §Copilot's work, in Fluent):
       <div class="thought" data-type="words"><p>[reasoning]</p><p>[reasoning]</p></div></li>
     <li data-beat="4" data-auto="600">[step]</li>
   </ul></div>
-<div class="cp-status" data-beat="2" data-auto="900" data-hide="5"><span class="oi copilot"></span><span class="t" data-hide="4">[now]</span><span class="t" data-beat="4">[next]</span></div>
+<div class="cp-status" data-beat="2" data-auto="900" data-hide="5"><span class="cp-mark"><i class="ic grad" data-icon="sparkle_filled"></i></span><span class="t" data-hide="4">[now]</span><span class="t" data-beat="4">[next]</span></div>
 <div class="cp-turn" data-beat="5" data-auto="900"><div class="cp-resp"><p data-type="words">...</p></div></div>
 ```
 
@@ -68,7 +68,7 @@ The engine animates every change, so you don't write any motion code:
   place (FLIP with `translate`) instead of jumping.  A new chat message rises with the conversation.
 - **Exits fade.**  `data-hide` content fades out where it was while the rest closes the gap.
 - **Panes push in.**  A `.cpa-pane` revealed on a beat slides in from the right while the conversation glides over.
-- **Text streams like Copilot.**  Words fade in one after another in space reserved for the finished text.
+- **Text streams like a chat agent.**  Words fade in one after another in space reserved for the finished text.
 - **Scenes crossfade.**
 - **Warm-up.**  While the first scene is up, the engine paints every other scene once, invisibly.  The first paint
   of new content is slow (fonts, icons and shadows are prepared once) and would otherwise hitch on the first run in
@@ -111,12 +111,12 @@ Inside a step, `.on-queued`, `.on-run`, `.on-wait`, `.on-done` show text for one
 <div class="acard" data-beat="4" data-hide="6">... <button class="btn primary" data-go="next" data-cue>Approve and send</button> ...</div>
 ```
 
-In the Copilot app, the steps go in the Workspace drawer (`.cpa-pane.ws` > `.ws-sec`) as plain lines
+In the agent app, the steps go in the Workspace drawer (`.cpa-pane.ws` > `.ws-sec`) as plain lines
 (`.st` > `.st-t`, no `.mode` badge or `.st-d`), and the input and approval cards, which carry the mode, appear in the
 conversation.  An empty `.ws-count` in the Steps heading shows "done / total" and updates itself.
-`assets/shells.html` `cowork` has the chrome as an outline: Steps, Output, References, Plugins, and an input card
+`assets/shells.html` `plan` has the chrome as an outline: Steps, Output, References, Plugins, and an input card
 with `.opt` choices.  The `chat` outline has an approval card (`.checks`, `.policy`).  How many steps, and
-which need the person, comes from your story.  Outside the Copilot app, `.run` puts steps and the card side by side
+which need the person, comes from your story.  Outside the agent app, `.run` puts steps and the card side by side
 (two columns), `.mode` badges and `.on-*` detail lines go on the steps, and `.log` shows the activity.
 
 ## Clicks
@@ -171,7 +171,7 @@ which element gets it.  H turns cues off.  Every scene must also advance with �
 
 A visual grows in with its beat (after any streamed text before it), and hovering shows the tooltip.  The check
 flags a visual without a title or `data-fmt`, values that don't match the categories, a `%` format given
-fractions, a chart that drew nothing, and a chart in a Copilot answer without its Power BI source.
+fractions, a chart that drew nothing, and a chart in an agent answer without its Power BI source.
 
 ## Presenter controls
 
@@ -187,7 +187,7 @@ play / pause button also sits at the left of the scene dots.
 
 **Pacing is a floor, set by the engine: fast enough that nobody waits, slow enough that everyone sees what
 happened.**  Text the room reads (answers, cards, mail, frame text) stays up about 0.6 s plus 0.12 s a word, at most
-6 s, before the next automatic beat; a chart 2.5 s.  Copilot's work trace, its status line, labels and hidden text
+6 s, before the next automatic beat; a chart 2.5 s.  The agent's work trace, its latency pill, labels and hidden text
 don't count: the trace keeps its own rhythm.  A product scene settles for 1.2 s before its first automatic beat.
 When playing, every stop also holds at least 2 s, and 0.8 s after the last thing settles.  The presenter can always
 skip ahead with →.

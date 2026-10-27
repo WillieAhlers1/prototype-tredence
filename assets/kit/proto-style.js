@@ -354,7 +354,7 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .radio{width:18px;height:18px;flex:none;border-radius:50%;border:1px solid var(--fg3);display:inline-flex;align-items:center;justify-content:center}
 .radio.on{border-color:var(--brand)}.radio.on::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--brand)}
 
-/* ---------- Copilot conversation parts (used inside the Copilot app, .cpa) ---------- */
+/* ---------- Agent conversation parts (used inside the custom agent app, .cpa) ---------- */
 .cp-mark{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex:none}
 .cp-mark .ic{width:100%;height:100%}
 .cp-user{align-self:flex-end;max-width:84%;padding:10px 14px;border-radius:var(--r-2xl);background:var(--brand-bg2);font-size:14px;line-height:20px}
@@ -429,7 +429,7 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .work-box.clip:not(.over,.all) > .more{display:none}
 .work-box > .more{height:34px;display:flex;align-items:center;padding:0 14px;border:0;border-top:1px solid var(--stroke3);background:none;font:inherit;font-size:13px;font-weight:600;color:var(--brand-fg2);cursor:pointer}
 .cp-status{flex:none;align-self:flex-start;display:flex;align-items:center;gap:8px;height:32px;padding:0 14px 0 8px;border:1px solid var(--stroke2);border-radius:999px;background:var(--bg1);box-shadow:var(--sh2);font-size:13px;line-height:20px;color:var(--fg2)}
-.cp-status > .oi{width:20px;height:20px}
+.cp-status > .oi,.cp-status > .cp-mark{width:20px;height:20px}
 .cp-status > .t,.work li.think.run .on-run{background:linear-gradient(100deg,var(--fg2) 42%,#c8c8c8 50%,var(--fg2) 58%) 100% 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 2.2s linear infinite}
 @keyframes shimmer{to{background-position:0 0}}
 /* Fluent CopilotMessage footer: feedback actions and the AI-content disclaimer, under Copilot's answer */
@@ -496,14 +496,14 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .opt .t{display:block;font-size:14px;line-height:20px;font-weight:600;color:var(--fg1)}
 .opt.on{border-color:var(--brand);background:var(--brand-bg2)}
 
-/* ---------- Microsoft Copilot app, drawn as a Fluent 2 agent UI ----------
+/* ---------- The agent app: the customer's own custom-built app, drawn in Fluent 2 ----------
    Not a copy of Cowork's look: a Fluent 2 layered window.  The frame (title bar and NavDrawer) sits on a neutral
    grey; the content surface is a lighter layer with a rounded top-left corner; Copilot speaks in Fluent cards with
    its avatar header; the side pane is a Fluent drawer with accordion sections.
    .cpa > .cpa-title (back/forward, window controls) + .cpa-body > .cpa-side (wordmark, mode TabList, nav, user)
    and .cpa-main > .cpa-top + one of: .cpa-home (greeting, prompt starters, prompt), .cpa-work > .cpa-conv
    (.cpa-chat, .cpa-prompt) with an optional .cpa-pane on the right (Workspace, in-app browser, Office document), or
-   .cpa-over (Autopilot overview).  Add .nav-off to .cpa to collapse the left panel when the pane needs room. */
+   .cpa-over (the agent's activity overview).  Add .nav-off to .cpa to collapse the left panel when the pane needs room. */
 .cpa{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg4);color:var(--fg1)}
 .cpa .btn.icon{border:0;background:transparent;color:var(--fg2)}
 .cpa-title{height:34px;flex:none;display:flex;align-items:center;gap:2px;padding-left:10px;color:var(--fg3)}
@@ -520,7 +520,7 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .cpa-side{width:252px;flex:none;display:flex;flex-direction:column;gap:2px;padding:0 10px 44px}
 .cpa.nav-off .cpa-side{display:none}
 .cpa-brand{height:44px;flex:none;display:flex;align-items:center;gap:2px;padding-left:8px}
-.cpa-brand .wm{font-size:18px;line-height:24px;font-weight:600;margin-right:auto}
+.cpa-brand .wm{font-size:18px;line-height:24px;font-weight:600;margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cpa-modes{display:flex;flex:none;gap:4px;margin:4px 0 10px;padding:0 2px;border-bottom:1px solid var(--stroke2)}
 .cpa-modes > *{position:relative;height:36px;padding:0 10px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--fg2)}
 .cpa-modes > .on{color:var(--fg1);font-weight:600}
@@ -549,7 +549,7 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 /* Home: Copilot's mark, a Fluent title, prompt-starter cards, the prompt */
 .cpa-home{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:0 48px 72px}
 .cpa-home > *{width:100%;max-width:780px}
-.cpa-home .oi.cpa-logo{width:48px;height:48px;margin-bottom:-8px}
+.cpa-home .cpa-logo{width:48px;height:48px;margin-bottom:-8px}
 .cpa-home > .cpa-hello,.cpa-home > .cpa-sub{text-align:center}
 .cpa-hello{margin:0;font-family:var(--font);font-size:28px;line-height:36px;font-weight:600;letter-spacing:0;color:var(--fg1)}
 .cpa-hello + .cpa-sub{margin-top:-16px}
@@ -560,7 +560,7 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .cpa-prompt .ph{font-size:15px;line-height:22px;color:var(--fg4)}
 .cpa-prompt .txt{font-size:15px;line-height:22px;color:var(--fg1)}
 .cpa-prompt .tools{display:flex;align-items:center;gap:6px;margin-left:-6px;color:var(--fg2)}
-/* Mode toggle buttons (Chat, Cowork): the selected one in brand tint */
+/* Mode toggle buttons (Chat, Agent): the selected one in brand tint */
 .cpa-switch{display:inline-flex;gap:4px}
 .cpa-switch > *{height:28px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--stroke1);border-radius:var(--r-md);background:var(--bg1);font-size:13px;color:var(--fg2)}
 .cpa-switch > .on{border-color:var(--brand-stroke2);background:var(--brand-bg2);color:var(--brand-fg2);font-weight:600}
@@ -686,10 +686,10 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 /* File type marks for outputs and documents */
 .oi{width:20px;height:20px;flex:none;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;line-height:1;color:#fff;background:var(--fg3)}
 .oi.w{background:#185abd}.oi.x{background:#107c41}.oi.p{background:#c43e1c}
-/* In-app browser pane, as the Copilot app shows it: one toolbar (.cpa-url: back, refresh, a compact address pill
+/* In-app browser pane: one toolbar (.cpa-url: back, refresh, a compact address pill
    with the site and a clear ✕, then .end with expand and close) over the page (.cpa-page; put a .lob, .m365.d3 or
-   .pbi-app inside).  While Copilot drives it, add .cp-browsing in the page (a blue-violet frame with a "Copilot is
-   browsing" tab) and a .cp-cursor ("Copilot is working" pointer); hide both when it's done.  .cpa-tabs is older
+   .pbi-app inside).  While the agent drives it, add .cp-browsing in the page (a blue-violet frame with an "[agent] is
+   browsing" tab) and a .cp-cursor ("[agent] is working" pointer); hide both when it's done.  .cpa-tabs is older
    markup, kept so existing prototypes still render; new scenes don't draw tabs. */
 .cpa-tabs{height:44px;flex:none;display:flex;align-items:flex-end;gap:2px;padding:0 6px 0 8px;background:var(--bg3);border-bottom:1px solid var(--stroke2)}
 .cpa-tabs > .tab{display:flex;align-items:center;gap:8px;height:34px;min-width:0;max-width:260px;padding:0 10px;margin-bottom:-1px;border-radius:8px 8px 0 0;border:1px solid transparent;font-size:12px;color:var(--fg2)}
@@ -709,7 +709,7 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .cp-browsing{position:absolute;inset:2px 6px 6px 2px;z-index:6;pointer-events:none;border:3px solid var(--browse,#6466e9);border-radius:10px}
 .cp-browsing > .lbl{position:absolute;left:50%;top:-3px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;height:24px;padding:0 12px 0 10px;border-radius:0 0 8px 8px;background:var(--browse,#6466e9);color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
 .cp-browsing > .lbl .ic{width:14px;height:14px}
-/* While Copilot is browsing, the frame is the page's edge, as in the product: the site sits inside it, with corners
+/* While the agent is browsing, the frame is the page's edge: the site sits inside it, with corners
    that follow the frame's.  (Shells inside .cpa-page are absolutely placed; other content gets the padding.) */
 .cpa-page:has(> .cp-browsing:not(.gone):not([data-beat]:not(.in))){padding:5px 9px 9px 5px}
 .cpa-page:has(> .cp-browsing:not(.gone):not([data-beat]:not(.in))) > :not(.cp-browsing,.cp-cursor){inset:5px 9px 9px 5px;border-radius:7px;overflow:hidden}
@@ -721,7 +721,7 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .cpa-send.stop{background:var(--bg1);color:var(--fg1);border:1px solid var(--stroke1)}
 .cpa-send.stop .ic{width:16px;height:16px}
 /* Office document side by side with the chat */
-/* Document pane: Word (or Excel, PowerPoint) open next to the chat, as the Copilot app shows it.  .cpa-pane-head
+/* Document pane: Word (or Excel, PowerPoint) open next to the chat.  .cpa-pane-head
    holds the file mark and name, then .doc-acts (round comment / edit / share buttons), "Open in Word" (primary), more,
    close; .doc-tabs is the ribbon's tab row; the page uses Word's default styles (Title, Heading 1, Heading 2). */
 .cpa-pane-head .doc-name{font-weight:400;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
