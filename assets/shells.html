@@ -54,6 +54,70 @@
   <aside class="notes">[[What the presenter says, and what to click]]</aside>
 </section>
 
+<!-- Copilot chat: the person asked; Copilot shows its work the way Copilot does (steps, a thinking node that
+     reasons with the story's own names and numbers, a status line), answers with sources, and stops for approval
+     before anything leaves the organization.  Beats 1-5 play on their own; the presenter clicks the approve button,
+     then the bridge chip.  Any part can stand alone: the trace, the answer, or the approval card in another view. -->
+<section class="scene zoom" id="chat" data-title="Copilot chat">
+  <div class="cpa">
+    <div class="cpa-title"><i class="ic" data-icon="arrow_left"></i><i class="ic off" data-icon="arrow_right"></i><span class="cpa-win"><i class="min"></i><i class="max"></i><i class="x"></i></span></div>
+    <div class="cpa-body">
+      <nav class="cpa-side">
+        <div class="cpa-brand"><span class="wm">Copilot</span><button class="btn icon"><i class="ic" data-icon="grid"></i></button><button class="btn icon"><i class="ic" data-icon="checkbox_checked"></i></button><button class="btn icon"><i class="ic" data-icon="panel_left"></i></button></div>
+        <div class="cpa-modes"><span class="on">Home</span><span>Code</span><span>Autopilot</span></div>
+        <div class="cpa-nav">
+          <div><span class="plus"><i class="ic" data-icon="add"></i></span>New</div>
+          <div><i class="ic" data-icon="search"></i>Search</div>
+          <div><i class="ic" data-icon="library"></i>Library</div>
+          <div><i class="ic" data-icon="options"></i>Plugins</div>
+          <div><i class="ic" data-icon="flash"></i>Automations</div>
+          <div><i class="ic" data-icon="more_horizontal"></i>More</div>
+          <div class="hdr">Recent</div>
+          <div class="on"><span class="lbl">[[This conversation]]</span></div>
+          <div><span class="lbl">[[An earlier conversation]]</span></div>
+          <div><span class="lbl">[[Another one]]</span></div>
+        </div>
+        <div class="cpa-me"><span class="avatar sm" data-name="[[Person]]"></span><div><div class="strong">[[Person]]</div><div class="t-cap">[[Company]]</div></div></div>
+      </nav>
+      <div class="cpa-main">
+        <div class="cpa-top"><span class="ttl">[[Conversation title]]</span><span class="end"><button class="btn icon"><i class="ic shield" data-icon="shield_checkmark"></i></button><button class="btn icon"><i class="ic" data-icon="more_horizontal"></i></button></span></div>
+        <div class="cpa-work">
+          <div class="cpa-conv">
+            <div class="cpa-chat">
+              <div class="cp-user">[[What the person asks, in their words]]</div>
+              <!-- Copilot's work (look-and-feel.md, "Copilot's work"): steps are -ing verb + the thing + where from;
+                   the thought is first person, present tense, with the data sheet's real names and numbers. -->
+              <div class="work-box" data-beat="1" data-auto="500"><div class="sum"><span class="on-run">Working on it</span><span class="on-done"><span class="n"></span> complete</span><i class="ic" data-icon="chevron_down"></i></div>
+                <ul class="work">
+                  <li data-beat="1" data-auto="500">[[Reading what, from where]]</li>
+                  <li class="think open" data-beat="2" data-auto="1200"><span class="lbl"><span class="on-run">Thinking…</span><span class="on-done">Thought process</span><i class="ic" data-icon="chevron_right"></i></span>
+                    <div class="thought" data-type="words"><p>[[What I'm weighing, with the real names and numbers]]</p><p>[[What doesn't add up, and what I'll do about it]]</p></div></li>
+                  <li data-beat="3" data-auto="600">[[Checking what, against which record]]</li>
+                </ul></div>
+              <div class="cp-status" data-beat="1" data-auto="500" data-hide="4"><span class="oi copilot"></span><span class="t" data-hide="3">[[What it's doing now, casually]]</span><span class="t" data-beat="3">[[What it's doing next]]</span></div>
+              <div class="cp-turn" data-beat="4" data-auto="900"><div class="cp-resp"><p data-type="words">[[The answer: what it found, and the one thing that needs the person]]<span class="cite">1</span></p></div>
+                <div class="refs"><span class="ref"><span class="oi [[product]]"></span>[[Source it used]]</span><span class="ref"><i class="ic" data-icon="document"></i>[[Another source]]</span></div>
+              </div>
+              <div class="acard" data-beat="5" data-auto="900">
+                <div class="acard-head"><i class="ic" data-icon="send" style="color:var(--brand)"></i><div class="grow strong">[[What it wants to do]]</div><span class="mode approval"><i class="ic" data-icon="shield_checkmark"></i>Needs your approval</span></div>
+                <div class="acard-body col" style="gap:12px">
+                  <div class="kv" style="grid-template-columns:96px 1fr"><span>[[Field]]</span><span>[[Value]]</span><span>[[Field]]</span><span class="strong">[[The value that matters]]</span></div>
+                  <ul class="checks"><li>[[A check it passed]]</li><li class="warn">[[Something the person should know first]]</li></ul>
+                  <div class="policy"><i class="ic" data-icon="lock_closed"></i>[[Why this waits for a person: the policy]]</div>
+                </div>
+                <div class="acard-foot"><span class="row" data-hide="6"><button class="btn primary" data-go="next" data-cue>[[Approve and act]]</button><button class="btn">[[Edit]]</button><button class="btn subtle">Decline</button></span><span class="row" data-beat="6" style="color:var(--success-fg)"><i class="ic" data-icon="checkmark_circle_filled"></i><span class="strong">[[What happened, where, and when]]</span></span></div>
+              </div>
+              <div class="chips" data-beat="7" data-auto="600"><button class="chip" data-go="next" data-cue>[[The next thing the presenter clicks]]</button></div>
+            </div>
+            <div class="cpa-prompt"><div class="ph">Message Copilot</div><div class="tools"><button class="btn icon"><i class="ic" data-icon="add"></i></button><span class="cpa-switch"><span class="on">Chat</span><span>Cowork</span></span><span class="grow"></span><button class="btn icon"><i class="ic" data-icon="mic"></i></button><span class="cpa-send off"><i class="ic" data-icon="arrow_up"></i></span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">[[What the presenter says, and what to click]]</aside>
+</section>
+
 <!-- Copilot answers from Power BI: a visual in the answer, cited, and the report in Copilot's browser pane.
      The answer, the visual and the report use the same numbers.  Syntax: references/engine.md (data-chart). -->
 <section class="scene zoom" id="pbi-answer" data-title="Answer from Power BI">
@@ -66,8 +130,8 @@
           <div class="cpa-conv">
             <div class="cpa-chat">
               <div class="cp-user">[[The question about a number]]</div>
-              <div class="work-box" data-beat="1" data-auto="400"><div class="sum"><i class="ic s16" data-icon="sparkle"></i>Working on it</div>
-                <ul class="work"><li data-beat="1" data-auto="400">[[Finding the report]]<span class="det">[[Report name]]</span></li><li data-beat="2" data-auto="1000">[[Querying its semantic model]]<span class="det">[[Refreshed when]]</span></li></ul></div>
+              <div class="work-box" data-beat="1" data-auto="400"><div class="sum"><span class="on-run">Working on it</span><span class="on-done"><span class="n"></span> complete</span><i class="ic" data-icon="chevron_down"></i></div>
+                <ul class="work"><li data-beat="1" data-auto="400">[[Finding the report, by name]]</li><li data-beat="2" data-auto="900">[[Querying its semantic model]]</li></ul></div>
               <div class="cp-turn" data-beat="3" data-auto="1100"><div class="cp-resp"><p data-type="words">[[The answer in one or two sentences]]<span class="cite">1</span></p>
                 <figure class="pbi" style="margin-top:12px" data-chart="line" data-h="180" data-fmt="0" data-xname="[[Axis]]"
                   data-x="[[A]],[[B]],[[C]],[[D]],[[E]],[[F]]" data-series="[[Actual]]:1,2,3,4,,; [[Plan]]:1,2,3,4,5,6; [[Forecast]]:,,,4,5,5" data-dash="[[Forecast]]">
@@ -81,8 +145,7 @@
             <div class="cpa-prompt"><div class="ph">Message Copilot</div><div class="tools"><button class="btn icon"><i class="ic" data-icon="add"></i></button><span class="cpa-switch"><span class="on">Chat</span><span>Cowork</span></span><span class="grow"></span><span class="cpa-send off"><i class="ic" data-icon="arrow_up"></i></span></div></div>
           </div>
           <aside class="cpa-pane" data-beat="6" style="--pane:700px">
-            <div class="cpa-tabs"><span class="tab on"><span class="fav powerbi"></span><span class="lbl">[[Report name]] · Power BI</span><i class="ic" data-icon="dismiss"></i></span><span class="end"><button class="btn icon"><i class="ic" data-icon="dismiss"></i></button></span></div>
-            <div class="cpa-url"><button class="btn icon"><i class="ic" data-icon="arrow_left"></i></button><button class="btn icon"><i class="ic" data-icon="arrow_clockwise"></i></button><span class="addr"><i class="ic" data-icon="lock_closed"></i>app.powerbi.com/groups/me/reports/[[report]]</span></div>
+            <div class="cpa-url"><button class="btn icon"><i class="ic" data-icon="arrow_left"></i></button><button class="btn icon"><i class="ic" data-icon="arrow_clockwise"></i></button><span class="addr"><i class="ic" data-icon="globe"></i>app.powerbi.com<i class="ic" data-icon="dismiss"></i></span><span class="end"><button class="btn icon"><i class="ic" data-icon="full_screen_maximize"></i></button><button class="btn icon"><i class="ic" data-icon="dismiss"></i></button></span></div>
             <div class="cpa-page">
               <div class="pbi-app">
                 <div class="pbi-bar"><span class="oi powerbi"></span><span class="crumb">Power BI · [[Workspace]] · <b>[[Report name]]</b></span><span class="end"><span class="avatar xs" data-name="[[Person]]"></span></span></div>
@@ -111,9 +174,14 @@
   <aside class="notes">[[What the presenter says, and what to click]]</aside>
 </section>
 
-<!-- Cowork: Copilot runs a multi-step process.  The Workspace pane shows steps (who acts on each), outputs and
-     permissions.  It stops once for the person's input (an options card) and runs the rest.  Add an approval step
-     with the approval card from starter.html.  Step syntax: references/engine.md "Process steps". -->
+<!-- Cowork: Copilot runs a multi-step process, drawn the way the Copilot app shows it (look-and-feel.md, "Copilot's
+     work").  The conversation shows the work as it happens (steps, a thinking node, a status line; .clip keeps the
+     latest in view).  The Workspace pane shows the plan (Steps, with a counter the engine fills in), what it made
+     (Output), what the person gave it (References) and the plugins it used.  It stops once for the person's input (an
+     options card) and runs the rest.  Add an approval step with the approval card from the chat outline.  Step syntax:
+     references/engine.md "Process steps".  The li.skill and the Plugins chip are optional: keep them only if the
+     story uses the customer's own skill (story-and-data.md, "The customer's own way of working").  If not, cut the
+     li.skill, and in the chip name a skill it did use (an .oi product mark in place of the .plug) or cut the section. -->
 <section class="scene zoom" id="cowork" data-title="Cowork plan">
   <div class="cpa nav-off">
     <div class="cpa-title"><i class="ic" data-icon="arrow_left"></i><i class="ic off" data-icon="arrow_right"></i><span class="cpa-win"><i class="min"></i><i class="max"></i><i class="x"></i></span></div>
@@ -123,9 +191,21 @@
         <div class="cpa-work">
           <div class="cpa-conv">
             <div class="cpa-chat">
+              <div class="cp-time">1 min ago</div>
+              <div class="cp-file"><span class="oi [[word]]"></span><div><div class="nm">[[What the person attached]]</div><span class="t-cap">[[Word document]]</span></div></div>
               <div class="cp-user">[[What the person asked Copilot to run]]</div>
               <div class="cp-turn" data-beat="1" data-auto="500"><div class="cp-resp"><p data-type="words">[[How Copilot will go about it, and when it will stop for the person]]</p></div></div>
-              <div class="acard" data-beat="3" data-hide="4">
+              <div class="work-box clip" data-beat="2" data-auto="700"><div class="sum"><span class="on-run">Working on it</span><span class="on-done"><span class="n"></span> complete</span><i class="ic" data-icon="chevron_down"></i></div>
+                <ul class="work">
+                  <li class="skill" data-beat="2" data-auto="700"><span class="plug" style="--plug:[[#their colour]]"><i class="ic" data-icon="[[glyph]]"></i></span>Reviewed custom skill <b>[[their-skill-name]]</b></li>
+                  <li data-beat="3" data-auto="600">[[Reading what, from where]]</li>
+                  <li class="think open" data-beat="4" data-auto="1200"><span class="lbl"><span class="on-run">Thinking…</span><span class="on-done">Thought process</span><i class="ic" data-icon="chevron_right"></i></span>
+                    <div class="thought" data-type="words"><p>[[What I'm weighing, with the real names and numbers, and the rule of theirs that applies]]</p><p>[[What I'll do next, and why it needs the person]]</p></div></li>
+                  <li data-beat="5" data-auto="600">[[Drafting what, for whom]]</li>
+                </ul>
+                <button class="more">Show more</button></div>
+              <div class="cp-status" data-beat="2" data-auto="700" data-hide="6"><span class="oi copilot"></span><span class="t">[[What it's doing now, casually]]</span></div>
+              <div class="acard" data-beat="6" data-hide="7">
                 <div class="acard-head"><i class="ic" data-icon="form" style="color:var(--brand)"></i><div class="grow strong">[[The decision that's theirs]]</div><span class="mode input"><i class="ic" data-icon="person_edit"></i>Needs your input</span></div>
                 <div class="acard-body col" style="gap:8px">
                   <p class="t-body" style="margin:0 0 4px">[[What Copilot found that bears on the decision]]</p>
@@ -134,27 +214,29 @@
                   <div class="opt"><span class="radio"></span><div><span class="t">[[Option]]</span>[[What it means]]</div></div>
                 </div>
               </div>
-              <div class="cp-user" data-beat="4">[[Option the person picks]]</div>
-              <div class="cp-turn" data-beat="6" data-auto="700"><div class="cp-resp"><p data-type="words">[[What's done, and what the person decided]]</p></div></div>
+              <div class="cp-user" data-beat="7">[[Option the person picks]]</div>
+              <div class="cp-turn" data-beat="9" data-auto="700"><div class="cp-resp"><p data-type="words">[[What's done, and what the person decided]]</p></div></div>
             </div>
             <div class="cpa-prompt"><div class="ph">Message Copilot</div><div class="tools"><button class="btn icon"><i class="ic" data-icon="add"></i></button><span class="cpa-switch"><span>Chat</span><span class="on">Cowork</span></span><span class="grow"></span><span class="cpa-send off"><i class="ic" data-icon="arrow_up"></i></span></div></div>
           </div>
-          <aside class="cpa-pane" data-beat="1">
+          <aside class="cpa-pane ws" data-beat="1" style="--pane:420px">
             <div class="cpa-pane-head">Workspace<span class="end"><button class="btn icon"><i class="ic" data-icon="dismiss"></i></button></span></div>
             <div class="cpa-pane-body">
-              <div class="ws-sec"><h4><i class="ic" data-icon="task_list_ltr"></i>Steps<span class="n">[[Whose process]]</span></h4>
+              <div class="ws-sec"><h4>Steps<span class="end"><span class="ws-count"></span><i class="ic" data-icon="chevron_down"></i></span></h4>
                 <ol class="steps">
-                  <li class="step" data-run-at="2" data-auto="700" data-run="1000"><div class="st"><div class="row"><span class="st-t grow">[[Routine step]]</span><span class="mode auto"><i class="ic" data-icon="flash"></i>Done for you</span></div><div class="st-d"><span class="on-queued">[[What it will use]]</span><span class="on-run">[[Doing it]]</span><span class="on-done">[[Result]]</span></div></div></li>
-                  <li class="step" data-wait-at="3" data-auto="1000" data-done-at="4"><div class="st"><div class="row"><span class="st-t grow">[[The person's decision]]</span><span class="mode input"><i class="ic" data-icon="person_edit"></i>Needs your input</span></div><div class="st-d"><span class="on-queued">[[Why it's theirs]]</span><span class="on-wait">Waiting for you</span><span class="on-done">[[What they chose]]</span></div></div></li>
-                  <li class="step" data-run-at="5" data-auto="500" data-run="1200"><div class="st"><div class="row"><span class="st-t grow">[[Routine step after the decision]]</span><span class="mode auto"><i class="ic" data-icon="flash"></i>Done for you</span></div><div class="st-d"><span class="on-queued">[[After you choose]]</span><span class="on-run">[[Doing it]]</span><span class="on-done">[[Result]]</span></div></div></li>
+                  <li class="step" data-run-at="2" data-auto="700" data-run="3600"><div class="st"><span class="st-t">[[Doing the routine part, -ing form]]</span></div></li>
+                  <li class="step" data-wait-at="6" data-auto="900" data-done-at="7"><div class="st"><span class="st-t">[[Getting the person's decision on what]]</span></div></li>
+                  <li class="step" data-run-at="8" data-auto="500" data-run="1200"><div class="st"><span class="st-t">[[Doing what follows from the decision]]</span></div></li>
                 </ol></div>
-              <div class="ws-sec"><h4><i class="ic" data-icon="document"></i>Outputs</h4>
-                <div class="ws-item" data-beat="2"><i class="ic" data-icon="document" style="color:var(--fg2)"></i><span class="ellipsis">[[Output]]</span><span class="t-cap">[[Kind]]</span></div>
-                <div class="ws-item" data-beat="5"><i class="ic" data-icon="document" style="color:var(--fg2)"></i><span class="ellipsis">[[Output]]</span><span class="t-cap">[[Kind]]</span></div>
+              <div class="ws-sec"><h4>Output<span class="end"><i class="ic" data-icon="chevron_down"></i></span></h4>
+                <div class="ws-item" data-beat="5"><span class="oi [[word]]"></span><div><div class="nm">[[What it made]]</div><span class="t-cap">Updated [[date]]</span></div></div>
+                <div class="ws-item" data-beat="8"><i class="ic" data-icon="globe"></i><div><div class="nm">[[What it made next]]</div><span class="t-cap">Updated [[date]]</span></div></div>
               </div>
-              <div class="ws-sec"><h4><i class="ic" data-icon="lock_closed"></i>Permissions</h4>
-                <div class="ws-perm"><i class="ic" data-icon="plug_connected"></i>[[System]]<span class="badge">[[Read and update]]</span></div>
-                <div class="ws-perm"><i class="ic" data-icon="plug_connected"></i>[[System]]<span class="badge warning">Asks you first</span></div>
+              <div class="ws-sec"><h4>References<span class="end"><button class="btn icon"><i class="ic" data-icon="folder_open"></i></button><i class="ic" data-icon="chevron_down"></i></span></h4>
+                <div class="ws-item"><span class="oi [[word]]"></span><div><div class="nm">[[What the person attached]]</div></div></div>
+              </div>
+              <div class="ws-sec"><h4>Plugins<span class="end"><i class="ic" data-icon="chevron_down"></i></span></h4>
+                <div class="ws-plugs"><span class="ws-plug"><span class="plug" style="--plug:[[#their colour]]"><i class="ic" data-icon="[[glyph]]"></i></span>[[their-skill-name]]</span></div>
               </div>
             </div>
           </aside>
@@ -165,9 +247,46 @@
   <aside class="notes">[[What the presenter says, and what to click]]</aside>
 </section>
 
-<!-- Proof in Copilot's browser pane (preview feature: label it in the notes).  Tab 1: the customer's own system
-     (unbranded .lob, reached through a connector) with the new row and its history.  Tab 2: the Dynamics 365
-     record with the change (.diff) and the timeline entry marked as the agent's. -->
+<!-- Customize, in Cowork: where people add, create and share the skills and plugins Copilot uses (Learn: "Customize
+     Copilot Cowork").  Use it only when the story is about the customer's own way of working: their skill sits in
+     "Your skills", next to the built-in ones.  Tabs: Preferences, Plugins, Skills; on the Plugins tab the lists are
+     "Installed" (rows with a .tgl toggle) and "Discover", and the button is "Upload plugin".  Their row appears on
+     beat 1, the way a new skill shows up once it has synced.  Drawn approximately from
+     Learn's screenshot.  A skill's own page and the Skill Report aren't pictured on Learn, so they aren't drawn: show
+     creating or changing a skill as a Cowork conversation instead (story-and-data.md). -->
+<section class="scene zoom" id="customize" data-title="Customize: skills">
+  <div class="cpa nav-off">
+    <div class="cpa-title"><i class="ic" data-icon="arrow_left"></i><i class="ic off" data-icon="arrow_right"></i><span class="cpa-win"><i class="min"></i><i class="max"></i><i class="x"></i></span></div>
+    <div class="cpa-body">
+      <div class="cpa-main">
+        <div class="cpa-top"><button class="btn icon"><i class="ic" data-icon="panel_left"></i></button></div>
+        <div class="cz">
+          <h1>Customize</h1>
+          <div class="cz-tabs"><span>Preferences</span><span>Plugins</span><span class="on">Skills</span></div>
+          <div class="cz-bar"><div class="cz-search"><i class="ic" data-icon="search"></i>Search skills</div><span class="cz-add"><span><i class="ic" data-icon="add"></i>Add</span><span><i class="ic" data-icon="chevron_down"></i></span></span></div>
+          <div class="cz-sec"><h3>Your skills</h3>
+            <div class="cz-row" data-beat="1" data-auto="800"><span class="plug l" style="--plug:[[#their colour]]"><i class="ic" data-icon="[[glyph]]"></i></span><div><div class="nm">[[their-skill-name]]</div><span class="t-cap">[[Its description: what it does and when to use it]]</span></div><i class="ic" data-icon="chevron_right"></i></div>
+            <div class="cz-row"><span class="plug l" style="--plug:[[#another colour]]"><i class="ic" data-icon="[[glyph]]"></i></span><div><div class="nm">[[another-skill]]</div><span class="t-cap">[[Its description]]</span></div><i class="ic" data-icon="chevron_right"></i></div>
+          </div>
+          <div class="cz-sec"><h3>Built-in</h3>
+            <div class="cz-row"><span class="cz-ic"><span class="oi word"></span></span><div><div class="nm">Word</div><span class="t-cap">Create and edit Word documents.</span></div><i class="ic" data-icon="chevron_right"></i></div>
+            <div class="cz-row"><span class="cz-ic"><span class="oi excel"></span></span><div><div class="nm">Excel</div><span class="t-cap">Create and edit Excel spreadsheets.</span></div><i class="ic" data-icon="chevron_right"></i></div>
+            <div class="cz-row"><span class="cz-ic"><span class="oi outlook"></span></span><div><div class="nm">Email</div><span class="t-cap">Compose, reply, forward, and send emails. Save drafts and manage attachments.</span></div><i class="ic" data-icon="chevron_right"></i></div>
+            <span class="cz-more">Show more<i class="ic" data-icon="chevron_down"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">[[What the presenter says: whose method this is, who wrote it, who it's shared with]]</aside>
+</section>
+
+<!-- Proof in Copilot's browser pane (preview feature: label it in the notes).  It opens with Copilot at work in the
+     customer's own system (unbranded .lob, reached through a connector): the .cp-browsing frame and the .cp-cursor
+     pointer are on, the prompt reads "Working on it. What's next?" with a stop button, and the new row arrives.  When
+     it's done (beat 2) the frame and pointer go, the row's history shows, and a source chip in the conversation opens
+     the Dynamics 365 record with the change (.diff) and the timeline entry marked as the agent's.  No tab strip: the
+     address pill shows where the browser is. -->
 <section class="scene zoom" id="proof" data-title="Proof in the browser pane">
   <div class="cpa nav-off">
     <div class="cpa-title"><i class="ic" data-icon="arrow_left"></i><i class="ic off" data-icon="arrow_right"></i><span class="cpa-win"><i class="min"></i><i class="max"></i><i class="x"></i></span></div>
@@ -176,14 +295,17 @@
         <div class="cpa-top"><button class="btn icon"><i class="ic" data-icon="panel_left"></i></button><span class="ttl">[[Conversation title]]</span></div>
         <div class="cpa-work">
           <div class="cpa-conv">
-            <div class="cpa-chat"><div class="cp-turn"><div class="cp-resp"><p>[[What Copilot says it changed, and where]]</p></div></div></div>
-            <div class="cpa-prompt"><div class="ph">Message Copilot</div><div class="tools"><span class="grow"></span><span class="cpa-send off"><i class="ic" data-icon="arrow_up"></i></span></div></div>
+            <div class="cpa-chat"><div class="cp-turn"><div class="cp-resp"><p>[[What Copilot says it's changing, and where]]</p></div>
+              <div class="refs" data-beat="2"><span class="ref" data-go="next" data-cue><span class="oi sales"></span>[[Record name]]</span></div></div></div>
+            <div class="cpa-prompt"><div class="ph" data-hide="2">Working on it. What's next?</div><div class="ph" data-beat="2">Message Copilot</div><div class="tools"><span class="grow"></span><span class="cpa-send stop" data-hide="2"><i class="ic" data-icon="stop"></i></span><span class="cpa-send off" data-beat="2"><i class="ic" data-icon="arrow_up"></i></span></div></div>
           </div>
           <aside class="cpa-pane" style="--pane:1000px">
             <div class="col grow" style="gap:0;min-height:0" data-hide="3">
-              <div class="cpa-tabs"><span class="tab on"><span class="fav" style="background:#1e293b"><i class="ic" data-icon="document"></i></span><span class="lbl">[[Customer's system]]</span></span><span class="tab" data-go="next" data-cue><span class="fav sales"></span><span class="lbl">[[Record name]]</span></span></div>
-              <div class="cpa-url"><button class="btn icon"><i class="ic" data-icon="arrow_left"></i></button><span class="addr"><i class="ic" data-icon="lock_closed"></i>[[system.company.com/path]]</span></div>
-              <div class="cpa-page"><div class="lob">
+              <div class="cpa-url"><button class="btn icon"><i class="ic" data-icon="arrow_left"></i></button><button class="btn icon"><i class="ic" data-icon="arrow_clockwise"></i></button><span class="addr"><i class="ic" data-icon="globe"></i>[[system.company.com]]<i class="ic" data-icon="dismiss"></i></span><span class="end"><button class="btn icon"><i class="ic" data-icon="full_screen_maximize"></i></button><button class="btn icon"><i class="ic" data-icon="dismiss"></i></button></span></div>
+              <div class="cpa-page">
+                <div class="cp-browsing" data-hide="2"><span class="lbl"><i class="ic" data-icon="cursor"></i>Copilot is browsing</span></div>
+                <span class="cp-cursor" data-hide="2" style="left:58%;top:34%"><span>Copilot is working</span></span>
+                <div class="lob">
                 <header class="lob-bar"><div class="name"><span class="glyph"><i class="ic" data-icon="document"></i></span>[[Plain functional name]]</div><div class="search"><i class="ic" data-icon="search"></i>[[Search hint]]</div><span class="avatar sm" data-name="[[Person]]"></span></header>
                 <div class="lob-body"><div class="lob-page">
                   <div class="lob-head"><h1>[[List name]]</h1><span class="grow"></span><button class="btn"><i class="ic" data-icon="filter"></i>Filter</button></div>
@@ -193,7 +315,7 @@
                     <tr><td class="strong">[[Older row]]</td><td>[[Value]]</td><td class="num">[[Value]]</td><td><span class="badge">[[Status]]</span></td></tr>
                     <tr><td class="strong">[[Older row]]</td><td>[[Value]]</td><td class="num">[[Value]]</td><td><span class="badge success">[[Status]]</span></td></tr>
                   </table></div>
-                  <div class="section" data-beat="2" data-auto="900"><h3>[[Row]] history</h3><div class="log">
+                  <div class="section" data-beat="2"><h3>[[Row]] history</h3><div class="log">
                     <div><span class="t">[[Time]]</span><span class="cp-mark" style="width:20px;height:20px"><i class="ic grad" data-icon="sparkle_filled"></i></span><span>[[What the agent did]]<span class="by">[[On whose behalf, through which connector]]</span></span><span></span></div>
                     <div><span class="t">[[Time]]</span><span class="avatar xs" data-name="[[Person]]"></span><span>[[What the person approved]]<span class="by">[[Person]]</span></span><span></span></div>
                   </div></div>
@@ -201,8 +323,7 @@
               </div></div>
             </div>
             <div class="col grow" style="gap:0;min-height:0" data-beat="3">
-              <div class="cpa-tabs"><span class="tab"><span class="fav" style="background:#1e293b"><i class="ic" data-icon="document"></i></span><span class="lbl">[[Customer's system]]</span></span><span class="tab on"><span class="fav sales"></span><span class="lbl">[[Record name]]</span></span></div>
-              <div class="cpa-url"><button class="btn icon"><i class="ic" data-icon="arrow_left"></i></button><span class="addr"><i class="ic" data-icon="lock_closed"></i>[[org]].crm.dynamics.com/[[record]]</span></div>
+              <div class="cpa-url"><button class="btn icon"><i class="ic" data-icon="arrow_left"></i></button><button class="btn icon"><i class="ic" data-icon="arrow_clockwise"></i></button><span class="addr"><i class="ic" data-icon="globe"></i>[[org]].crm.dynamics.com<i class="ic" data-icon="dismiss"></i></span><span class="end"><button class="btn icon"><i class="ic" data-icon="full_screen_maximize"></i></button><button class="btn icon"><i class="ic" data-icon="dismiss"></i></button></span></div>
               <div class="cpa-page"><div class="m365 d3">
                 <header class="d3-bar"><div class="waffle"><i class="ic" data-icon="grid"></i></div><div class="app-name">Dynamics 365<span>[[App]]</span></div><div class="search"><i class="ic" data-icon="search"></i>Search</div><span class="avatar sm" data-name="[[Person]]"></span></header>
                 <div class="m365-body"><div class="d3-page">
@@ -227,32 +348,41 @@
   <aside class="notes">[[What the presenter says, and what to click]]</aside>
 </section>
 
-<!-- Teams: people reached where they already work.  A card posted with Copilot, then replies arrive. -->
+<!-- Teams: people reached where they already work.  A card posted with Copilot, then replies arrive.  This is also
+     where a colleague can message or @mention someone's Autopilot like a colleague: it answers as itself (its own
+     name and avatar, clearly working for its owner), never as the person (look-and-feel.md, "Autopilot as a
+     teammate"; draw only what Microsoft has published). -->
 <section class="scene zoom" id="teams" data-title="Teams chat">
   <div class="tm">
-    <header class="tm-bar"><i class="ic muted" data-icon="arrow_left"></i><i class="ic muted" data-icon="arrow_right"></i><div class="search"><i class="ic" data-icon="search"></i>Search</div><i class="ic muted" data-icon="more_horizontal"></i><span class="avatar sm" data-name="[[Person]]"><i class="pres"></i></span></header>
+    <header class="tm-bar"><i class="ic" data-icon="panel_left"></i><span class="grow"></span><i class="ic muted" data-icon="chevron_left"></i><i class="ic muted" data-icon="chevron_right"></i><div class="search"><i class="ic" data-icon="search"></i>Search or ask Copilot (Ctrl+E)</div><span class="tm-org">[[Company]]<span class="avatar xs" data-name="[[Person]]"><i class="pres"></i></span></span><span class="cpa-win"><i class="min"></i><i class="max"></i><i class="x"></i></span></header>
     <div class="tm-body">
-      <nav class="tm-rail"><span><i class="ic" data-icon="alert"></i>Activity</span><span class="on"><i class="ic" data-icon="chat"></i>Chat</span><span><i class="ic" data-icon="people_team"></i>Teams</span><span><i class="ic" data-icon="calendar_ltr"></i>Calendar</span><span><i class="ic" data-icon="apps"></i>Apps</span></nav>
+      <nav class="tm-rail"><span title="Activity"><i class="ic" data-icon="alert"></i></span><span class="on" title="Chat"><i class="ic" data-icon="chat"></i><span class="badge">1</span></span><span title="Calendar"><i class="ic" data-icon="calendar_ltr"></i></span><span title="Teams"><i class="ic" data-icon="people_team"></i></span><span title="Apps"><i class="ic" data-icon="apps"></i></span><span title="More"><i class="ic" data-icon="more_horizontal"></i></span></nav>
       <div class="tm-list">
-        <div class="tm-list-head">Chat<span class="grow"></span><i class="ic s16 muted" data-icon="filter"></i><i class="ic s16 muted" data-icon="compose"></i></div>
-        <div class="tm-item sel"><span class="avatar org" data-name="[[Group chat]]"></span><div class="grow"><div class="strong ellipsis">[[Group chat]]</div><div class="prev ellipsis">[[Last message]]</div></div></div>
-        <div class="tm-item"><span class="avatar" data-name="[[Colleague]]"><i class="pres"></i></span><div class="grow"><div class="ellipsis">[[Colleague]]</div><div class="prev ellipsis">[[Last message]]</div></div></div>
-        <div class="tm-item"><span class="avatar" data-name="[[Colleague]]"><i class="pres away"></i></span><div class="grow"><div class="ellipsis">[[Colleague]]</div><div class="prev ellipsis">[[Last message]]</div></div></div>
+        <div class="tm-list-head">Chat<span class="grow"></span><i class="ic" data-icon="more_horizontal"></i><i class="ic" data-icon="search"></i><i class="ic" data-icon="compose"></i></div>
+        <div class="tm-pills"><span>Unread</span><span>Channels</span><span>Chats</span><span>Meeting chats</span></div>
+        <div class="tm-item"><i class="ic s16" data-icon="sparkle"></i>Copilot</div>
+        <div class="tm-sec"><i class="ic" data-icon="chevron_down"></i>Favorites</div>
+        <div class="tm-item sel"><span class="avatar org" data-name="[[Group chat]]"></span><span class="ellipsis">[[Group chat]]</span></div>
+        <div class="tm-item unread"><span class="avatar" data-name="[[Colleague]]"><i class="pres"></i></span><span class="ellipsis">[[Colleague]]</span><span class="n">1</span></div>
+        <div class="tm-sec"><i class="ic" data-icon="chevron_down"></i>Chats</div>
+        <div class="tm-item"><span class="avatar" data-name="[[Colleague]]"><i class="pres away"></i></span><span class="ellipsis">[[Colleague]]</span></div>
+        <div class="tm-item"><span class="avatar" data-name="[[Colleague]]"><i class="pres"></i></span><span class="ellipsis">[[Colleague]]</span></div>
       </div>
       <div class="tm-main">
-        <div class="tm-head"><span class="avatar org sm" data-name="[[Group chat]]"></span>[[Group chat]]<div class="tabs"><span class="on">Chat</span><span>Files</span></div></div>
+        <div class="tm-head"><span class="avatar org" data-name="[[Group chat]]"></span>[[Group chat]]<div class="tabs"><span class="on">Chat</span><span>Shared</span><span>Notes</span></div><span class="end"><i class="ic" data-icon="people"></i><i class="ic" data-icon="search"></i><i class="ic" data-icon="more_horizontal"></i></span></div>
         <div class="tm-chat">
+          <div class="tm-date">[[Day, date]]</div>
           <div class="tm-msg"><span class="avatar" data-name="[[Colleague]]"></span><div><div class="meta"><b>[[Colleague]]</b>[[Time]]</div><div class="bubble">[[Earlier message]]</div></div></div>
-          <div class="tm-msg me"><div><div class="meta" style="text-align:right">[[Time]]</div>
+          <div class="tm-msg me"><div><div class="meta">[[Time]]</div>
             <div class="bubble"><p style="margin:0 0 10px">[[Intro line]]</p>
-              <div class="acard" style="width:560px;box-shadow:none">
+              <div class="acard" style="width:520px">
                 <div class="acard-head"><i class="ic s24" data-icon="task_list_ltr" style="color:var(--teams)"></i><div class="grow strong">[[Card title]]</div></div>
                 <div class="acard-body"><div class="item"><span class="avatar sm" data-name="[[Owner]]"></span><div class="grow">[[Item · date]]</div></div><div class="item"><span class="avatar sm" data-name="[[Owner]]"></span><div class="grow">[[Item · date]]</div></div></div>
               </div></div>
             <div class="t-cap muted row" style="justify-content:flex-end;gap:4px;margin-top:4px"><i class="ic s16" data-icon="sparkle"></i>Sent with Copilot</div></div></div>
           <div class="tm-msg" data-beat="1" data-auto="700"><span class="avatar" data-name="[[Colleague]]"></span><div><div class="meta"><b>[[Colleague]]</b>[[Time]]</div><div class="bubble">[[Reply]]</div></div></div>
         </div>
-        <div class="tm-compose"><i class="ic" data-icon="compose"></i>Type a message</div>
+        <div class="tm-compose">Type a message<span class="tools"><i class="ic" data-icon="edit"></i><i class="ic" data-icon="emoji"></i><i class="ic" data-icon="attach"></i><i class="ic" data-icon="sparkle"></i><i class="ic" data-icon="add"></i><i class="ic" data-icon="send"></i></span></div>
       </div>
     </div>
   </div>
@@ -260,7 +390,8 @@
 </section>
 
 <!-- Autopilot (preview: show the badge): an agent with its own identity keeps working and comes back when it
-     needs the person.  The item that needs them arrives on beat 1; the presenter clicks its action. -->
+     needs the person.  The item that needs them arrives on beat 1; the presenter clicks its action.  Show it working
+     with the team, too: what colleagues asked it and what it answered, and where the owner stepped in. -->
 <section class="scene zoom" id="autopilot" data-title="Autopilot feed">
   <div class="cpa">
     <div class="cpa-title"><i class="ic" data-icon="arrow_left"></i><i class="ic off" data-icon="arrow_right"></i><span class="cpa-win"><i class="min"></i><i class="max"></i><i class="x"></i></span></div>
@@ -363,9 +494,9 @@
      The agent's change appears on beat 1. -->
 <section class="scene zoom" id="record" data-title="Dynamics 365 record">
   <div class="m365 d3">
-    <header class="d3-bar"><div class="waffle"><i class="ic" data-icon="grid"></i></div><div class="app-name">Dynamics 365<span>[[App]]</span></div><div class="search"><i class="ic" data-icon="search"></i>Search</div><span class="avatar sm" data-name="[[Person]]"></span></header>
+    <header class="d3-bar"><div class="waffle"><i class="ic" data-icon="grid"></i></div><div class="app-name">Dynamics 365<span>[[App]]</span></div><div class="search"><i class="ic" data-icon="search"></i>Search</div><span class="tools"><i class="ic" data-icon="add"></i><i class="ic" data-icon="settings"></i><i class="ic" data-icon="question_circle"></i><i class="ic" data-icon="alert"></i></span><span class="d3-copilot"><span class="oi copilot"></span>Copilot</span><span class="avatar sm" data-name="[[Person]]"></span></header>
     <div class="m365-body">
-      <nav class="d3-nav"><div><i class="ic" data-icon="home"></i>Home</div><div><i class="ic" data-icon="clock"></i>Recent</div><div class="hdr">[[Area]]</div><div class="on"><i class="ic" data-icon="document"></i>[[Table]]</div><div><i class="ic" data-icon="people"></i>[[Table]]</div></nav>
+      <nav class="d3-nav"><div class="menu"><i class="ic" data-icon="navigation"></i></div><div><i class="ic" data-icon="home"></i>Home</div><div><i class="ic" data-icon="clock"></i>Recent<i class="ic chev" data-icon="chevron_down"></i></div><div><i class="ic" data-icon="pin"></i>Pinned<i class="ic chev" data-icon="chevron_down"></i></div><div class="hdr">[[Group]]</div><div class="on"><i class="ic" data-icon="document"></i>[[Table]]</div><div><i class="ic" data-icon="people"></i>[[Table]]</div><div><i class="ic" data-icon="target"></i>[[Table]]</div><div class="hdr">[[Group]]</div><div><i class="ic" data-icon="building"></i>[[Table]]</div><div><i class="ic" data-icon="contact_card"></i>[[Table]]</div><div class="area"><span class="sq">[[A]]</span>[[Area]]<i class="ic chev" data-icon="chevron_down"></i></div></nav>
       <div class="d3-page">
         <div class="d3-cmd"><button class="btn"><i class="ic" data-icon="arrow_left"></i></button><button class="btn"><i class="ic" data-icon="arrow_sync"></i>Refresh</button><button class="btn"><i class="ic" data-icon="share"></i>Share</button></div>
         <div class="d3-head">
@@ -388,6 +519,48 @@
   <aside class="notes">[[What the presenter says]]</aside>
 </section>
 
+<!-- Dynamics 365 home, with Copilot's side pane: the seller's dashboard (.d3-page.home: tabs, .d3-dash of .d3-card
+     with a .hd title, info icon and "View all", and a .bd body: rows, .d3-kpis tiles or an .empty state).  Copilot's
+     side pane (.d3-cp) is open on the right (the top bar's .d3-copilot is .on) with its greeting and suggestions;
+     the person asks on beat 1 and Copilot answers.  Use the side pane only when the story's work happens inside
+     Dynamics 365; the Copilot app stays the default home (look-and-feel.md, "Where the agent shows up").  Cut the
+     .d3-cp and .d3-rail to show the dashboard alone. -->
+<section class="scene zoom" id="d365-home" data-title="Dynamics 365 home with Copilot">
+  <div class="m365 d3">
+    <header class="d3-bar"><div class="waffle"><i class="ic" data-icon="grid"></i></div><div class="app-name">Dynamics 365<span>[[App]]</span></div><div class="search"><i class="ic" data-icon="search"></i>Search</div><span class="tools"><i class="ic" data-icon="add"></i><i class="ic" data-icon="settings"></i><i class="ic" data-icon="question_circle"></i><i class="ic" data-icon="alert"></i></span><span class="d3-copilot on"><span class="oi copilot"></span>Copilot</span><span class="avatar sm" data-name="[[Person]]"></span></header>
+    <div class="m365-body">
+      <nav class="d3-nav"><div class="menu"><i class="ic" data-icon="navigation"></i></div><div class="on"><i class="ic" data-icon="home"></i>Home</div><div><i class="ic" data-icon="clock"></i>Recent<i class="ic chev" data-icon="chevron_down"></i></div><div><i class="ic" data-icon="pin"></i>Pinned<i class="ic chev" data-icon="chevron_down"></i></div><div class="hdr">[[Group]]</div><div><i class="ic" data-icon="document"></i>[[Table]]</div><div><i class="ic" data-icon="people"></i>[[Table]]</div><div><i class="ic" data-icon="target"></i>[[Table]]</div><div class="hdr">[[Group]]</div><div><i class="ic" data-icon="building"></i>[[Table]]</div><div><i class="ic" data-icon="contact_card"></i>[[Table]]</div><div class="area"><span class="sq">[[A]]</span>[[Area]]<i class="ic chev" data-icon="chevron_down"></i></div></nav>
+      <div class="d3-page home">
+        <div class="d3-home-head"><div class="tabs"><span class="on">Home</span><span>[[Tab]]</span></div><span class="end"><i class="ic s16" data-icon="edit"></i>Personalize</span></div>
+        <div class="d3-dash">
+          <div class="d3-card"><div class="hd">[[Card title]]<i class="ic" data-icon="info"></i><span class="all">View all<i class="ic" data-icon="chevron_right"></i></span></div>
+            <div class="bd"><div class="row" style="gap:10px"><span class="avatar sm" data-name="[[Account]]"></span><div class="grow">[[Account]]<div class="t-cap muted">[[Why it's here]]</div></div></div>
+              <div class="row" style="gap:10px"><span class="avatar sm" data-name="[[Account]]"></span><div class="grow">[[Account]]<div class="t-cap muted">[[Why it's here]]</div></div></div></div></div>
+          <div class="d3-card"><div class="hd">[[Card title]]</div><div class="bd"><div class="empty"><i class="ic" data-icon="document"></i>[[Empty state, as the product words it]]</div></div></div>
+          <div class="d3-card"><div class="hd">[[Card title]]<i class="ic" data-icon="info"></i></div>
+            <div class="bd"><div class="d3-kpis"><div>[[Metric]]<b>[[0]]</b></div><div>[[Metric]]<b>[[0]]</b></div><div>[[Metric]]<b>[[0]]</b></div><div>[[Metric]]<b>[[0]]</b></div><div>[[Metric]]<b>[[0]]</b></div><div>[[Metric]]<b>[[0]]</b></div></div></div></div>
+          <div class="d3-card"><div class="hd">[[Card title]]<i class="ic" data-icon="info"></i><span class="all">View all<i class="ic" data-icon="chevron_right"></i></span></div><div class="bd"><div class="empty"><i class="ic" data-icon="target"></i>[[Empty state]]</div></div></div>
+        </div>
+      </div>
+      <aside class="d3-cp">
+        <div class="d3-cp-head"><span class="oi copilot"></span>Copilot<button class="btn icon"><i class="ic" data-icon="dismiss"></i></button></div>
+        <div class="d3-cp-sub"><i class="ic" data-icon="navigation"></i><span class="end"><i class="ic shield" data-icon="shield_checkmark"></i><i class="ic" data-icon="more_horizontal"></i></span></div>
+        <div class="d3-cp-body">
+          <h2 data-hide="1">Hi, how can I help?</h2>
+          <p data-hide="1" style="margin:0">[[The product's greeting line]]</p>
+          <span class="sug" data-hide="1">[[Suggested question]]</span><span class="sug" data-hide="1">[[Suggested question]]</span>
+          <div class="cp-user" data-beat="1">[[What the person asks, in their words]]</div>
+          <div class="cp-turn" data-beat="2" data-auto="900"><div class="cp-resp"><p data-type="words" style="margin:0">[[The answer, from this record and its data]]<span class="cite">1</span></p></div>
+            <div class="refs"><span class="ref"><span class="oi sales"></span>[[Record or view]]</span></div></div>
+        </div>
+        <div class="d3-cp-prompt"><i class="ic" data-icon="add"></i>Message Copilot<span class="end"><i class="ic" data-icon="mic"></i></span></div>
+      </aside>
+      <nav class="d3-rail"><i class="ic" data-icon="people"></i><i class="ic on" data-icon="chat"></i><i class="ic" data-icon="sparkle"></i></nav>
+    </div>
+  </div>
+  <aside class="notes">[[What the presenter says, and what to click]]</aside>
+</section>
+
 <!-- Copilot drafts a document in the pane next to the chat (.oi.word, .oi.excel or .oi.powerpoint).
      The draft fills in on beats. -->
 <section class="scene zoom" id="doc" data-title="Copilot drafts a document">
@@ -406,10 +579,12 @@
             <div class="cpa-prompt"><div class="ph">Message Copilot</div><div class="tools"><span class="grow"></span><span class="cpa-send off"><i class="ic" data-icon="arrow_up"></i></span></div></div>
           </div>
           <aside class="cpa-pane" style="--pane:760px" data-beat="1">
-            <div class="cpa-pane-head"><span class="oi word"></span>[[File name]].docx<span class="end"><button class="btn">Open in Word</button><button class="btn icon"><i class="ic" data-icon="dismiss"></i></button></span></div>
+            <div class="cpa-pane-head"><span class="oi word"></span><span class="doc-name">[[File name]]</span><span class="end"><span class="doc-acts"><button class="btn icon" title="Comments"><i class="ic" data-icon="chat"></i></button><button class="btn icon" title="Edit"><i class="ic" data-icon="edit"></i></button><button class="btn icon" title="Share"><i class="ic" data-icon="share"></i></button></span><button class="btn primary">Open in Word</button><button class="btn icon"><i class="ic" data-icon="more_horizontal"></i></button><button class="btn icon"><i class="ic" data-icon="dismiss"></i></button></span></div>
+            <div class="doc-tabs"><span>File</span><span class="on">Home</span><span>Insert</span><span>Layout</span><span>References</span><span>Review</span><span>View</span><span>Help</span></div>
             <div class="cpa-doc"><div class="page">
-              <h1>[[Document title]]</h1><p>[[For whom · Draft, date]]</p>
+              <h1>[[Document title]]</h1><p class="sub">[[For whom · Draft, date]]</p>
               <h2>[[Heading]]</h2><p>[[Paragraph]]</p>
+              <ol><li><b>[[Point]]</b><ol><li>[[Detail]]</li><li>[[Detail]]</li></ol></li></ol>
               <div data-beat="2" data-auto="1000"><h2>[[Heading]]</h2><p>[[Paragraph]]</p></div>
             </div></div>
           </aside>

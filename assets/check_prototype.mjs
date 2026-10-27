@@ -1,5 +1,5 @@
 // Node version of check_prototype.py, for environments with Node Playwright but no Python Playwright.
-//   node check_prototype.mjs working/<name>/prototype.html [--scene <id>] [--motion]
+//   node check_prototype.mjs working/<name>/prototype.html [--scene <id>] [--motion] [--outline [file.json]]
 // The in-page checks and the wording list are read from check_prototype.py, so the two can't drift apart.
 import { createRequire } from "node:module";
 import { execSync } from "node:child_process";
@@ -94,8 +94,9 @@ async function previewCheck(browser, src) {
 
 const args = process.argv.slice(2);
 const si = args.indexOf("--scene"), only = si >= 0 ? args[si + 1] : null, motionOnly = args.includes("--motion");
-const file = args.find((a, i) => !a.startsWith("--") && !(si >= 0 && i === si + 1));
-if (!file) { console.log("Usage: node check_prototype.mjs <prototype.html> [--scene <id>] [--motion]"); process.exit(2); }
+const oi = args.indexOf("--outline"), outlineTo = oi >= 0 && /\.json$/i.test(args[oi + 1] || "") ? args[oi + 1] : null;
+const file = args.find((a, i) => !a.startsWith("--") && !(si >= 0 && i === si + 1) && !(outlineTo && i === oi + 1));
+if (!file) { console.log("Usage: node check_prototype.mjs <prototype.html> [--scene <id>] [--motion] [--outline [file.json]]"); process.exit(2); }
 
 const pw = loadPlaywright();
 if (!pw) {
@@ -111,6 +112,17 @@ if (!browser) {
 }
 
 const src = path.resolve(file), out = path.join(path.dirname(src), "renders");
+if (oi >= 0) {
+  // --outline: the machine-readable outline (scenes, beats, text, triggers, notes) for a tool that drives the demo.
+  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+  await page.goto(pathToFileURL(src).href + "?driven");
+  await page.waitForFunction("window.proto && window.proto.outline");
+  const o = await page.evaluate("proto.outline()"), dest = path.resolve(outlineTo || path.join(path.dirname(src), "outline.json"));
+  await browser.close();
+  fs.writeFileSync(dest, JSON.stringify(o, null, 2), "utf8");
+  console.log(`Outline: ${o.scenes.length} scenes, ${o.scenes.reduce((n, s) => n + s.beats.length, 0)} stops → ${dest}`);
+  process.exit(0);
+}
 if (motionOnly) {
   // --motion: play the scenes at presenter speed and report anything that jumps instead of gliding.
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } }), errors = [], issues = [], t0 = Date.now();
@@ -141,7 +153,7 @@ fs.mkdirSync(out, { recursive: true });
 for (const f of fs.readdirSync(out)) if (f.endsWith(".png") && (!only || f.includes(`-${only}-b`) || f.startsWith("sheet-")))
   fs.unlinkSync(path.join(out, f));
 
-const issues = [], errors = [], requests = [], taken = [];
+const issues = [], errors = [], requests = [], taken = [], notes = [];
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const uniq = a => [...new Set(a)];
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
@@ -161,7 +173,7 @@ if (only && !scenes.some(s => s.id === only)) {
 
 for (const [i, s] of scenes.entries()) {
   if (only && s.id !== only) continue;
-  await page.evaluate(`proto.go(${i})`);
+  await page.evaluate(`void proto.go(${i})`);
   await wait(150);
   const seen = new Set();
   for (let b = 0; b <= s.beats; b++) {
@@ -187,8 +199,8 @@ for (const [i, s] of scenes.entries()) {
         for (const re of TELLS) for (const m of uniq(a.text.match(re) || [])) issues.push(`${tag}: wording to replace: '${m}'`);
         for (const m of uniq(a.text.match(EMOJI) || [])) issues.push(`${tag}: emoji '${m}' (use a Fluent icon)`);
         for (const f of a.findings || []) issues.push(`${tag}: ${f}`);
-        if (!a.frame && !a.clickable && st.max === 0)
-          issues.push(`${tag}: nothing happens in this scene (no beats, no click)`);
+        if (!["cover", "close"].includes(s.id) && !a.clickable && st.max === 0)
+          notes.push(`${tag}: a still scene (no beats, no click).  Fine if that's the point; otherwise give the room something to see happen`);
       }
     }
     if (st.beat >= st.max) break;
@@ -207,4 +219,6 @@ for (const r of uniq(requests)) issues.push(`network request (must be offline): 
 console.log(`${scenes.length} scenes, ${taken.length} screenshots and ${sheets} contact sheet(s) in ${out}`);
 console.log(issues.length ? issues.map(x => "  - " + x).join("\n") :
   "  No automatic findings.  Now review the contact sheets, and open single screenshots where something looks off.");
+if (notes.length) console.log("  Notes (not findings):\n" + notes.map(x => "  - " + x).join("\n"));
+console.log("  This check sees layout, not story.  Before you show it, read the story back: is it the fullest version?");
 process.exit(issues.length ? 1 : 0);

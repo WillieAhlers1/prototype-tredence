@@ -12,32 +12,41 @@ Assume there are problems and go looking for them.  The first render is rarely r
 
 ## Review checklist (every screenshot)
 
+Read every word aloud in the Tredence voice (`tredence-frame.md` §Voice).
+
 Do this yourself, never with a subagent.  Look at each contact sheet (`renders/sheet-N.png`, 12 screenshots each,
 in order), then open single screenshots where something looks off.
 
-1. **Would a Tredence lead show it?**  Nothing generic, silly or overclaimed.  Read every word aloud as the
-   presenter, across a table, in the Tredence voice (`tredence-frame.md` §Voice).
+1. **Would a Tredence lead show it?**  Nothing generic, silly or overclaimed.  Read every word aloud as the presenter.
 2. **Looks like the real product?**  Chrome, spacing, type sizes, icon style and colours match the product.
    Employees meet Copilot in the Copilot app; other apps appear where the work starts, as proof, or to show
-   people reached.
+   people reached.  Copilot's work trace and the Workspace follow `look-and-feel.md` §Copilot's work, as Copilot
+   shows it: flat, thin checks, a thinking node whose reasoning uses this story's names and numbers, a status
+   line, and Workspace sections with plain step lines.
 3. **One idea per scene, obvious in 3 seconds.**  The eye lands on the agent's moment first.
 4. **Consistent data.**  Same names, amounts, dates and counts everywhere (check against the data sheet).
-5. **The human is in control** somewhere visible: confirm, edit, approve or undo.  Nothing approval-class is
-   marked *Done for you*; every approval shows checks and the policy reason.
+5. **The human is in control** somewhere visible: confirm, edit, approve, undo, or set the rule the agent
+   follows.  Nothing approval-class is marked *Done for you*; any approval shows checks and the policy reason.
 6. **Sources shown** for anything the agent claims.
 7. **Nothing clipped, overlapping or empty-looking**; no stray placeholder text; the concept label is visible.
    Frame scenes look like the Tredence template: chrome untouched, nothing over the footer, top rule, brand squares
    or cover band, Poppins and flat brand colour only, the key phrase of each title in Bright Orange.
 8. **Flow works**: every beat reveals in reading order; the cue ring lands on the thing to click, and clicking it
    does what it says; scenes end on an in-product bridge where the story has one (otherwise the Next pill shows);
-   → and the Next button always advance, and nothing the presenter must click sits under the Back/Next buttons.
+   → always advances.
 9. **Made for this story?**  The scenes, their order, the screens and the signature moment come from this
-   customer's story, not from the starter, the outlines, or the last prototype you built.  If the scene list could
-   be swapped with another customer's, it isn't designed yet.
-10. **Does the business change, not just the task?**  The cover names the business shift in the customer's words;
-    the room sees it on the ground and from above; the close says how the business could work, what it could be
-    worth (rounded, "Illustrative", basis in the notes) and one ask.  Nothing on screen recaps the scenes or ticks
-    off the brief.  Ask: would the leader who owns the measure say "we could run this differently"?
+   customer's story, not from the starter, the outlines, this skill's rules, or the last prototype you built.  If
+   the scene list could be swapped with another customer's, it isn't designed yet.  Every scene is there because
+   this story needs it, not because the skill mentions it.
+10. **Is the idea big enough?**  The room understands the business change in the work and across the business,
+    in the customer's words.  If there's a close, it says what the business could become and what it could be
+    worth (rounded, "Illustrative", basis in the notes), never a recap of the scenes or a tick-list of the brief.
+    Read the opening and the ending aloud as their CEO: would they repeat it to their board, and would a
+    competitor worry?  If it's the same business doing the same things earlier, faster or for more people, go back
+    to `story-and-data.md` §Questions that break the frame (unless the user asked for something smaller).
+11. **Is the new shape shown, not just said?**  Point to the moment the room sees the new business, or the
+    redesigned work, happen on screen.  If you can only point to the close or a presenter line, it's a claim:
+    `story-and-data.md` §Show it, don't just say it.
 
 ## Running the check
 
@@ -63,6 +72,11 @@ beat yourself with the checklist above.
 - Segoe fonts aren't installed, so screenshots use a fallback font with different text widths.  If a label is
   only just clipped, ask the user to check it on Windows before cutting the wording.
 
+Export the scene and beat outline for a recording or automation tool with
+`python <skill>/assets/check_prototype.py <html> --outline [file.json]`.
+Still scenes are notes, not failures. Product checks also flag percent fractions, clipped agent highlights,
+highlights inside Word drafts and red/green traffic-light figures. Tredence frame checks remain unchanged.
+
 ## Feedback playbook
 
 Users often give one-line feedback.  Read the intent, fix the cause, and show the result.
@@ -72,29 +86,29 @@ Users often give one-line feedback.  Read the intent, fix the cause, and show th
 | "Looks fake", "too AI" | Decoration and generic content | Remove gradients and decoration outside the agent moments, add real product detail and specific content, cut marketing words.  `look-and-feel.md` §AI tells |
 | "Too busy" | Too much competing for the eye | Hide non-essential panes, fewer list rows, one agent moment per scene |
 | "Too many apps" | A tour, not a story | Keep the employee's agent work in Copilot; show other apps only where the work starts, in the browser pane, or as one proof scene |
-| "They all look the same" | Screens chosen before the story | Go back to the beats.  Open where this person's work really starts, replace stock scenes with views designed for this story, and give the signature moment its own view |
-| "So what?", "think bigger", "it's just a productivity tool", "where's the business impact?" | The story stops at one person's task, or ticks off a feature list | Go back to `story-and-data.md` §Start with the business shift: the constraint, from → to, the measure and who owns it.  Add the view from above, rewrite the cover and close around the shift, and fold the feature list into one story |
-| "Too slow" | Pacing | Shorten `data-auto` delays and work steps; cut a scene |
+| "They all look the same" | Screens chosen before the story, or the same parts in every build (an approval, a proof scene, a leader's report) | Go back to the beats.  Drop any part this story doesn't need, open where this work really starts, replace stock scenes with views designed for this story, and give the signature moment its own view |
+| "So what?", "think bigger", "is it ambitious?", "it's just a productivity tool", "where's the business impact?" | The story stops at one person's task, ticks off a feature list, or shows the same business doing more of the same | Go back to `story-and-data.md` §Start with the business shift.  Write three new ideas with §Questions that break the frame, take the boldest one their leaders could believe, then rebuild the cover, the close and whatever shows the change across the business around it.  Keep the scenes that still prove it; fold any feature list into one story |
+| "Too slow" | Too many beats, or beats that show nothing new | Cut beats and scenes that don't show something new.  Don't add `data-hold` except at the one moment that matters; the presenter can press → to skip ahead, or pause |
+| "Too fast", "I can't read it" | A stop with a lot on it | The engine already holds text long enough to skim; add `data-hold` at the moment that matters, or `data-hold="pause"` where the presenter will talk (`engine.md` §Presenter controls) |
+| "We want a video of it", "the recording drags" | Play mode is paced for a room | Don't slow or speed play mode for a video.  A recording tool opens it with `?driven` and steps it to its own narration (`engine.md` §Driving it from another tool); `data-note` on a beat gives it a line to start from |
+| "That's not what Copilot looks like", "the thinking looks fake" | A home-made trace or Workspace, or thinking that narrates instead of reasoning | Redraw with the parts in `look-and-feel.md` §Copilot's work, as Copilot shows it, and rewrite the thought: first person, the story's real names and numbers, the thing that doesn't add up, what it will do next |
 | "Jumpy", "not smooth" | Content snapping into place | Run `--motion`; reveal content where it stays, pair replaced elements with `data-morph`, give the warm-up a few seconds on the cover.  `engine.md` §Motion |
 | "I clicked and then it just stopped" | A cue fired one beat early, or nothing to click | Make the beats before the named thing automatic, or add an in-product bridge if the story has one.  `engine.md` §Clicks |
 | "Make it ours" | Not specific enough | Put the customer's industry, roles and real-world artefacts (fictional) into the data sheet, and rebuild the signature moment around their problem |
 | "Can it do X for real?" | A question for the Tredence team | Note it in `brief.md`; don't make the prototype claim it |
+| "How would it know how *we* do it?", "who controls what it does?" | The story doesn't show where the customer's own method lives or who owns it | If their method is the point, weave in their own Cowork skill: one rule from it applied visibly, and the person who owns it.  `story-and-data.md` §The customer's own way of working |
+| "That's wrong", "take a step back" | You are patching symptoms | Stop.  Name the root cause in one line and offer 2–4 genuinely different directions with a recommendation |
 | "Doesn't look like Tredence" | The frame drifted, or product styling leaked into it | Use the `td-` layouts and classes from `frames.html`; Poppins and the palette only; the orange key phrase in titles; a brand photo on the cover.  Leave the Microsoft product scenes as they are |
 | "Doesn't look like Microsoft" | Tredence styling leaked into a product scene | Take Poppins, orange and logos out of the product scenes; use the kit's shells as they are |
 | "Sounds like a brochure" | Marketing words, slogans, no "we" or "you" | Rewrite every line out loud in the Tredence voice: their world first, what changes in someone's day, one ask |
-| "That's wrong", "take a step back" | You are patching symptoms | Stop.  Name the root cause in one line and offer 2–4 genuinely different directions with a recommendation |
-
-- **Match the scope of the feedback.**  "The subtitle is too long" is not permission to restyle the scene.
-- **When the user settles** ("leave it", "perfect"), stop iterating on that scene.
-- **When the user asks why**, explain your reasoning honestly, including its weaknesses, then offer options.
 
 ## Delivery note (keep it short)
 
 ```
 The prototype is ready: <path to dist/<name>.html>  (source: <path to prototype.html>)
-- Run it: click Next at the bottom right (or the highlighted control in a scene); N for presenter notes
+- Run it: Space to play and pause, → to step by hand, N for presenter notes, ? for keys
 - Illustrative: <what's invented, what's labelled Preview>
-- Business shift: <from → to, in one line>; <the measure that moves, rounded> (illustrative; basis in brief.md)
+- The big idea: <what the business could become, in one line>; <the measure that moves, rounded> (illustrative; basis in brief.md).  Also considered: <the safer idea> · <the wilder one>
 - Question to ask in the room: <the card's line 5>, also in the notes of scene <n>
 - Checked: every stop screenshotted and reviewed; motion pass clean; packed file plays in the preview sandbox
 ```

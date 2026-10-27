@@ -1,5 +1,5 @@
-/* prototype-tredence kit styles: Fluent 2 product shells + the Tredence 2026 frame (cover, content, section, divider,
-   ask, closing).  Shipped as JS because Copilot Cowork skills can't contain .css files.  Load it in <head>:
+/* prototype-tredence kit styles: Fluent 2 product shells + Tredence 2026 frame.
+   Shipped as JS because Copilot Cowork skills can't contain .css files.  Load it in <head>:
    <script src="kit/proto-style.js"></script>.  Don't edit per prototype; use a <style> block in prototype.html. */
 (function () {
   var s = document.createElement("style"); s.id = "proto-style";
@@ -9,6 +9,7 @@
 
 @font-face{font-family:"Segoe Sans Display";src:local("Segoe Sans Display");font-weight:400}
 @font-face{font-family:"Segoe Sans Display Semibold";src:local("Segoe Sans Display Semibold");font-weight:400}
+
 /* Poppins, the only Tredence typeface, ships in kit/fonts (SIL OFL) and is inlined by pack_prototype.py */
 @font-face{font-family:"Poppins";src:local("Poppins Regular"),local("Poppins-Regular"),url(kit/fonts/Poppins-Regular.ttf) format("truetype");font-weight:400;font-display:block}
 @font-face{font-family:"Poppins";src:local("Poppins Medium"),local("Poppins-Medium"),url(kit/fonts/Poppins-Medium.ttf) format("truetype");font-weight:500;font-display:block}
@@ -36,7 +37,11 @@
   --sh64:0 0 8px rgba(0,0,0,.12),0 32px 64px rgba(0,0,0,.14);
   /* App accents: use only inside the matching shell */
   --outlook:#0f6cbd;--teams:#5b5fc7;--teams-bg:#ebebeb;--teams-hover:#e8ebfa;--d365:#0f6cbd;
-  /* Copilot's agent gradient: product scenes only (it marks the agent).  The Tredence frame is flat colour. */
+  /* Data colours for figures outside Power BI: the Office theme's accents (Word, Excel, PowerPoint), a muted grey
+     for comparison values and a dark grey for limit lines (references/look-and-feel.md, "Data colours"). */
+  --office-1:#156082;--office-2:#e97132;--office-3:#196b24;--office-4:#0f9ed5;--office-5:#a02b93;--office-6:#4ea72e;
+  --data-muted:#d9d9d9;--data-ref:#595959;
+  /* Copilot's agent gradient: product scenes only. The Tredence frame is flat colour. */
   --cp-grad:linear-gradient(135deg,#38b9b6 0%,#1d90b2 45%,#8661c5 100%);
   --f-teal:#38b9b6;--f-deep:#28647c;--f-purple:#8661c5;--f-blue:#1d90b2;
   --f-display:"Segoe Sans Display","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
@@ -120,6 +125,14 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .proto-next:hover{background:rgba(20,20,20,.96)}
 .cues .proto-next.show{opacity:1;visibility:visible;transform:none;transition-delay:0s}
 .scene-frame-on .proto-next{bottom:52px}
+/* Play / pause: the pill offers Play on the first scene and says when the demo is paused (shown even with cues off);
+   the button sits at the left of the scene dots.  A cued control the demo presses by itself shows the press. */
+.proto-next .pi-play{display:none}
+.proto-next.play .pi-play{display:block;animation:none}
+.proto-next.play .pi-next{display:none}
+.proto-paused .proto-next.show{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+[data-go].pf-press{transform:scale(.96);filter:brightness(.92);transition:transform 120ms var(--ease-out),filter 120ms var(--ease-out)}
+
 /* Back and next buttons: added by proto.js, always on, so nobody needs the keys.  Quiet until the pointer is near. */
 .proto-nav{position:absolute;right:24px;bottom:20px;z-index:900;display:flex;gap:6px;padding:4px;border-radius:999px;
   background:rgba(36,36,36,.9);box-shadow:0 4px 12px rgba(0,0,0,.22),0 14px 32px rgba(0,0,0,.2);opacity:.72;transition:opacity var(--t-enter) var(--ease-out)}
@@ -137,10 +150,18 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 /* Presenter overlays (outside the stage) */
 .proto-dots{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(20,20,20,.7);opacity:0;transition:opacity .3s;z-index:1000}
 .proto-dots.show{opacity:1}
+.proto-paused .proto-dots{opacity:1}
+.proto-pp{display:flex;align-items:center;justify-content:center;width:22px;height:22px;margin:-7px 6px -7px -6px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.16);cursor:pointer}
+.proto-pp svg{width:14px;height:14px;fill:#fff}
+.proto-pp .pp-pause,.proto-playing .proto-pp .pp-play{display:none}
+.proto-playing .proto-pp .pp-pause{display:block}
 .proto-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer}
 .proto-dots i.on{background:#fff}
 .proto-notes{position:fixed;left:24px;right:24px;bottom:40px;max-height:30vh;overflow:auto;z-index:1001;display:none;padding:16px 20px;border-radius:8px;background:rgba(20,20,20,.92);color:#fff;font:15px/22px var(--font);box-shadow:var(--sh28)}
 .proto-notes.show{display:block}
+.proto-notes .bn{margin:8px 0 0;color:#cfe9e8}
+/* Driven by another tool (?driven): no presenter controls on screen.  The concept label stays. */
+.proto-driven .proto-nav,.proto-driven .proto-next,.proto-driven .proto-dots,.proto-driven .proto-help,.proto-driven .proto-notes{display:none!important}
 .proto-notes b{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:#9ad8d6;margin-bottom:4px}
 .proto-help{position:fixed;top:16px;right:16px;z-index:1001;display:none;padding:14px 18px;border-radius:8px;background:rgba(20,20,20,.92);color:#fff;font:13px/22px var(--font)}
 .proto-help.show{display:block}
@@ -349,17 +370,67 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--r-xl);border:1px solid var(--stroke2);background:var(--bg1);font-size:13px;color:var(--fg1)}
 
-/* Agent work steps: proto.js sets .run then .done on each li */
-.work{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:18px;color:var(--fg2)}
-.work li{display:flex;align-items:flex-start;gap:10px;padding:5px 0}
-.work li::before{content:"";width:16px;height:16px;flex:none;margin-top:1px;border-radius:50%;border:2px solid var(--stroke1)}
-.work li.run::before{border-color:var(--brand-stroke2);border-top-color:var(--brand);animation:spin 1s linear infinite}
-.work li.done::before{border:0;background:var(--success) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.2l2.6 2.6L12 5.4' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
-.work li.done[data-beat]::before{animation:tick-pop .36s var(--ease-out)}
+/* Copilot's work in the conversation, drawn the way the Copilot app shows it (look-and-feel.md §Copilot's work).
+   Flat, no box: .work-box > .sum ("Working on it" + chevron), .work > li (a step: thin check when done) and
+   li.think (a dot; .lbl holds .on-run "Thinking…" and .on-done "Thought process" + chevron; .thought holds the
+   reasoning, shown while the li has .open; clicking .lbl toggles it), then .more ("Show more").  .clip keeps only
+   the latest items in view, faded at the top.  .cp-status (Copilot mark + .t) is the live line under the trace.
+   proto.js sets .run then .done on each li[data-beat]; a thinking li stays .run until its text has streamed.
+   When every item is done proto.js adds .done to the .work-box: .sum > .on-run ("Working on it") gives way to
+   .on-done, whose .n it fills ("9 items" + " complete").  li.skill: Copilot loads the customer's own skill; its
+   icon (.plug) takes the place of the check. */
+.work-box{flex:none;display:flex;flex-direction:column;align-items:flex-start}
+.work-box > summary,.work-box > .sum{display:flex;align-items:center;gap:6px;height:28px;font-size:14px;color:var(--fg3);list-style:none}
+.work-box > .sum .ic{width:16px;height:16px}
+.work-box > .sum .on-done,.work-box.done > .sum .on-run{display:none}
+.work-box.done > .sum .on-done{display:inline}
+.work{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-self:stretch;font-size:14px;line-height:20px;color:var(--fg1)}
+.work li{position:relative;padding:6px 0 6px 26px}
+.work li::before{content:"";position:absolute;left:0;top:8px;width:16px;height:16px;box-sizing:border-box;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.2 8.4l3.1 3.1 6.5-7' fill='none' stroke='%23424242' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.work li:not(:last-child)::after{content:"";position:absolute;left:7.5px;top:26px;bottom:-6px;width:1px;background:var(--stroke1)}
+.work li.run{color:var(--fg3)}
+.work li.run::before{left:2px;top:10px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--stroke1);border-top-color:var(--fg3);background:none;animation:spin .9s linear infinite}
+.work li.done[data-beat]:not(.think)::before{animation:tick-pop .36s var(--ease-out)}
 @keyframes tick-pop{from{transform:scale(.4);opacity:0}}
-.work li .det{display:block;font-size:12px;color:var(--fg4)}
-.work-box{border:1px solid var(--stroke2);border-radius:var(--r-xl);padding:10px 14px;background:var(--bg2)}
-.work-box > summary,.work-box > .sum{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--fg2);margin-bottom:4px;list-style:none}
+.work li .det{color:var(--fg3)}
+.work li b{font-weight:600}
+.work li.skill:not(.run)::before{content:none}
+.work li.skill > .plug{position:absolute;left:-1px;top:7px}
+.work li.skill.run > .plug{visibility:hidden}
+.work li.skill.done[data-beat] > .plug{animation:tick-pop .36s var(--ease-out)}
+.work li.think{font-size:13px;color:var(--fg3)}
+.work li.think::before,.work li.think.run::before{left:0;top:8px;width:16px;height:16px;border:0;border-radius:0;animation:none;background:radial-gradient(circle,var(--fg-disabled) 0 2.5px,transparent 3px)}
+.work li.think > .lbl{display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.work li.think > .lbl .ic{width:14px;height:14px;transition:transform .2s var(--ease-out)}
+.work li.think.open > .lbl .ic{transform:rotate(90deg)}
+.work li.think > .thought{display:none;padding:6px 0 4px;font-size:14px;line-height:22px;color:var(--fg2)}
+.work li.think.open > .thought{display:block}
+.work .thought p{margin:0}
+.work .thought p + p{margin-top:10px}
+.work .on-run,.work li.run .on-done{display:none}
+.work li.run .on-run{display:inline}
+.work-box.clip > .work{max-height:var(--clip,136px);overflow:hidden;justify-content:flex-end}
+/* While a thought streams in a clipped trace, proto.js sets --lag to its unstreamed tail, so the window ends at the
+   latest words; the list eases down by it and back as the text arrives. */
+.work-box.clip > .work > li{translate:0 var(--lag,0px);transition:translate .24s var(--ease-out)}
+.work-box.clip.all > .work > li{translate:none}
+.work-box.clip > .work.lag-snap > li{transition:none}
+.work-box.clip.over > .work{-webkit-mask-image:linear-gradient(to bottom,transparent,#000 44px);mask-image:linear-gradient(to bottom,transparent,#000 44px)}
+.work-box.clip.all > .work{max-height:none;-webkit-mask-image:none;mask-image:none}
+.work-box.clip:not(.over,.all) > .more{display:none}
+.work-box > .more{height:28px;display:flex;align-items:center;margin-top:2px;padding:0;border:0;background:none;font:inherit;font-size:13px;color:var(--fg3);cursor:pointer}
+.cp-status{flex:none;display:flex;align-items:center;gap:8px;font-size:13px;line-height:20px;color:var(--fg3)}
+.cp-status > .oi{width:16px;height:16px}
+.cp-status > .t,.work li.think.run .on-run{background:linear-gradient(100deg,var(--fg3) 42%,#cdcdcd 50%,var(--fg3) 58%) 100% 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 2.2s linear infinite}
+@keyframes shimmer{to{background-position:0 0}}
+/* Conversation furniture: a time divider ("1 min ago") and a file the person attached, above their message */
+.cp-time{flex:none;display:flex;align-items:center;gap:12px;font-size:12px;line-height:16px;color:var(--fg3)}
+.cp-time::before,.cp-time::after{content:"";flex:1;height:1px;background:var(--stroke2)}
+.cp-file{align-self:flex-end;flex:none;display:flex;align-items:center;gap:10px;max-width:320px;padding:10px 16px 10px 12px;border:1px solid var(--stroke1);border-radius:14px;background:var(--bg1);font-size:14px;line-height:18px}
+.cp-file > .oi,.cp-file > .ic{width:24px;height:24px}
+.cp-file > div{min-width:0}
+.cp-file .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-file .t-cap{display:block;font-size:12px;line-height:16px;color:var(--fg3)}
 
 /* Process steps: the agent runs a playbook.  Visible (queued) from the start; proto.js sets .run / .wait / .done
    from data-run-at / data-wait-at / data-done-at.  .on-queued .on-run .on-wait .on-done show text for one state. */
@@ -403,8 +474,9 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .log > :first-child{border-top:0}
 .log .t{color:var(--fg3);font-variant-numeric:tabular-nums;white-space:nowrap}
 .log .by{display:block;font-size:12px;color:var(--fg3)}
-/* Process view layout: steps on the left, whatever needs the user (input, approval, log) on the right */
-.run{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:20px;align-items:start}
+/* Process view layout: steps on the left, whatever needs the user (input, approval, log) on the right.  Not on list
+   items: proto.js also sets .run on a running step or work item, which must keep its own layout. */
+.run:not(li){display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:20px;align-items:start}
 /* Selectable option for a "needs your input" step */
 .opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--stroke2);border-radius:var(--r-lg);background:var(--bg1);font-size:13px;line-height:18px;color:var(--fg2)}
 .opt .t{display:block;font-size:14px;line-height:20px;font-weight:600;color:var(--fg1)}
@@ -482,27 +554,98 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
    moves the conversation; the pane takes the same path, so it reads as one push).  Nothing resizes mid-motion,
    so text never rewraps while it moves. */
 .cpa-pane[data-beat].in{animation:pane-in var(--t-glide) var(--ease-glide) both}
+/* A browser or document pane is a full-height split beside the conversation, as in the Copilot app: it starts at
+   the conversation's header row and runs to the window's bottom and right edges, set off by a divider, not a
+   floating card; the conversation's header stays above the conversation.  (The Workspace pane, .ws, is unchanged.) */
+.cpa-main:has(> .cpa-work > .cpa-pane:not(.ws)){display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr)}
+.cpa-main:has(> .cpa-work > .cpa-pane:not(.ws)) > .cpa-top{grid-area:1/1}
+.cpa-main:has(> .cpa-work > .cpa-pane:not(.ws)) > .cpa-work{display:contents}
+.cpa-main:has(> .cpa-work > .cpa-pane:not(.ws)) > .cpa-work > .cpa-conv{grid-area:2/1;min-height:0;padding-bottom:12px}
+.cpa-main:has(> .cpa-work > .cpa-pane:not(.ws)) > .cpa-work > .cpa-pane:not(.ws){grid-area:1/2/3/3;border:0;border-left:1px solid var(--stroke2);border-radius:0;box-shadow:none}
 @keyframes pane-in{from{opacity:0;transform:translateX(48px)}}
 .cpa-pane-head{height:48px;flex:none;display:flex;align-items:center;gap:8px;padding:0 6px 0 16px;border-bottom:1px solid var(--stroke2);font-size:15px;font-weight:600}
 .cpa-pane-head .end,.cpa-tabs .end{margin-left:auto;display:flex;align-items:center;gap:2px}
 .cpa-pane-body{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:16px;padding:14px 16px}
-/* Cowork Workspace: Steps, Outputs, References, Permissions */
+/* Cowork Workspace, the way the Copilot app shows it: a flat side panel (.cpa-pane.ws) with sections Steps
+   (.ws-count: "done / total", filled in by proto.js), Output, References and Plugins.  Each .ws-sec > h4 holds
+   the title and .end (count, buttons, chevron).  Steps are plain lines: a circle, dashed while running, ticked
+   when done. */
+.cpa-pane.ws{background:#fafafa;border:0;border-left:1px solid var(--stroke2);border-radius:0;box-shadow:none;margin:0 -12px -12px 0}
+.ws .cpa-pane-head{height:56px;border-bottom:0;padding:0 10px 0 22px;font-size:16px;font-weight:400}
+.ws .cpa-pane-body{gap:26px;padding:4px 22px 22px}
 .ws-sec{flex:none;display:flex;flex-direction:column;gap:6px}
-.ws-sec > h4{margin:0;height:24px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--fg2)}
-.ws-sec > h4 .ic{width:16px;height:16px}
+.ws-sec > h4{margin:0;height:30px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:400;color:var(--fg1)}
+.ws-sec > h4 .ic{width:16px;height:16px;color:var(--fg2)}
+.ws-sec > h4 .end{margin-left:auto;display:flex;align-items:center;gap:6px}
 .ws-sec > h4 .n{margin-left:auto;font-weight:400;color:var(--fg3)}
-.ws-sec .step{padding:7px 8px}
-.ws-sec .step:not(:last-child)::after{left:17px;top:30px}
-.ws-item{display:flex;align-items:center;gap:10px;height:32px;flex:none;padding:0 10px;border:1px solid var(--stroke2);border-radius:10px;background:var(--bg1);font-size:13px;line-height:18px;white-space:nowrap}
-.ws-item > .ic{width:16px;height:16px}
-.ws-item .t-cap{margin-left:auto;color:var(--fg3)}
+.ws-count{display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px solid var(--stroke1);border-radius:999px;font-size:12px;color:var(--fg2);white-space:nowrap}
+.ws-sec .steps{gap:0}
+.ws-sec .step{padding:6px 0;gap:12px;border-radius:0}
+.ws-sec .step::before{width:18px;height:18px;border:0;margin-top:1px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='8' fill='none' stroke='%23bdbdbd' stroke-width='1.2'/%3E%3C/svg%3E") center/18px no-repeat}
+.ws-sec .step.run::before{border:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='8' fill='none' stroke='%23616161' stroke-width='1.2' stroke-dasharray='2.4 2.6'/%3E%3C/svg%3E");animation:spin 4s linear infinite}
+.ws-sec .step.wait{background:none;box-shadow:none}
+.ws-sec .step.wait::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='8' fill='none' stroke='%230f6cbd' stroke-width='1.2'/%3E%3Ccircle cx='9' cy='9' r='3' fill='%230f6cbd'/%3E%3C/svg%3E")}
+.ws-sec .step.done::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='8' fill='none' stroke='%23616161' stroke-width='1.2'/%3E%3Cpath d='M5.6 9.3l2.3 2.3 4.5-4.9' fill='none' stroke='%23616161' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.ws-sec .step:not(:last-child)::after,.ws-sec .step.done:not(:last-child)::after{left:8.5px;top:27px;bottom:-5px;width:1px;background:var(--stroke1)}
+.ws-sec .step .st-t{font-size:14px;line-height:20px;font-weight:400;color:var(--fg3)}
+.ws-sec .step.wait .st-t{color:var(--fg1)}
+.ws-item{display:flex;align-items:center;gap:12px;flex:none;padding:6px 0;font-size:14px;line-height:20px;color:var(--fg1)}
+.ws-item > .ic,.ws-item > .oi{width:20px;height:20px;flex:none;color:var(--fg2)}
+.ws-item > div{min-width:0;flex:1}
+.ws-item .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ws-item .t-cap{display:block;font-size:12px;line-height:16px;color:var(--fg3)}
+.ws-plugs{display:flex;flex-wrap:wrap;gap:8px}
+.ws-plug{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px 0 8px;border:1px solid var(--stroke1);border-radius:10px;background:var(--bg1);font-size:14px;color:var(--fg1);white-space:nowrap}
+.ws-plug > .oi,.ws-plug > .ic{width:18px;height:18px}
+/* A customer's own skill or plugin: its icon is a tile in its own colour (--plug, default brand) with a white kit
+   glyph.  18 px in the trace and the Workspace; .l is 40 px for the Customize page. */
+.plug{--s:18px;flex:none;display:inline-flex;align-items:center;justify-content:center;width:var(--s);height:var(--s);border-radius:calc(var(--s) * .26);background:var(--plug,var(--brand));color:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.plug > .ic{width:calc(var(--s) * .68);height:calc(var(--s) * .68)}
+.plug.l{--s:40px}
+/* Cowork's Customize page, where people add, create and share skills and plugins (Learn: "Customize Copilot
+   Cowork").  In .cpa-main after .cpa-top: .cz > h1, .cz-tabs (Preferences, Plugins, Skills; .on), .cz-bar
+   (.cz-search, .cz-add: "Add" and its arrow), then .cz-sec > h3 (+ .end), p, .cz-row (.plug.l or .cz-ic > .oi,
+   a <div> with .nm and .t-cap, an optional .tgl (.on) for plugins, a chevron), .cz-more ("Show more"). */
+.cz{flex:1;min-height:0;overflow:hidden;width:100%;max-width:820px;margin:0 auto;padding:18px 32px 32px;display:flex;flex-direction:column;gap:10px}
+.cz > h1{margin:0 0 6px;font-family:var(--f-semi);font-size:34px;line-height:44px;font-weight:600;letter-spacing:-.3px;color:var(--fg1)}
+.cz-tabs{flex:none;display:flex;gap:6px}
+.cz-tabs > *{height:34px;padding:0 14px;display:inline-flex;align-items:center;border:1px solid transparent;border-radius:17px;font-size:14px;color:var(--fg2)}
+.cz-tabs > .on{border-color:#b9bcf2;background:#eef0fd;color:#3b3fae;font-weight:600}
+.cz-bar{flex:none;display:flex;align-items:center;gap:8px;margin-top:8px}
+.cz-search{flex:1;height:34px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--stroke1);border-radius:10px;background:var(--bg1);font-size:14px;color:var(--fg4)}
+.cz-search .ic{width:16px;height:16px;color:var(--fg3)}
+.cz-add{flex:none;display:inline-flex;align-items:stretch;height:34px;border:1px solid var(--stroke1);border-radius:10px;background:var(--bg1);font-size:14px;font-weight:600;color:var(--fg1);overflow:hidden}
+.cz-add > *{display:inline-flex;align-items:center;gap:6px;padding:0 12px}
+.cz-add > * + *{padding:0 8px;border-left:1px solid var(--stroke1)}
+.cz-add .ic{width:16px;height:16px}
+.cz-sec{flex:none;display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.cz-sec > h3{margin:0;display:flex;align-items:center;gap:8px;font-size:17px;line-height:24px;font-weight:600}
+.cz-sec > h3 .end{margin-left:auto;display:flex;align-items:center;gap:4px;color:var(--fg2)}
+.cz-sec > p{margin:0 0 4px;font-size:14px;line-height:20px;color:var(--fg2)}
+.cz-row{display:flex;align-items:center;gap:14px;min-height:64px;padding:10px 16px;border-radius:14px;background:#f0f0f0;font-size:15px;line-height:20px;color:var(--fg1)}
+.cz-row > div{flex:1;min-width:0}
+.cz-row .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cz-row .t-cap{display:block;font-size:13px;line-height:18px;color:var(--fg3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cz-row > .ic{width:18px;height:18px;flex:none;color:var(--fg2)}
+.cz-ic{width:40px;height:40px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:#e4e4e4}
+.cz-ic > .oi{width:24px;height:24px}
+.tgl{width:40px;height:20px;flex:none;position:relative;box-sizing:border-box;border:1px solid var(--fg2);border-radius:10px}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:var(--fg2)}
+.tgl.on{border-color:var(--brand);background:var(--brand)}
+.tgl.on::after{background:#fff;transform:translateX(20px)}
+.cz-more{align-self:flex-end;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--fg2)}
+.cz-more .ic{width:14px;height:14px}
 .ws-perm{display:flex;align-items:center;gap:10px;padding:3px 0;font-size:13px;line-height:18px}
 .ws-perm > .ic{width:16px;height:16px;color:var(--fg3)}
 .ws-perm .badge{margin-left:auto}
 /* File type marks for outputs and documents */
 .oi{width:20px;height:20px;flex:none;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;line-height:1;color:#fff;background:var(--fg3)}
 .oi.w{background:#185abd}.oi.x{background:#107c41}.oi.p{background:#c43e1c}
-/* In-app browser pane: tabs, address, page (put a .lob or .m365.d3 shell inside .cpa-page) */
+/* In-app browser pane, as the Copilot app shows it: one toolbar (.cpa-url: back, refresh, a compact address pill
+   with the site and a clear ✕, then .end with expand and close) over the page (.cpa-page; put a .lob, .m365.d3 or
+   .pbi-app inside).  While Copilot drives it, add .cp-browsing in the page (a blue-violet frame with a "Copilot is
+   browsing" tab) and a .cp-cursor ("Copilot is working" pointer); hide both when it's done.  .cpa-tabs is older
+   markup, kept so existing prototypes still render; new scenes don't draw tabs. */
 .cpa-tabs{height:44px;flex:none;display:flex;align-items:flex-end;gap:2px;padding:0 6px 0 8px;background:var(--bg3);border-bottom:1px solid var(--stroke2)}
 .cpa-tabs > .tab{display:flex;align-items:center;gap:8px;height:34px;min-width:0;max-width:260px;padding:0 10px;margin-bottom:-1px;border-radius:8px 8px 0 0;border:1px solid transparent;font-size:12px;color:var(--fg2)}
 .cpa-tabs > .tab.on{background:var(--bg1);color:var(--fg1);border-color:var(--stroke2);border-bottom-color:var(--bg1)}
@@ -511,16 +654,47 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .cpa-tabs .end{align-self:center}
 .fav{width:16px;height:16px;flex:none;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;background:var(--fg3);color:#fff}
 .fav .ic{width:12px;height:12px}
-.cpa-url{height:40px;flex:none;display:flex;align-items:center;gap:2px;padding:0 8px;border-bottom:1px solid var(--stroke2);color:var(--fg2)}
-.cpa-url .addr{flex:1;min-width:0;height:28px;margin-left:6px;display:flex;align-items:center;gap:6px;padding:0 12px;border-radius:999px;background:var(--bg3);font-size:12px;color:var(--fg2);white-space:nowrap;overflow:hidden}
-.cpa-url .addr .ic{width:14px;height:14px}
+.cpa-url{height:48px;flex:none;display:flex;align-items:center;gap:4px;padding:0 8px 0 10px;border-bottom:1px solid var(--stroke2);color:var(--fg2)}
+.cpa-url .btn.icon .ic{width:18px;height:18px}
+.cpa-url .addr{flex:0 1 260px;min-width:0;height:30px;margin-left:8px;display:flex;align-items:center;gap:7px;padding:0 6px 0 10px;border-radius:var(--r-xl);background:var(--bg3);font-size:13px;color:var(--fg1);white-space:nowrap;overflow:hidden}
+.cpa-url .addr > .ic{width:15px;height:15px;color:var(--fg2);flex:none}
+.cpa-url .addr > .ic:last-child{margin-left:auto;width:13px;height:13px;color:var(--fg3)}
+.cpa-url .end{margin-left:auto;display:flex;align-items:center;gap:2px}
 .cpa-page{flex:1;min-height:0;position:relative;overflow:hidden}
+.cp-browsing{position:absolute;inset:2px 6px 6px 2px;z-index:6;pointer-events:none;border:3px solid var(--browse,#6466e9);border-radius:10px}
+.cp-browsing > .lbl{position:absolute;left:50%;top:-3px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;height:24px;padding:0 12px 0 10px;border-radius:0 0 8px 8px;background:var(--browse,#6466e9);color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
+.cp-browsing > .lbl .ic{width:14px;height:14px}
+/* While Copilot is browsing, the frame is the page's edge, as in the product: the site sits inside it, with corners
+   that follow the frame's.  (Shells inside .cpa-page are absolutely placed; other content gets the padding.) */
+.cpa-page:has(> .cp-browsing:not(.gone):not([data-beat]:not(.in))){padding:5px 9px 9px 5px}
+.cpa-page:has(> .cp-browsing:not(.gone):not([data-beat]:not(.in))) > :not(.cp-browsing,.cp-cursor){inset:5px 9px 9px 5px;border-radius:7px;overflow:hidden}
+.cp-cursor{position:absolute;z-index:7;width:22px;height:22px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M3 1.5v17.2l4.3-4.1 2.9 6.6 2.9-1.3-2.8-6.5h6z' fill='%23fff' stroke='%23242424' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0/22px no-repeat;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.cp-cursor > span{position:absolute;left:20px;top:22px;padding:4px 10px;border-radius:6px;background:#242424;border:1px solid #fff;color:#fff;font-size:12px;font-weight:600;line-height:16px;white-space:nowrap;box-shadow:var(--sh4)}
+/* The prompt while Copilot works: "Working on it. What's next?" and a stop button in place of send. */
+.cpa-send.stop{background:var(--bg1);color:var(--fg1);border:1.5px solid var(--fg2)}
+.cpa-send.stop .ic{width:16px;height:16px}
 /* Office document side by side with the chat */
-.cpa-doc{flex:1;min-height:0;overflow:hidden;background:var(--bg3);padding:20px 24px}
-.cpa-doc .page{max-width:640px;margin:0 auto;padding:36px 44px;background:var(--bg1);box-shadow:var(--sh4);font-family:Aptos,Calibri,var(--font);font-size:13px;line-height:20px;color:#222}
-.cpa-doc .page h1{margin:0 0 10px;font-size:24px;line-height:30px;font-weight:600;color:#0f4761}
-.cpa-doc .page h2{margin:16px 0 6px;font-size:16px;line-height:22px;font-weight:600;color:#0f4761}
+/* Document pane: Word (or Excel, PowerPoint) open next to the chat, as the Copilot app shows it.  .cpa-pane-head
+   holds the file mark and name, then .doc-acts (round comment / edit / share buttons), "Open in Word" (primary), more,
+   close; .doc-tabs is the ribbon's tab row; the page uses Word's default styles (Title, Heading 1, Heading 2). */
+.cpa-pane-head .doc-name{font-weight:400;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-acts{display:flex;align-items:center;gap:6px;margin-right:4px}
+.doc-acts .btn.icon{width:30px;height:30px;border-radius:50%;border:1px solid var(--stroke1);background:var(--bg1)}
+.doc-acts .btn.icon .ic{width:16px;height:16px}
+.doc-tabs{height:36px;flex:none;display:flex;align-items:center;gap:20px;padding:0 18px;border-bottom:1px solid var(--stroke2);font-size:13px;color:var(--fg2)}
+.doc-tabs > .on{color:var(--fg1);font-weight:600}
+.cpa-doc{flex:1;min-height:0;overflow:hidden;background:#f0f0f0;padding:20px 24px}
+.cpa-doc .page{max-width:640px;margin:0 auto;padding:44px 52px;background:var(--bg1);border:1px solid #e0e0e0;box-shadow:0 1px 2px rgba(0,0,0,.06);font-family:Aptos,"Segoe UI",Calibri,var(--font);font-size:13px;line-height:20px;color:#000}
+.cpa-doc .page h1{margin:0 0 14px;font-family:"Aptos Display",Aptos,"Segoe UI",var(--font);font-size:28px;line-height:34px;font-weight:400;color:#000}
+.cpa-doc .page h2{margin:18px 0 8px;font-family:"Aptos Display",Aptos,"Segoe UI",var(--font);font-size:20px;line-height:26px;font-weight:400;color:#0f4761}
+.cpa-doc .page h3{margin:14px 0 6px;font-size:15px;line-height:20px;font-weight:400;color:#0f4761}
+.cpa-doc .page .sub{color:#595959;font-size:14px}
 .cpa-doc .page p{margin:0 0 8px}
+.cpa-doc .page :is(ol,ul){margin:0 0 8px;padding-left:28px}
+.cpa-doc .page li{margin:0 0 2px}
+.cpa-doc .page ol ol{list-style:lower-alpha;margin:2px 0 4px}
 /* Autopilot overview: the agent's own identity, what it has been doing, what needs you */
 .cpa-over{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:24px;padding:36px 48px 0}
 .cpa-over > *{width:100%;max-width:820px}
@@ -542,47 +716,131 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .feed-item .det{display:flex;align-items:center;gap:6px;font-size:13px;line-height:18px;color:var(--fg2)}
 .feed-item.need .dot{background:var(--warning-bg);border-color:var(--warning-stroke);color:var(--warning-fg)}
 
-/* ---------- Teams ---------- */
+/* ---------- Teams (new Teams, light, as of late 2026) ----------
+   Grey frame and icon-only app rail; a compact chat list (filter pills, sections, 20 px avatars); a white chat canvas
+   with a centred conversation column: your own messages right-aligned in lavender, others' in light grey with their
+   avatar, date separators centred; a compose box with its icon row.  Older markup (rail labels) still works. */
 .tm{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--teams-bg);--app:var(--teams)}
-.tm-bar{height:48px;flex:none;display:flex;align-items:center;gap:12px;padding:0 12px}
-.tm-bar .search{flex:0 1 560px;margin:0 auto;background:var(--bg1)}
+.tm-bar{height:40px;flex:none;display:flex;align-items:center;gap:6px;padding:0 0 0 10px;font-size:12px}
+.tm-bar > .ic{width:16px;height:16px;color:var(--fg2)}
+.tm-bar .search{flex:0 1 640px;margin:0 auto;height:28px;border:1px solid var(--stroke2);border-radius:var(--r-md);font-size:13px;color:var(--fg3)}
+.tm-bar .search .ic{width:16px;height:16px}
+.tm-org{display:flex;align-items:center;gap:8px;color:var(--fg2);padding-right:4px}
+.tm-bar .cpa-win > i{width:44px}
 .tm-body{flex:1;display:flex;min-height:0}
-.tm-rail{width:68px;flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding-top:4px}
-.tm-rail > *{width:60px;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;color:var(--fg3);border-radius:var(--r-lg);position:relative}
-.tm-rail > .on{color:var(--teams);font-weight:600}
-.tm-rail > .on::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:2px;background:var(--teams)}
-.tm-list{width:320px;flex:none;background:var(--bg2);border-radius:var(--r-xl) 0 0 0;display:flex;flex-direction:column;border-right:1px solid var(--stroke2)}
-.tm-list-head{height:56px;display:flex;align-items:center;gap:8px;padding:0 16px;font-size:18px;font-weight:700}
-.tm-item{display:flex;gap:10px;align-items:center;padding:8px 16px;font-size:14px}
-.tm-item.sel{background:var(--bg1);box-shadow:var(--sh2);margin:0 8px;padding:8px;border-radius:var(--r-lg)}
-.tm-item .prev{font-size:12px;color:var(--fg3)}
+.tm-rail{width:52px;flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:6px}
+.tm-rail > *{width:40px;height:36px;display:flex;align-items:center;justify-content:center;font-size:0;color:var(--fg2);border-radius:var(--r-md);position:relative}
+.tm-rail > * .ic{width:20px;height:20px}
+.tm-rail > .on{color:var(--teams);background:rgba(255,255,255,.6)}
+.tm-rail .badge{position:absolute;top:3px;right:5px;min-width:15px;height:15px;padding:0 4px;box-sizing:border-box;border-radius:8px;background:#c4314b;color:#fff;font-size:11px;line-height:15px;font-weight:600;text-align:center}
+.tm-list{width:330px;flex:none;background:#f5f5f5;border-radius:var(--r-xl) 0 0 0;display:flex;flex-direction:column;border-right:1px solid var(--stroke2);overflow:hidden}
+.tm-list-head{height:52px;flex:none;display:flex;align-items:center;gap:14px;padding:0 14px 0 26px;font-size:18px;font-weight:700}
+.tm-list-head .ic{width:18px;height:18px;color:var(--fg2)}
+.tm-pills{display:flex;gap:4px;padding:0 14px 8px 26px;flex:none}
+.tm-pills > span{height:22px;display:flex;align-items:center;padding:0 8px;border:1px solid var(--stroke1);border-radius:999px;font-size:11px;color:var(--fg2);background:var(--bg1)}
+.tm-pills > .on{border-color:var(--teams);color:var(--teams);background:#e8ebfa}
+.tm-sec{display:flex;align-items:center;gap:4px;height:26px;padding:0 14px;margin-top:4px;font-size:12px;color:var(--fg2)}
+.tm-sec .ic{width:12px;height:12px}
+.tm-item{display:flex;gap:10px;align-items:center;min-height:28px;margin:0 12px;padding:3px 14px;border-radius:var(--r-md);font-size:13px;color:var(--fg1)}
+.tm-item .avatar{width:20px;height:20px;font-size:9px;flex:none}
+.tm-item .avatar .pres{width:7px;height:7px}
+.tm-item.sel{background:var(--bg1);box-shadow:0 0 0 1px var(--stroke2)}
+.tm-item.unread{font-weight:600}
+.tm-item .n{margin-left:auto;min-width:16px;height:16px;padding:0 4px;box-sizing:border-box;border-radius:8px;background:var(--teams);color:#fff;font-size:11px;line-height:16px;font-weight:600;text-align:center}
+.tm-item .prev{display:none}
 .tm-main{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--bg1)}
-.tm-head{height:56px;flex:none;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--stroke2);font-weight:700;font-size:16px}
-.tm-head .tabs{height:56px;margin-left:12px;font-weight:400}
-.tm-head .tabs > .on::after{background:var(--teams);bottom:0}
-.tm-chat{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:16px;padding:20px 64px 16px 24px;background:var(--bg3);
+.tm-head{height:52px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px 0 20px;border-bottom:1px solid var(--stroke2);font-weight:700;font-size:16px}
+.tm-head .avatar{width:28px;height:28px;font-size:11px}
+.tm-head .tabs{height:52px;margin-left:8px;font-weight:400;gap:0}
+.tm-head .tabs > *{font-size:14px;color:var(--fg2);padding:0 9px}
+.tm-head .tabs > .on{color:var(--fg1);font-weight:600}
+.tm-head .tabs > .on::after{background:var(--teams);bottom:0;left:9px;right:9px}
+.tm-head .end{margin-left:auto;display:flex;gap:14px;color:var(--fg2)}
+.tm-head .end .ic{width:18px;height:18px}
+.tm-chat{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding:16px max(24px,calc((100% - 760px) / 2)) 14px;background:var(--bg1);
   -webkit-mask-image:linear-gradient(to bottom,transparent,#000 20px);mask-image:linear-gradient(to bottom,transparent,#000 20px)}
-.tm-msg{display:flex;gap:10px;align-items:flex-start;max-width:820px}
-.tm-msg .bubble{background:var(--bg1);border-radius:var(--r-lg);padding:8px 14px 10px;box-shadow:var(--sh2);font-size:14px;line-height:20px}
-.tm-msg .meta{font-size:12px;color:var(--fg3);margin-bottom:2px}
-.tm-msg .meta b{color:var(--fg1);font-weight:600;margin-right:8px}
+.tm-date{align-self:center;font-size:12px;color:var(--fg3);margin:4px 0}
+.tm-msg{display:flex;gap:10px;align-items:flex-start;max-width:640px}
+.tm-msg .bubble{background:#f5f5f5;border-radius:var(--r-lg);padding:8px 12px 9px;font-size:14px;line-height:20px;color:var(--fg1)}
+.tm-msg .meta{font-size:12px;color:var(--fg3);margin-bottom:3px}
+.tm-msg .meta b{color:var(--fg2);font-weight:600;margin-right:8px}
+.tm-msg .avatar{width:32px;height:32px;font-size:12px;flex:none}
 .tm-msg.me{align-self:flex-end;flex-direction:row-reverse}
+.tm-msg.me .meta{text-align:right}
 .tm-msg.me .bubble{background:#e8ebfa}
-.tm-compose{margin:0 64px 20px 24px;border-radius:var(--r-lg);background:var(--bg1);border:1px solid var(--stroke2);border-bottom:2px solid var(--teams);height:44px;display:flex;align-items:center;padding:0 12px;color:var(--fg4);gap:8px}
+.tm-msg .bubble .acard{background:var(--bg1);box-shadow:none;border:1px solid var(--stroke2)}
+.tm-compose{flex:none;margin:0 max(24px,calc((100% - 760px) / 2)) 14px;border-radius:var(--r-lg);background:var(--bg1);border:1px solid var(--stroke1);height:40px;display:flex;align-items:center;gap:14px;padding:0 12px;color:var(--fg3);font-size:13px}
+.tm-compose .tools{margin-left:auto;display:flex;align-items:center;gap:14px;color:var(--fg2)}
+.tm-compose .ic{width:18px;height:18px}
 
-/* ---------- Dynamics 365 (model-driven app, new look) ---------- */
+/* ---------- Dynamics 365 (model-driven app, new look) ----------
+   White top bar: waffle, "Dynamics 365" | app, a bordered search, then .tools (new, settings, help, notifications),
+   the .d3-copilot button and the avatar.  A site map on the page background (.d3-nav: menu, Home / Recent / Pinned
+   with chevrons, bold group headers, compact rows, the .area switcher at the bottom).  Content on a floating white
+   panel (.d3-page; .home for a dashboard of .d3-card).  Copilot's side pane (.d3-cp) and the side rail (.d3-rail) on
+   the right, only when the story's work happens in Dynamics 365 (the Copilot app stays the default home). */
+.m365.d3{background:#fafafa}
 .d3{--app:#0f6cbd}
-.d3-bar{height:48px;flex:none;display:flex;align-items:center;gap:12px;padding:0 12px 0 0;background:var(--bg1);border-bottom:1px solid var(--stroke2)}
+.d3-bar{height:48px;flex:none;display:flex;align-items:center;gap:10px;padding:0 10px 0 0;background:var(--bg1);border-bottom:1px solid var(--stroke2)}
 .d3-bar .waffle{width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--fg2)}
-.d3-bar .app-name{font-size:16px;font-weight:600;white-space:nowrap}
+.d3-bar .app-name{font-size:14px;font-weight:600;white-space:nowrap}
 .d3-bar .app-name span{font-weight:400;color:var(--fg2);padding-left:10px;margin-left:10px;border-left:1px solid var(--stroke1)}
-.d3-bar .search{flex:0 1 520px;margin:0 auto;background:var(--bg3)}
-.d3-nav{width:220px;flex:none;background:var(--bg2);border-right:1px solid var(--stroke2);padding:8px 6px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
-.d3-nav > *{display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:var(--r-md);font-size:14px;color:var(--fg1)}
-.d3-nav > .hdr{font-size:12px;font-weight:600;color:var(--fg3);margin-top:10px;height:24px}
+.d3-bar .search{flex:0 1 360px;margin:0 auto;height:30px;background:var(--bg1);border:1px solid var(--stroke1);border-radius:var(--r-md);font-size:13px}
+.d3-bar .search .ic{width:16px;height:16px}
+.d3-bar .tools{display:flex;align-items:center;gap:16px;color:var(--fg2);margin-right:4px}
+.d3-bar .tools .ic{width:18px;height:18px}
+.d3-copilot{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px 0 8px;border:1px solid var(--stroke1);border-radius:999px;background:var(--bg1);font-size:13px;color:var(--fg1);white-space:nowrap}
+.d3-copilot.on{border-color:#b9a9ef;background:#f6f3fd}
+.d3-copilot .oi{width:18px;height:18px}
+.d3-nav{width:200px;flex:none;background:transparent;padding:2px 6px 34px;display:flex;flex-direction:column;gap:1px;overflow:hidden}
+.d3-nav > *{display:flex;align-items:center;gap:10px;height:30px;flex:none;padding:0 10px;border-radius:var(--r-md);font-size:13px;color:var(--fg1)}
+.d3-nav > * > .ic{width:18px;height:18px;color:var(--fg2)}
+.d3-nav > * > .ic.chev{margin-left:auto;width:14px;height:14px}
+.d3-nav > .menu{height:36px}
+.d3-nav > .hdr{font-size:13px;font-weight:600;color:var(--fg1);margin-top:8px;height:28px}
 .d3-nav > .on{background:var(--bg1);font-weight:600;box-shadow:var(--sh2);position:relative}
-.d3-nav > .on::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--brand)}
-.d3-page{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--bg3);overflow:hidden}
+.d3-nav > .on::before{content:"";position:absolute;left:0;top:7px;bottom:7px;width:3px;border-radius:2px;background:var(--brand)}
+.d3-nav > .area{margin-top:auto;height:40px;border-top:1px solid var(--stroke2);border-radius:0}
+.d3-nav > .area .sq{width:20px;height:20px;flex:none;border-radius:4px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--fg2)}
+.d3-page{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--bg3);overflow:hidden;margin:6px 8px 10px 4px;border-radius:var(--r-xl);box-shadow:var(--sh4)}
+.d3-page.home{background:var(--bg1)}
+.d3-home-head{height:56px;flex:none;display:flex;align-items:center;padding:0 24px}
+.d3-home-head .tabs{height:56px}
+.d3-home-head .tabs > *{font-size:13px}
+.d3-home-head .end{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--fg1)}
+.d3-dash{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:4px 24px 24px;align-content:start;overflow:hidden}
+.d3-card{background:var(--bg1);border:1px solid var(--stroke2);border-radius:var(--r-md);box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;min-height:200px;min-width:0}
+.d3-card > .hd{height:40px;flex:none;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid var(--stroke2);font-size:13px;font-weight:600}
+.d3-card > .hd .ic{width:14px;height:14px;color:var(--fg2)}
+.d3-card > .hd .all{margin-left:auto;display:flex;align-items:center;gap:2px;font-size:12px;font-weight:400;color:var(--brand)}
+.d3-card > .hd .all .ic{color:var(--brand)}
+.d3-card > .bd{flex:1;min-height:0;padding:10px 12px;font-size:13px;line-height:18px;display:flex;flex-direction:column;gap:8px}
+.d3-card .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--fg2);font-size:12px;text-align:center}
+.d3-card .empty .ic{width:32px;height:32px;padding:7px;box-sizing:border-box;border-radius:50%;background:var(--bg3)}
+.d3-kpis{display:grid;grid-template-columns:repeat(3,1fr);margin:4px 0}
+.d3-kpis > div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border-right:1px solid var(--stroke2);border-bottom:1px solid var(--stroke2);font-size:12px;font-weight:600}
+.d3-kpis > div:nth-child(3n){border-right:0}
+.d3-kpis > div:nth-last-child(-n+3){border-bottom:0}
+.d3-kpis b{font-size:24px;line-height:32px}
+.d3-cp{width:var(--cp-w,340px);flex:none;margin:6px 2px 10px 0;background:var(--bg1);border-radius:var(--r-xl);box-shadow:var(--sh4);display:flex;flex-direction:column;overflow:hidden}
+.d3-cp-head{height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;font-size:16px;font-weight:600}
+.d3-cp-head .oi{width:20px;height:20px}
+.d3-cp-head .btn.icon,.d3-cp-sub .btn.icon{margin-left:auto;border:0;background:transparent;color:var(--fg2)}
+.d3-cp-sub{height:34px;flex:none;display:flex;align-items:center;gap:6px;padding:0 8px 0 12px;color:var(--fg2)}
+.d3-cp-sub .ic{width:16px;height:16px}
+.d3-cp-sub .end{margin-left:auto;display:flex;align-items:center;gap:10px}
+.d3-cp-body{flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px;font-size:13px;line-height:19px}
+.d3-cp-body > h2{margin:10px 0 4px;font-size:22px;line-height:28px;font-weight:400}
+.d3-cp-body > .sug{align-self:flex-start;padding:6px 10px;border-radius:var(--r-lg);background:var(--bg3);color:var(--fg1)}
+.d3-cp .cp-user{font-size:13px;line-height:19px;padding:8px 12px;background:#efefef;border-radius:14px}
+.d3-cp .cp-turn{font-size:13px;line-height:19px}
+.d3-cp .cp-resp{background:transparent;box-shadow:none;padding:0;border-radius:0}
+.d3-cp-prompt{flex:none;margin:8px 12px 12px;height:42px;border:1px solid var(--stroke1);border-radius:21px;display:flex;align-items:center;gap:10px;padding:0 8px 0 12px;color:var(--fg3);font-size:13px}
+.d3-cp-prompt .end{margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--fg2)}
+.d3-cp-prompt .ic{width:18px;height:18px}
+.d3-rail{width:36px;flex:none;display:flex;flex-direction:column;align-items:center;gap:16px;padding-top:12px;color:var(--fg2)}
+.d3-rail .ic{width:18px;height:18px}
+.d3-rail .on{color:var(--brand)}
 .d3-cmd{height:44px;flex:none;display:flex;align-items:center;gap:2px;padding:0 12px;background:var(--bg1);border-bottom:1px solid var(--stroke2)}
 .d3-cmd .btn{font-weight:400;border:0;background:transparent}
 .d3-cmd .btn .ic{color:var(--brand)}
@@ -790,8 +1048,10 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 @media (prefers-reduced-motion:reduce){
   [data-beat].in,.cpa-pane[data-beat].in{animation:none}
   .spinner,.work li.run::before,.step.run::before,.cues [data-go].cue::after,.work li.done::before,.step.done::before,
-  .step :is(.on-run,.on-wait,.on-done){animation:none}
+  .work li.skill > .plug,.step :is(.on-run,.on-wait,.on-done){animation:none}
+  .cp-status > .t,.work li.think.run .on-run,.work li.think > .lbl .ic{animation:none;transition:none}
   .tw.shown,.tw-box.shown{transition:none}
+  .work-box.clip > .work > li{transition:none}
   .proto-next{transform:none;transition:none}
   .proto-next svg{animation:none}
   .pbi-tip[data-beat].in{animation:none}

@@ -3,6 +3,7 @@
     python check_prototype.py working/<name>/prototype.html     # or the packed dist/<name>.html
     python check_prototype.py working/<name>/prototype.html --scene orders   # recheck one scene after an edit
     python check_prototype.py working/<name>/prototype.html --motion [--scene orders]   # smoothness only, ~10 s a scene
+    python check_prototype.py working/<name>/prototype.html --outline [file.json]   # outline.json for a driving tool
 
 Writes renders/NN-<scene>-bB.png next to the HTML, plus renders/sheet-N.png contact sheets (12 screenshots each, in
 beat order) so the whole flow can be reviewed in a few images.  Delete the folder when you're done.
@@ -11,6 +12,8 @@ Automatic beats (data-auto) play straight through, so B is the beat the scene st
 types itself, beat 2 is a click and beats 3-7 follow on their own gives two screenshots: b1 and b7.
 --motion plays the scenes at presenter speed instead (no screenshots) and reports anything that jumps more than
 12 px in a single frame rather than gliding: content that snaps into place when a beat appears, hides or finishes.
+--outline writes the prototype's outline (scenes, beats, the text each adds, how each starts, notes) as JSON, for a
+tool that drives the demo (references/engine.md, "Driving it from another tool"); no checks run.
 Needs Python Playwright and Microsoft Edge or Chromium (`pip install playwright`, then `playwright install chromium`
 if Edge isn't installed).  Without them it runs check_prototype.mjs with Node Playwright instead (same checks, read
 from this file).  If neither runs, say so to the user: the screenshots and layout checks did not happen.
@@ -18,13 +21,12 @@ from this file).  If neither runs, say so to the user: the screenshots and layou
 What it flags: script errors (for a packed file, also when played inside the sandbox OneDrive and SharePoint use
 to preview a shared file, on a full pass), network requests, text clipped or spilling out of its box, text smaller than 11 px,
 text on a Tredence frame photo without enough contrast (WCAG 4.5:1, or 3:1 for large text: 24 px, or 18.66 px bold),
-the concept label missing, placeholder or AI-tell wording (including the Tredence voice's banned words), emoji, and a
-product scene with nothing for the presenter to do.
+the concept label missing, placeholder or AI-tell wording (including the Tredence voice's banned words), emoji, and notes for still scenes.
 Tredence frame scenes (.scene.frame): a colour outside the Tredence palette, a tint used as a text colour, text not in
 Poppins, a gradient (other than .td-shade) or a shadow, Bright Orange or white-on-orange text under 24 px, white text
 on Teal or Highlight Orange, Grey text under 28 px, and "TREDENCE" written in capitals in running text.
 On a full pass, any double-bracket placeholder left from the starter or shells.html, anywhere in the source.
-Power BI visuals: no title or number format, categories and values that don't line up, a chart that drew nothing or
+Power BI visuals: no title or number format, categories and values that don't line up, a "0%" format given fractions, a chart that drew nothing or
 shows NaN, and a chart in a Copilot answer that doesn't cite its Power BI source.
 Look at every screenshot yourself as well.  The script can't tell whether a scene is convincing.
 """
@@ -63,7 +65,8 @@ EMOJI = re.compile("[\U0001F300-\U0001FAFF\U00002600-\U000027BF\U0001F000-\U0001
 
 # Leftover [[placeholders]] from the starter or shells.html, read from the source (they can hide in attributes).
 PLACEHOLDERS = r"""(src) => {
-  src = src.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');  // a packed file inlines the kit's code
+  // Scripts are skipped: inlined engine code (a packed file) has [[a, b]] arrays that aren't placeholders.
+  src = src.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
   const ph = [...new Set(src.match(/\[\[[^\]\n]{1,80}\]\]/g) || [])];
   return ph.length ? ['placeholder left in: ' + ph.slice(0, 6).join(', ') + (ph.length > 6 ? ` and ${ph.length - 6} more` : '')] : [];
 }"""
@@ -131,19 +134,47 @@ AUDIT = r"""() => {
     });
   }
   if (scene.querySelector('.m365 .cp, .tm .cp, .lob .cp, .cp.pane, .mc'))
-    out.findings.push('Copilot pane inside an app or the old full-screen shell: start in the Copilot app (.cpa), see starter.html');
+    out.findings.push('Copilot pane inside an app or the old full-screen shell: start in the Copilot app (.cpa), see shells.html');
   scene.querySelectorAll('.ai-touched').forEach(el => {
     if (!vis(el)) return;
     const cs = getComputedStyle(el), w = ['Top', 'Right', 'Bottom', 'Left'].map(s => parseFloat(cs['border' + s + 'Width']));
     if (Math.min(...w) < 1.5 || Math.max(...w) - Math.min(...w) > 0.5 || parseFloat(cs.paddingLeft) < 6 || parseFloat(cs.paddingRight) < 6)
       out.findings.push('agent highlight (.ai-touched) has a missing edge or content touching its frame: ' + (el.textContent || '').trim().slice(0, 50));
+    // A container that clips (overflow other than visible) must hold the whole highlight; corners are matched by the engine.
+    if (el.closest('.cpa-doc .page')) out.findings.push('agent highlight (.ai-touched) inside a document: Word draws none, and the whole draft is Copilot\'s; take it out: ' + (el.textContent || '').trim().slice(0, 50));
+    for (let a = el.parentElement; a && a !== scene; a = a.parentElement) {
+      const ca = getComputedStyle(a);
+      if (ca.overflowX === 'visible' && ca.overflowY === 'visible') continue;
+      const ra = a.getBoundingClientRect(), r = el.getBoundingClientRect(), t = 1.5 * k;
+      if (r.top < ra.top - t || r.left < ra.left - t || r.right > ra.right + t || r.bottom > ra.bottom + t)
+        out.findings.push('agent highlight (.ai-touched) cut off by a container that clips: ' + (el.textContent || '').trim().slice(0, 50));
+      break;
+    }
   });
+  // Figures outside Power BI: red and green fills used as bad and good (traffic lights).
+  const hue = c => { const m = (c || '').match(/\d+(\.\d+)?/g); if (!m || m.length < 3 || (m[3] !== undefined && +m[3] < 0.5)) return null;
+    const [r, g, bl] = m.slice(0, 3).map(v => v / 255), mx = Math.max(r, g, bl), mn = Math.min(r, g, bl), l = (mx + mn) / 2, d = mx - mn;
+    if (d < 0.25 || l < 0.15 || l > 0.7 || d / (1 - Math.abs(2 * l - 1)) < 0.45) return null;
+    let h = mx === r ? ((g - bl) / d) % 6 : mx === g ? (bl - r) / d + 2 : (r - g) / d + 4; h *= 60; return h < 0 ? h + 360 : h; };
+  let red = 0, green = 0;
+  scene.querySelectorAll('div,span,i,b,rect,path').forEach(el => {
+    if (el.closest('.pbi,.ic,.oi,.fav,.avatar,.badge,.tag,.chip,.mode,.cp-mark,.plug,.notes') || !vis(el)) return;
+    const r = el.getBoundingClientRect(); if (r.width < 24 * k || r.height < 4 * k) return;
+    const svg = el instanceof SVGElement; if (!svg && (el.textContent || '').trim()) return;
+    const h = hue(svg ? getComputedStyle(el).fill : getComputedStyle(el).backgroundColor);
+    if (h === null) return;
+    if (h < 15 || h > 340) red++; else if (h > 85 && h < 160) green++;
+  });
+  if (!out.frame && red && green) out.findings.push('red and green fills in one view (traffic lights): use the product palette, one accent for the value that matters and grey for the rest (look-and-feel.md, "Data colours")');
   scene.querySelectorAll('figure.pbi[data-chart]').forEach(f => {
     if (!vis(f)) return;
     const t = ((f.querySelector('.pbi-head > b') || {}).textContent || '').trim(), name = t.slice(0, 50) || f.dataset.chart + ' chart';
     if (!t) out.findings.push('Power BI visual without a title (.pbi-head > b): ' + name);
     if (!f.dataset.fmt) out.findings.push('Power BI visual without data-fmt, so its numbers have no units: ' + name);
     const n = (f.dataset.x || '').split(',').length;
+    const nums = (f.dataset.series || '').split(';').flatMap(s => s.slice(s.indexOf(':') + 1).split(',')).map(v => +v).filter(v => !isNaN(v));
+    if (/%\s*$/.test(f.dataset.fmt || '') && nums.length && nums.every(v => Math.abs(v) <= 1) && nums.some(v => v % 1))
+      out.findings.push('Power BI visual "' + name + '": data-fmt "' + f.dataset.fmt + '" expects whole percents (75 for 75%), but the values look like fractions');
     (f.dataset.series || '').split(';').filter(s => s.trim()).forEach(s => {
       const m = s.slice(s.indexOf(':') + 1).split(',').length;
       if (m !== n) out.findings.push('Power BI visual "' + name + '" has ' + n + ' categories but ' + m + ' values in "' + s.split(':')[0].trim() + '"');
@@ -344,12 +375,36 @@ def motion_check(browser, src, only):
 def main():
     args = sys.argv[1:]
     only = args[args.index("--scene") + 1] if "--scene" in args and args.index("--scene") + 1 < len(args) else None
-    files = [a for i, a in enumerate(args) if not a.startswith("--") and (i == 0 or args[i - 1] != "--scene")]
+    oi = args.index("--outline") if "--outline" in args else -1
+    outline_to = args[oi + 1] if oi >= 0 and oi + 1 < len(args) and args[oi + 1].lower().endswith(".json") else None
+    files = [a for i, a in enumerate(args) if not a.startswith("--") and (i == 0 or args[i - 1] != "--scene")
+             and not (outline_to and i == oi + 1)]
     if not files:
         sys.exit(__doc__)
     if sync_playwright is None:
         run_node("Python Playwright isn't installed")
     src = Path(files[0]).resolve()
+    if oi >= 0:
+        import json
+        with sync_playwright() as p:
+            browser = None
+            for opts in ({"channel": "msedge"}, {}):
+                try:
+                    browser = p.chromium.launch(**opts)
+                    break
+                except Exception:
+                    pass
+            if browser is None:
+                run_node("No browser for Python Playwright")
+            page = browser.new_page(viewport={"width": 1920, "height": 1080})
+            page.goto(src.as_uri() + "?driven")
+            page.wait_for_function("window.proto && window.proto.outline")
+            o = page.evaluate("proto.outline()")
+            browser.close()
+        dest = Path(outline_to).resolve() if outline_to else src.parent / "outline.json"
+        dest.write_text(json.dumps(o, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"Outline: {len(o['scenes'])} scenes, {sum(len(s['beats']) for s in o['scenes'])} stops -> {dest}")
+        sys.exit(0)
     if "--motion" in args:
         with sync_playwright() as p:
             browser = None
@@ -369,7 +424,7 @@ def main():
     for f in out.glob("*.png"):
         if not only or f"-{only}-b" in f.name or f.name.startswith("sheet-"):
             f.unlink()
-    issues, shots, taken = [], 0, []
+    issues, shots, taken, notes = [], 0, [], []
     with sync_playwright() as p:
         browser = None
         for opts in ({"channel": "msedge"}, {}):
@@ -396,7 +451,7 @@ def main():
         for i, s in enumerate(scenes):
             if only and s["id"] != only:
                 continue
-            page.evaluate(f"proto.go({i})")
+            page.evaluate(f"void proto.go({i})")
             page.wait_for_timeout(150)
             seen = set()
             for b in range(s["beats"] + 1):
@@ -431,8 +486,8 @@ def main():
                             issues.append(f"{tag}: emoji {m!r} (use a Fluent icon)")
                         for f in a["findings"]:
                             issues.append(f"{tag}: {f}")
-                        if not a["frame"] and not a["clickable"] and st["max"] == 0:
-                            issues.append(f"{tag}: nothing happens in this scene (no beats, no click)")
+                        if not s["id"] in ("cover", "close") and not a["clickable"] and st["max"] == 0:
+                            notes.append(f"{tag}: a still scene (no beats, no click).  Fine if that's the point; otherwise give the room something to see happen")
                 if st["beat"] >= st["max"]:
                     break
                 page.evaluate("proto.next()")
@@ -449,6 +504,9 @@ def main():
     print(f"{len(scenes)} scenes, {shots} screenshots and {sheets} contact sheet(s) in {out}")
     print("\n".join(f"  - {x}" for x in issues) if issues else
           "  No automatic findings.  Now review the contact sheets, and open single screenshots where something looks off.")
+    if notes:
+        print("  Notes (not findings):\n" + "\n".join(f"  - {x}" for x in notes))
+    print("  This check sees layout, not story.  Before you show it, read the story back: is it the fullest version?")
     sys.exit(1 if issues else 0)
 
 
