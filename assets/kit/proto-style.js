@@ -361,7 +361,9 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .cp-turn{display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:21px}
 .cp-turn p{margin:0}
 .cp-turn ul{margin:0;padding-left:20px}.cp-turn li{margin:2px 0}
-.cp-who{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--fg2)}
+.cp-who{flex:none;display:flex;align-items:center;gap:8px;font-size:14px;line-height:20px;font-weight:600;color:var(--fg1)}
+.cp-who > .oi,.cp-who > .cp-mark{width:24px;height:24px}
+.cp-who .t-cap{font-size:12px;font-weight:400;color:var(--fg3)}
 .cp-resp{background:var(--bg1);border-radius:var(--r-2xl);padding:14px 16px;box-shadow:var(--sh2)}
 .cite{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;margin:0 2px;border-radius:var(--r-md);background:var(--bg4);font-size:11px;font-weight:600;color:var(--fg2);vertical-align:1px}
 .refs{display:flex;flex-wrap:wrap;gap:6px}
@@ -370,40 +372,47 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--r-xl);border:1px solid var(--stroke2);background:var(--bg1);font-size:13px;color:var(--fg1)}
 
-/* Copilot's work in the conversation, drawn the way the Copilot app shows it (look-and-feel.md §Copilot's work).
-   Flat, no box: .work-box > .sum ("Working on it" + chevron), .work > li (a step: thin check when done) and
-   li.think (a dot; .lbl holds .on-run "Thinking…" and .on-done "Thought process" + chevron; .thought holds the
-   reasoning, shown while the li has .open; clicking .lbl toggles it), then .more ("Show more").  .clip keeps only
-   the latest items in view, faded at the top.  .cp-status (Copilot mark + .t) is the live line under the trace.
+/* Copilot's work in the conversation, as a Fluent 2 agent-activity card (look-and-feel.md §Copilot's work).
+   .work-box is a card: .sum is its header ("Working on it" with a brand spinner and an indeterminate progress bar
+   across the top edge; then a filled check and "9 items complete"), .work > li are the steps (a brand spinner,
+   then a filled brand check, joined by a hairline), li.think is the reasoning (a lightbulb; .lbl holds .on-run
+   "Thinking…" and .on-done "Thought process" + chevron; .thought is a quoted panel shown while the li has .open;
+   clicking .lbl toggles it), then .more ("Show more") as the card's footer.  .clip keeps only the latest items in
+   view, faded at the top.  .cp-status (Copilot mark + .t) is the latency pill under the card.
    proto.js sets .run then .done on each li[data-beat]; a thinking li stays .run until its text has streamed.
-   When every item is done proto.js adds .done to the .work-box: .sum > .on-run ("Working on it") gives way to
-   .on-done, whose .n it fills ("9 items" + " complete").  li.skill: Copilot loads the customer's own skill; its
-   icon (.plug) takes the place of the check. */
-.work-box{flex:none;display:flex;flex-direction:column;align-items:flex-start}
-.work-box > summary,.work-box > .sum{display:flex;align-items:center;gap:6px;height:28px;font-size:14px;color:var(--fg3);list-style:none}
-.work-box > .sum .ic{width:16px;height:16px}
+   When every item is done proto.js adds .done to the .work-box and fills .on-done's .n.  li.skill: Copilot loads
+   the customer's own skill; its icon (.plug) takes the place of the check. */
+.work-box{flex:none;position:relative;display:flex;flex-direction:column;align-items:stretch;background:var(--bg1);border:1px solid var(--stroke2);border-radius:var(--r-xl);box-shadow:var(--sh2);overflow:hidden}
+.work-box::after{content:"";position:absolute;left:0;top:0;width:34%;height:2px;border-radius:1px;background:linear-gradient(90deg,transparent,var(--brand) 30%,var(--brand) 70%,transparent);animation:fluent-indet 1.6s var(--ease-glide) infinite}
+.work-box.done::after{content:none}
+@keyframes fluent-indet{from{transform:translateX(-100%)}to{transform:translateX(300%)}}
+.work-box > summary,.work-box > .sum{display:flex;align-items:center;gap:10px;height:40px;padding:0 12px 0 14px;font-size:14px;font-weight:600;color:var(--fg1);list-style:none;border-bottom:1px solid var(--stroke3)}
+.work-box > .sum::before{content:"";width:16px;height:16px;flex:none;box-sizing:border-box;border-radius:50%;border:2px solid var(--brand-stroke2);border-top-color:var(--brand);animation:spin .9s linear infinite}
+.work-box.done > .sum::before{border:0;animation:tick-pop .36s var(--ease-out);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%230f6cbd'/%3E%3Cpath d='M4.6 8.3l2.3 2.3 4.6-4.9' fill='none' stroke='%23fff' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.work-box > .sum .ic{width:16px;height:16px;margin-left:auto;color:var(--fg3)}
 .work-box > .sum .on-done,.work-box.done > .sum .on-run{display:none}
 .work-box.done > .sum .on-done{display:inline}
-.work{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-self:stretch;font-size:14px;line-height:20px;color:var(--fg1)}
-.work li{position:relative;padding:6px 0 6px 26px}
-.work li::before{content:"";position:absolute;left:0;top:8px;width:16px;height:16px;box-sizing:border-box;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.2 8.4l3.1 3.1 6.5-7' fill='none' stroke='%23424242' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
-.work li:not(:last-child)::after{content:"";position:absolute;left:7.5px;top:26px;bottom:-6px;width:1px;background:var(--stroke1)}
-.work li.run{color:var(--fg3)}
-.work li.run::before{left:2px;top:10px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--stroke1);border-top-color:var(--fg3);background:none;animation:spin .9s linear infinite}
+.work{list-style:none;margin:0;padding:6px 14px 8px;display:flex;flex-direction:column;align-self:stretch;font-size:14px;line-height:20px;color:var(--fg1)}
+.work li{position:relative;padding:7px 0 7px 28px}
+.work li::before{content:"";position:absolute;left:0;top:9px;width:16px;height:16px;box-sizing:border-box;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%230f6cbd'/%3E%3Cpath d='M4.6 8.3l2.3 2.3 4.6-4.9' fill='none' stroke='%23fff' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.work li:not(:last-child)::after{content:"";position:absolute;left:7.5px;top:29px;bottom:-5px;width:1px;background:var(--stroke2)}
+.work li.run{color:var(--fg2)}
+.work li.run::before{left:1px;top:10px;width:14px;height:14px;border-radius:50%;border:2px solid var(--brand-stroke2);border-top-color:var(--brand);background:none;animation:spin .9s linear infinite}
 .work li.done[data-beat]:not(.think)::before{animation:tick-pop .36s var(--ease-out)}
 @keyframes tick-pop{from{transform:scale(.4);opacity:0}}
 .work li .det{color:var(--fg3)}
 .work li b{font-weight:600}
 .work li.skill:not(.run)::before{content:none}
-.work li.skill > .plug{position:absolute;left:-1px;top:7px}
+.work li.skill > .plug{position:absolute;left:-1px;top:8px}
 .work li.skill.run > .plug{visibility:hidden}
 .work li.skill.done[data-beat] > .plug{animation:tick-pop .36s var(--ease-out)}
-.work li.think{font-size:13px;color:var(--fg3)}
-.work li.think::before,.work li.think.run::before{left:0;top:8px;width:16px;height:16px;border:0;border-radius:0;animation:none;background:radial-gradient(circle,var(--fg-disabled) 0 2.5px,transparent 3px)}
-.work li.think > .lbl{display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.work li.think{font-size:13px;color:var(--fg2)}
+.work li.think::before,.work li.think.run::before{left:0;top:9px;width:16px;height:16px;border:0;border-radius:0;animation:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%23616161' d='M10 2a6 6 0 0 1 3.5 10.87V14.5a1.5 1.5 0 0 1-1.5 1.5H8a1.5 1.5 0 0 1-1.5-1.5v-1.63A6 6 0 0 1 10 2Zm0 1a5 5 0 0 0-2.8 9.14.5.5 0 0 1 .3.46v1.9c0 .28.22.5.5.5h4a.5.5 0 0 0 .5-.5v-1.9a.5.5 0 0 1 .3-.46A5 5 0 0 0 10 3ZM8 17.5c0-.28.22-.5.5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Z'/%3E%3C/svg%3E") center/16px no-repeat}
+.work li.think > .lbl{display:inline-flex;align-items:center;gap:4px;font-weight:600;cursor:pointer}
 .work li.think > .lbl .ic{width:14px;height:14px;transition:transform .2s var(--ease-out)}
 .work li.think.open > .lbl .ic{transform:rotate(90deg)}
-.work li.think > .thought{display:none;padding:6px 0 4px;font-size:14px;line-height:22px;color:var(--fg2)}
+.work li.think > .thought{display:none;margin:6px 0 2px;padding:8px 12px;border-left:2px solid var(--brand-stroke2);border-radius:0 var(--r-md) var(--r-md) 0;background:var(--bg2);font-size:14px;line-height:22px;color:var(--fg2)}
 .work li.think.open > .thought{display:block}
 .work .thought p{margin:0}
 .work .thought p + p{margin-top:10px}
@@ -418,15 +427,20 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .work-box.clip.over > .work{-webkit-mask-image:linear-gradient(to bottom,transparent,#000 44px);mask-image:linear-gradient(to bottom,transparent,#000 44px)}
 .work-box.clip.all > .work{max-height:none;-webkit-mask-image:none;mask-image:none}
 .work-box.clip:not(.over,.all) > .more{display:none}
-.work-box > .more{height:28px;display:flex;align-items:center;margin-top:2px;padding:0;border:0;background:none;font:inherit;font-size:13px;color:var(--fg3);cursor:pointer}
-.cp-status{flex:none;display:flex;align-items:center;gap:8px;font-size:13px;line-height:20px;color:var(--fg3)}
-.cp-status > .oi{width:16px;height:16px}
-.cp-status > .t,.work li.think.run .on-run{background:linear-gradient(100deg,var(--fg3) 42%,#cdcdcd 50%,var(--fg3) 58%) 100% 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 2.2s linear infinite}
+.work-box > .more{height:34px;display:flex;align-items:center;padding:0 14px;border:0;border-top:1px solid var(--stroke3);background:none;font:inherit;font-size:13px;font-weight:600;color:var(--brand-fg2);cursor:pointer}
+.cp-status{flex:none;align-self:flex-start;display:flex;align-items:center;gap:8px;height:32px;padding:0 14px 0 8px;border:1px solid var(--stroke2);border-radius:999px;background:var(--bg1);box-shadow:var(--sh2);font-size:13px;line-height:20px;color:var(--fg2)}
+.cp-status > .oi{width:20px;height:20px}
+.cp-status > .t,.work li.think.run .on-run{background:linear-gradient(100deg,var(--fg2) 42%,#c8c8c8 50%,var(--fg2) 58%) 100% 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 2.2s linear infinite}
 @keyframes shimmer{to{background-position:0 0}}
+/* Fluent CopilotMessage footer: feedback actions and the AI-content disclaimer, under Copilot's answer */
+.cp-acts{display:flex;align-items:center;gap:2px;color:var(--fg3);font-size:12px;line-height:16px}
+.cp-acts .btn.icon{width:28px;height:28px;min-width:0;padding:0;border:0;background:transparent;color:var(--fg3)}
+.cp-acts .btn.icon .ic{width:16px;height:16px}
+.cp-acts .cp-ai{margin-left:auto;white-space:nowrap}
 /* Conversation furniture: a time divider ("1 min ago") and a file the person attached, above their message */
 .cp-time{flex:none;display:flex;align-items:center;gap:12px;font-size:12px;line-height:16px;color:var(--fg3)}
 .cp-time::before,.cp-time::after{content:"";flex:1;height:1px;background:var(--stroke2)}
-.cp-file{align-self:flex-end;flex:none;display:flex;align-items:center;gap:10px;max-width:320px;padding:10px 16px 10px 12px;border:1px solid var(--stroke1);border-radius:14px;background:var(--bg1);font-size:14px;line-height:18px}
+.cp-file{align-self:flex-end;flex:none;display:flex;align-items:center;gap:10px;max-width:320px;padding:8px 14px 8px 10px;border:1px solid var(--stroke2);border-radius:var(--r-xl);background:var(--bg1);box-shadow:var(--sh2);font-size:14px;line-height:18px}
 .cp-file > .oi,.cp-file > .ic{width:24px;height:24px}
 .cp-file > div{min-width:0}
 .cp-file .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -482,13 +496,15 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .opt .t{display:block;font-size:14px;line-height:20px;font-weight:600;color:var(--fg1)}
 .opt.on{border-color:var(--brand);background:var(--brand-bg2)}
 
-/* ---------- Microsoft Copilot app (Windows desktop): where every story starts ----------
-   .cpa > .cpa-title (back/forward, window controls) + .cpa-body > .cpa-side (wordmark, mode switch, nav, user)
-   and .cpa-main > .cpa-top + one of: .cpa-home (greeting, prompt, chips), .cpa-work > .cpa-conv (.cpa-chat,
-   .cpa-prompt) with an optional .cpa-pane on the right (Workspace, in-app browser, Office document), or
+/* ---------- Microsoft Copilot app, drawn as a Fluent 2 agent UI ----------
+   Not a copy of Cowork's look: a Fluent 2 layered window.  The frame (title bar and NavDrawer) sits on a neutral
+   grey; the content surface is a lighter layer with a rounded top-left corner; Copilot speaks in Fluent cards with
+   its avatar header; the side pane is a Fluent drawer with accordion sections.
+   .cpa > .cpa-title (back/forward, window controls) + .cpa-body > .cpa-side (wordmark, mode TabList, nav, user)
+   and .cpa-main > .cpa-top + one of: .cpa-home (greeting, prompt starters, prompt), .cpa-work > .cpa-conv
+   (.cpa-chat, .cpa-prompt) with an optional .cpa-pane on the right (Workspace, in-app browser, Office document), or
    .cpa-over (Autopilot overview).  Add .nav-off to .cpa to collapse the left panel when the pane needs room. */
-.cpa{position:absolute;inset:0;display:flex;flex-direction:column;background:#fafafa;color:var(--fg1);
-  --serif:"Sitka Heading","Sitka Text",Georgia,Cambria,"Times New Roman",serif}
+.cpa{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg4);color:var(--fg1)}
 .cpa .btn.icon{border:0;background:transparent;color:var(--fg2)}
 .cpa-title{height:34px;flex:none;display:flex;align-items:center;gap:2px;padding-left:10px;color:var(--fg3)}
 .cpa-title > .ic{width:16px;height:16px;margin:0 7px}
@@ -500,63 +516,88 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .cpa-win > .x::before,.cpa-win > .x::after{content:"";position:absolute;width:13px;height:1px;background:var(--fg2);transform:rotate(45deg)}
 .cpa-win > .x::after{transform:rotate(-45deg)}
 .cpa-body{flex:1;min-height:0;display:flex}
-.cpa-side{width:252px;flex:none;display:flex;flex-direction:column;gap:2px;padding:0 12px 44px;border-right:1px solid var(--stroke2)}
+/* NavDrawer: app title, a TabList for the modes, nav items with a brand selection bar, the signed-in person */
+.cpa-side{width:252px;flex:none;display:flex;flex-direction:column;gap:2px;padding:0 10px 44px}
 .cpa.nav-off .cpa-side{display:none}
 .cpa-brand{height:44px;flex:none;display:flex;align-items:center;gap:2px;padding-left:8px}
-.cpa-brand .wm{font-family:var(--f-semi);font-size:22px;letter-spacing:-.3px;margin-right:auto}
-.cpa-modes{display:flex;flex:none;padding:3px;margin:6px 0 10px;border-radius:12px;background:#efefef}
-.cpa-modes > *{flex:1;height:32px;display:flex;align-items:center;justify-content:center;border-radius:9px;font-size:14px;color:var(--fg2)}
-.cpa-modes > .on{background:var(--bg1);color:var(--fg1);font-weight:600;box-shadow:var(--sh2)}
+.cpa-brand .wm{font-size:18px;line-height:24px;font-weight:600;margin-right:auto}
+.cpa-modes{display:flex;flex:none;gap:4px;margin:4px 0 10px;padding:0 2px;border-bottom:1px solid var(--stroke2)}
+.cpa-modes > *{position:relative;height:36px;padding:0 10px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--fg2)}
+.cpa-modes > .on{color:var(--fg1);font-weight:600}
+.cpa-modes > .on::after{content:"";position:absolute;left:10px;right:10px;bottom:-1px;height:3px;border-radius:2px;background:var(--brand)}
 .cpa-nav{display:flex;flex-direction:column;gap:2px;min-height:0;overflow:hidden}
-.cpa-nav > *{display:flex;align-items:center;gap:12px;height:36px;flex:none;padding:0 10px;border-radius:10px;font-size:14px;color:var(--fg1);white-space:nowrap}
-.cpa-nav > .on{background:#ececec;font-weight:600}
-.cpa-nav > .hdr{height:30px;margin-top:12px;font-size:13px;color:var(--fg3)}
-.cpa-nav > .sub{padding-left:42px;color:var(--fg2)}
+.cpa-nav > *{position:relative;display:flex;align-items:center;gap:10px;height:36px;flex:none;padding:0 10px;border-radius:var(--r-md);font-size:14px;color:var(--fg1);white-space:nowrap}
+.cpa-nav > * > .ic{color:var(--fg2)}
+.cpa-nav > .on{background:var(--bg6);font-weight:600}
+.cpa-nav > .on::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:2px;background:var(--brand)}
+.cpa-nav > .hdr{height:30px;margin-top:12px;font-size:12px;font-weight:600;color:var(--fg3)}
+.cpa-nav > .sub{padding-left:40px;color:var(--fg2)}
 .cpa-nav .lbl{min-width:0;overflow:hidden;text-overflow:ellipsis}
-.cpa-nav .plus{width:20px;height:20px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:var(--fg1);color:#fff}
+.cpa-nav .plus{width:20px;height:20px;border-radius:var(--r-md);flex:none;display:flex;align-items:center;justify-content:center;background:var(--brand);color:#fff}
 .cpa-nav .plus .ic{width:14px;height:14px}
-.cpa-me{margin-top:auto;flex:none;display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;font-size:14px;line-height:18px}
+.cpa-me{margin-top:auto;flex:none;display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--r-md);font-size:14px;line-height:18px}
 .cpa-me .t-cap{color:var(--fg3)}
-.cpa-main{flex:1;min-width:0;display:flex;flex-direction:column}
-.cpa-top{height:48px;flex:none;display:flex;align-items:center;gap:4px;padding:0 12px 0 16px}
-.cpa-top .pick{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:8px;font-size:15px;white-space:nowrap}
+/* Content layer: lighter than the frame, rounded top-left corner, hairline edge */
+.cpa-main{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--bg2);border-top:1px solid var(--stroke2);border-left:1px solid var(--stroke2);border-top-left-radius:var(--r-xl)}
+.cpa.nav-off .cpa-main{border-left:0;border-top-left-radius:0}
+.cpa-top{height:48px;flex:none;display:flex;align-items:center;gap:6px;padding:0 12px 0 16px;border-bottom:1px solid var(--stroke3)}
+.cpa-top .pick{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border:1px solid var(--stroke1);border-radius:var(--r-md);background:var(--bg1);font-size:14px;white-space:nowrap}
 .cpa-top .pick .ic{width:16px;height:16px;color:var(--fg2)}
-.cpa-top .ttl{font-size:14px;font-weight:600;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cpa-top .ttl{font-size:16px;line-height:22px;font-weight:600;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cpa-top .end{margin-left:auto;display:flex;align-items:center;gap:2px}
 .cpa .shield{color:#0e7a0d}
-/* Home: greeting, prompt, suggestions */
-.cpa-home{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:0 48px 72px}
-.cpa-home > *{width:100%;max-width:760px}
-.cpa-hello{margin:0;padding-left:24px;font-family:var(--serif);font-size:40px;line-height:48px;font-weight:400;letter-spacing:-.4px;color:var(--fg1)}
-.cpa-prompt{flex:none;display:flex;flex-direction:column;gap:14px;padding:16px 14px 12px 22px;background:var(--bg1);border:1px solid var(--stroke2);border-radius:26px;box-shadow:0 1px 3px rgba(0,0,0,.05),0 8px 28px rgba(0,0,0,.06)}
-.cpa-prompt .ph{font-size:16px;line-height:24px;color:var(--fg4)}
-.cpa-prompt .txt{font-size:16px;line-height:24px;color:var(--fg1)}
-.cpa-prompt .tools{display:flex;align-items:center;gap:8px;margin-left:-6px;color:var(--fg2)}
-.cpa-switch{display:inline-flex;padding:2px;border-radius:10px;background:#f0f0f0}
-.cpa-switch > *{height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:14px;color:var(--fg2)}
-.cpa-switch > .on{background:var(--bg1);color:var(--fg1);font-weight:600;box-shadow:var(--sh2)}
-.cpa-send{width:34px;height:34px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--fg1);color:#fff}
-.cpa-send.off{background:var(--bg4);color:var(--fg-disabled)}
-.cpa-chips{display:flex;flex-wrap:wrap;gap:10px}
-.cpa-chips > *{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:12px;border:1px solid var(--stroke2);background:var(--bg1);font-size:14px;color:var(--fg1);white-space:nowrap}
+/* Home: Copilot's mark, a Fluent title, prompt-starter cards, the prompt */
+.cpa-home{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:0 48px 72px}
+.cpa-home > *{width:100%;max-width:780px}
+.cpa-home .oi.cpa-logo{width:48px;height:48px;margin-bottom:-8px}
+.cpa-home > .cpa-hello,.cpa-home > .cpa-sub{text-align:center}
+.cpa-hello{margin:0;font-family:var(--font);font-size:28px;line-height:36px;font-weight:600;letter-spacing:0;color:var(--fg1)}
+.cpa-hello + .cpa-sub{margin-top:-16px}
+.cpa-sub{margin:0;font-size:16px;line-height:22px;color:var(--fg3)}
+/* Prompt input: a Fluent card with the brand focus line along its bottom edge on Home */
+.cpa-prompt{flex:none;display:flex;flex-direction:column;gap:12px;padding:14px 12px 10px 16px;background:var(--bg1);border:1px solid var(--stroke1);border-radius:var(--r-xl);box-shadow:var(--sh4)}
+.cpa-home .cpa-prompt{box-shadow:var(--sh4),inset 0 -2px 0 var(--brand)}
+.cpa-prompt .ph{font-size:15px;line-height:22px;color:var(--fg4)}
+.cpa-prompt .txt{font-size:15px;line-height:22px;color:var(--fg1)}
+.cpa-prompt .tools{display:flex;align-items:center;gap:6px;margin-left:-6px;color:var(--fg2)}
+/* Mode toggle buttons (Chat, Cowork): the selected one in brand tint */
+.cpa-switch{display:inline-flex;gap:4px}
+.cpa-switch > *{height:28px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--stroke1);border-radius:var(--r-md);background:var(--bg1);font-size:13px;color:var(--fg2)}
+.cpa-switch > .on{border-color:var(--brand-stroke2);background:var(--brand-bg2);color:var(--brand-fg2);font-weight:600}
+.cpa-switch .ic{width:16px;height:16px}
+.cpa-send{width:32px;height:32px;flex:none;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;background:var(--brand);color:#fff}
+.cpa-send .ic{width:18px;height:18px}
+.cpa-send.off{background:transparent;color:var(--fg-disabled)}
+/* Prompt starters: Fluent cards (an icon, a short title, the prompt) */
+.cpa-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.cpa-chips > *{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;padding:12px 14px;border:1px solid var(--stroke2);border-radius:var(--r-xl);background:var(--bg1);box-shadow:var(--sh2);font-size:13px;line-height:18px;color:var(--fg2)}
+.cpa-chips > * > .ic{width:20px;height:20px;margin-bottom:4px;color:var(--brand)}
+.cpa-chips > * > b{font-size:14px;line-height:20px;font-weight:600;color:var(--fg1)}
 /* Conversation, with an optional side pane */
 .cpa-work{flex:1;min-height:0;display:flex;gap:12px;padding:0 12px 12px 0}
 .cpa-conv{flex:1;min-width:0;display:flex;flex-direction:column;padding-left:12px}
-.cpa-chat{flex:1;min-height:0;width:100%;max-width:800px;margin:0 auto;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:16px;padding:8px 24px;
+.cpa-chat{flex:1;min-height:0;width:100%;max-width:820px;margin:0 auto;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding:8px 24px 12px;
   -webkit-mask-image:linear-gradient(to bottom,transparent,#000 18px);mask-image:linear-gradient(to bottom,transparent,#000 18px)}
-.cpa-conv .cpa-prompt{width:calc(100% - 48px);max-width:752px;margin:6px auto 0;padding:12px 12px 10px 18px;gap:10px;border-radius:22px}
-.cpa .cp-user{background:#efefef;border-radius:18px;padding:10px 16px;font-size:15px;line-height:22px}
-.cpa .cp-turn{font-size:15px;line-height:23px}
-.cpa .cp-resp{background:transparent;box-shadow:none;padding:0;border-radius:0}
+/* Like a real chat, a long conversation scrolls its oldest messages up under the fade; nothing gets squashed */
+.cpa-chat > *{flex-shrink:0}
+.cpa-conv .cpa-prompt{width:calc(100% - 48px);max-width:772px;margin:6px auto 0;padding:12px 12px 10px 16px;gap:10px}
+/* Fluent UserMessage (brand-tinted, right) and CopilotMessage (white card under Copilot's avatar header) */
+.cpa .cp-user{background:var(--brand-bg2);border-radius:var(--r-2xl) var(--r-2xl) var(--r-md) var(--r-2xl);padding:10px 14px;font-size:15px;line-height:22px;color:var(--fg1)}
+.cpa .cp-turn{font-size:15px;line-height:23px;gap:8px}
+.cpa .cp-resp{background:var(--bg1);border:1px solid var(--stroke2);border-radius:var(--r-xl);box-shadow:var(--sh2);padding:12px 16px}
+.cpa .cite{background:var(--brand-bg2);color:var(--brand-fg2);border-radius:var(--r-md)}
+.cpa .ref{border-radius:var(--r-md);border-color:var(--stroke2)}
+.cpa .chips > .chip{height:32px;padding:0 14px;border-radius:999px;border-color:var(--brand-stroke2);color:var(--brand-fg2);font-size:14px;font-weight:600}
+.cpa .chips > .chip .ic{width:16px;height:16px}
 .cpa .acard{max-width:none}
-.cpa-pane{width:var(--pane,560px);flex:none;min-height:0;display:flex;flex-direction:column;background:var(--bg1);border:1px solid var(--stroke2);border-radius:14px;box-shadow:var(--sh4);overflow:hidden}
+.cpa-pane{width:var(--pane,560px);flex:none;min-height:0;display:flex;flex-direction:column;background:var(--bg1);border:1px solid var(--stroke2);border-radius:var(--r-xl);box-shadow:var(--sh4);overflow:hidden}
 /* A pane revealed on a beat slides in from the right while the conversation glides over to make room (the engine
    moves the conversation; the pane takes the same path, so it reads as one push).  Nothing resizes mid-motion,
    so text never rewraps while it moves. */
 .cpa-pane[data-beat].in{animation:pane-in var(--t-glide) var(--ease-glide) both}
-/* A browser or document pane is a full-height split beside the conversation, as in the Copilot app: it starts at
-   the conversation's header row and runs to the window's bottom and right edges, set off by a divider, not a
-   floating card; the conversation's header stays above the conversation.  (The Workspace pane, .ws, is unchanged.) */
+/* A browser or document pane is a full-height split beside the conversation: it starts at the conversation's
+   header row and runs to the window's bottom and right edges, set off by a divider, not a floating card; the
+   conversation's header stays above the conversation.  (The Workspace drawer, .ws, is laid out separately.) */
 .cpa-main:has(> .cpa-work > .cpa-pane:not(.ws)){display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr)}
 .cpa-main:has(> .cpa-work > .cpa-pane:not(.ws)) > .cpa-top{grid-area:1/1}
 .cpa-main:has(> .cpa-work > .cpa-pane:not(.ws)) > .cpa-work{display:contents}
@@ -566,74 +607,78 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 .cpa-pane-head{height:48px;flex:none;display:flex;align-items:center;gap:8px;padding:0 6px 0 16px;border-bottom:1px solid var(--stroke2);font-size:15px;font-weight:600}
 .cpa-pane-head .end,.cpa-tabs .end{margin-left:auto;display:flex;align-items:center;gap:2px}
 .cpa-pane-body{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:16px;padding:14px 16px}
-/* Cowork Workspace, the way the Copilot app shows it: a flat side panel (.cpa-pane.ws) with sections Steps
-   (.ws-count: "done / total", filled in by proto.js), Output, References and Plugins.  Each .ws-sec > h4 holds
-   the title and .end (count, buttons, chevron).  Steps are plain lines: a circle, dashed while running, ticked
-   when done. */
-.cpa-pane.ws{background:#fafafa;border:0;border-left:1px solid var(--stroke2);border-radius:0;box-shadow:none;margin:0 -12px -12px 0}
-.ws .cpa-pane-head{height:56px;border-bottom:0;padding:0 10px 0 22px;font-size:16px;font-weight:400}
-.ws .cpa-pane-body{gap:26px;padding:4px 22px 22px}
-.ws-sec{flex:none;display:flex;flex-direction:column;gap:6px}
-.ws-sec > h4{margin:0;height:30px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:400;color:var(--fg1)}
+/* Workspace, as a Fluent 2 inline drawer: a white panel at the right edge, a drawer title and close button, then
+   accordion sections divided by hairlines: Steps (.ws-count, a brand badge with "done / total", filled in by
+   proto.js), Output, References and Plugins.  Each .ws-sec > h4 holds the title and .end (count, buttons, chevron).
+   Steps carry Fluent status icons: an outline circle while queued, a brand spinner while running, a brand ring and
+   tinted row while waiting for the person, a filled brand check when done. */
+.cpa-pane.ws{background:var(--bg1);border:0;border-left:1px solid var(--stroke2);border-radius:0;box-shadow:none;margin:0 -12px -12px 0}
+.ws .cpa-pane-head{height:56px;border-bottom:1px solid var(--stroke2);padding:0 10px 0 20px;font-size:20px;line-height:28px;font-weight:600}
+.ws .cpa-pane-body{gap:0;padding:0 20px 20px}
+.ws-sec{flex:none;display:flex;flex-direction:column;gap:6px;padding:12px 0 14px}
+.ws-sec + .ws-sec{border-top:1px solid var(--stroke2)}
+.ws-sec > h4{margin:0;height:30px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--fg1)}
 .ws-sec > h4 .ic{width:16px;height:16px;color:var(--fg2)}
 .ws-sec > h4 .end{margin-left:auto;display:flex;align-items:center;gap:6px}
 .ws-sec > h4 .n{margin-left:auto;font-weight:400;color:var(--fg3)}
-.ws-count{display:inline-flex;align-items:center;height:22px;padding:0 9px;border:1px solid var(--stroke1);border-radius:999px;font-size:12px;color:var(--fg2);white-space:nowrap}
-.ws-sec .steps{gap:0}
-.ws-sec .step{padding:6px 0;gap:12px;border-radius:0}
-.ws-sec .step::before{width:18px;height:18px;border:0;margin-top:1px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='8' fill='none' stroke='%23bdbdbd' stroke-width='1.2'/%3E%3C/svg%3E") center/18px no-repeat}
-.ws-sec .step.run::before{border:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='8' fill='none' stroke='%23616161' stroke-width='1.2' stroke-dasharray='2.4 2.6'/%3E%3C/svg%3E");animation:spin 4s linear infinite}
-.ws-sec .step.wait{background:none;box-shadow:none}
-.ws-sec .step.wait::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='8' fill='none' stroke='%230f6cbd' stroke-width='1.2'/%3E%3Ccircle cx='9' cy='9' r='3' fill='%230f6cbd'/%3E%3C/svg%3E")}
-.ws-sec .step.done::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='8' fill='none' stroke='%23616161' stroke-width='1.2'/%3E%3Cpath d='M5.6 9.3l2.3 2.3 4.5-4.9' fill='none' stroke='%23616161' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
-.ws-sec .step:not(:last-child)::after,.ws-sec .step.done:not(:last-child)::after{left:8.5px;top:27px;bottom:-5px;width:1px;background:var(--stroke1)}
-.ws-sec .step .st-t{font-size:14px;line-height:20px;font-weight:400;color:var(--fg3)}
-.ws-sec .step.wait .st-t{color:var(--fg1)}
-.ws-item{display:flex;align-items:center;gap:12px;flex:none;padding:6px 0;font-size:14px;line-height:20px;color:var(--fg1)}
+.ws-count{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:999px;background:var(--brand-bg2);font-size:12px;font-weight:600;color:var(--brand-fg2);white-space:nowrap}
+.ws-sec .steps{gap:2px}
+.ws-sec .step{padding:6px 8px;margin:0 -8px;gap:12px;border-radius:var(--r-md)}
+.ws-sec .step::before{width:18px;height:18px;border:1.5px solid var(--stroke1);margin-top:1px;background:none}
+.ws-sec .step.run::before{border:2px solid var(--brand-stroke2);border-top-color:var(--brand);background:none;animation:spin .9s linear infinite}
+.ws-sec .step.wait{background:var(--brand-bg2);box-shadow:none}
+.ws-sec .step.wait::before{border:1.5px solid var(--brand);background:radial-gradient(circle,var(--brand) 0 3.5px,transparent 4px)}
+.ws-sec .step.done::before{border:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%230f6cbd'/%3E%3Cpath d='M4.6 8.3l2.3 2.3 4.6-4.9' fill='none' stroke='%23fff' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat}
+.ws-sec .step:not(:last-child)::after,.ws-sec .step.done:not(:last-child)::after{left:16.5px;top:27px;bottom:-7px;width:1px;background:var(--stroke2)}
+.ws-sec .step .st-t{font-size:14px;line-height:20px;font-weight:400;color:var(--fg2)}
+.ws-sec .step.run .st-t,.ws-sec .step.done .st-t{color:var(--fg1)}
+.ws-sec .step.wait .st-t{color:var(--brand-fg2);font-weight:600}
+.ws-item{display:flex;align-items:center;gap:12px;flex:none;padding:6px 8px;margin:0 -8px;border-radius:var(--r-md);font-size:14px;line-height:20px;color:var(--fg1)}
 .ws-item > .ic,.ws-item > .oi{width:20px;height:20px;flex:none;color:var(--fg2)}
 .ws-item > div{min-width:0;flex:1}
 .ws-item .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ws-item .t-cap{display:block;font-size:12px;line-height:16px;color:var(--fg3)}
 .ws-plugs{display:flex;flex-wrap:wrap;gap:8px}
-.ws-plug{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px 0 8px;border:1px solid var(--stroke1);border-radius:10px;background:var(--bg1);font-size:14px;color:var(--fg1);white-space:nowrap}
+.ws-plug{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 10px 0 6px;border:1px solid var(--stroke2);border-radius:var(--r-md);background:var(--bg3);font-size:13px;color:var(--fg1);white-space:nowrap}
 .ws-plug > .oi,.ws-plug > .ic{width:18px;height:18px}
 /* A customer's own skill or plugin: its icon is a tile in its own colour (--plug, default brand) with a white kit
    glyph.  18 px in the trace and the Workspace; .l is 40 px for the Customize page. */
-.plug{--s:18px;flex:none;display:inline-flex;align-items:center;justify-content:center;width:var(--s);height:var(--s);border-radius:calc(var(--s) * .26);background:var(--plug,var(--brand));color:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.plug{--s:18px;flex:none;display:inline-flex;align-items:center;justify-content:center;width:var(--s);height:var(--s);border-radius:calc(var(--s) * .22);background:var(--plug,var(--brand));color:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 .plug > .ic{width:calc(var(--s) * .68);height:calc(var(--s) * .68)}
 .plug.l{--s:40px}
-/* Cowork's Customize page, where people add, create and share skills and plugins (Learn: "Customize Copilot
-   Cowork").  In .cpa-main after .cpa-top: .cz > h1, .cz-tabs (Preferences, Plugins, Skills; .on), .cz-bar
-   (.cz-search, .cz-add: "Add" and its arrow), then .cz-sec > h3 (+ .end), p, .cz-row (.plug.l or .cz-ic > .oi,
-   a <div> with .nm and .t-cap, an optional .tgl (.on) for plugins, a chevron), .cz-more ("Show more"). */
-.cz{flex:1;min-height:0;overflow:hidden;width:100%;max-width:820px;margin:0 auto;padding:18px 32px 32px;display:flex;flex-direction:column;gap:10px}
-.cz > h1{margin:0 0 6px;font-family:var(--f-semi);font-size:34px;line-height:44px;font-weight:600;letter-spacing:-.3px;color:var(--fg1)}
-.cz-tabs{flex:none;display:flex;gap:6px}
-.cz-tabs > *{height:34px;padding:0 14px;display:inline-flex;align-items:center;border:1px solid transparent;border-radius:17px;font-size:14px;color:var(--fg2)}
-.cz-tabs > .on{border-color:#b9bcf2;background:#eef0fd;color:#3b3fae;font-weight:600}
+/* Customize, where people add, create and share skills and plugins, drawn with Fluent parts: a title, a TabList
+   (Preferences, Plugins, Skills; .on), a search box and an "Add" split button (.cz-bar: .cz-search, .cz-add), then
+   .cz-sec > h3 (+ .end), p, .cz-row cards (.plug.l or .cz-ic > .oi, a <div> with .nm and .t-cap, an optional
+   Fluent switch .tgl (.on) for plugins, a chevron), .cz-more ("Show more"). */
+.cz{flex:1;min-height:0;overflow:hidden;width:100%;max-width:840px;margin:0 auto;padding:20px 32px 32px;display:flex;flex-direction:column;gap:10px}
+.cz > h1{margin:0 0 6px;font-family:var(--font);font-size:28px;line-height:36px;font-weight:600;color:var(--fg1)}
+.cz-tabs{flex:none;display:flex;gap:4px;border-bottom:1px solid var(--stroke2)}
+.cz-tabs > *{position:relative;height:40px;padding:0 12px;display:inline-flex;align-items:center;font-size:14px;color:var(--fg2)}
+.cz-tabs > .on{color:var(--fg1);font-weight:600}
+.cz-tabs > .on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;border-radius:2px;background:var(--brand)}
 .cz-bar{flex:none;display:flex;align-items:center;gap:8px;margin-top:8px}
-.cz-search{flex:1;height:34px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--stroke1);border-radius:10px;background:var(--bg1);font-size:14px;color:var(--fg4)}
+.cz-search{flex:1;height:32px;display:flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--stroke1);border-bottom-color:var(--fg3);border-radius:var(--r-md);background:var(--bg1);font-size:14px;color:var(--fg4)}
 .cz-search .ic{width:16px;height:16px;color:var(--fg3)}
-.cz-add{flex:none;display:inline-flex;align-items:stretch;height:34px;border:1px solid var(--stroke1);border-radius:10px;background:var(--bg1);font-size:14px;font-weight:600;color:var(--fg1);overflow:hidden}
+.cz-add{flex:none;display:inline-flex;align-items:stretch;height:32px;border-radius:var(--r-md);background:var(--brand);font-size:14px;font-weight:600;color:#fff;overflow:hidden}
 .cz-add > *{display:inline-flex;align-items:center;gap:6px;padding:0 12px}
-.cz-add > * + *{padding:0 8px;border-left:1px solid var(--stroke1)}
+.cz-add > * + *{padding:0 8px;border-left:1px solid rgba(255,255,255,.4)}
 .cz-add .ic{width:16px;height:16px}
 .cz-sec{flex:none;display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.cz-sec > h3{margin:0;display:flex;align-items:center;gap:8px;font-size:17px;line-height:24px;font-weight:600}
+.cz-sec > h3{margin:0;display:flex;align-items:center;gap:8px;font-size:16px;line-height:22px;font-weight:600}
 .cz-sec > h3 .end{margin-left:auto;display:flex;align-items:center;gap:4px;color:var(--fg2)}
 .cz-sec > p{margin:0 0 4px;font-size:14px;line-height:20px;color:var(--fg2)}
-.cz-row{display:flex;align-items:center;gap:14px;min-height:64px;padding:10px 16px;border-radius:14px;background:#f0f0f0;font-size:15px;line-height:20px;color:var(--fg1)}
+.cz-row{display:flex;align-items:center;gap:14px;min-height:64px;padding:10px 16px;border:1px solid var(--stroke2);border-radius:var(--r-xl);background:var(--bg1);box-shadow:var(--sh2);font-size:15px;line-height:20px;color:var(--fg1)}
 .cz-row > div{flex:1;min-width:0}
 .cz-row .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cz-row .t-cap{display:block;font-size:13px;line-height:18px;color:var(--fg3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cz-row > .ic{width:18px;height:18px;flex:none;color:var(--fg2)}
-.cz-ic{width:40px;height:40px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:#e4e4e4}
+.cz-ic{width:40px;height:40px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-md);background:var(--bg4)}
 .cz-ic > .oi{width:24px;height:24px}
 .tgl{width:40px;height:20px;flex:none;position:relative;box-sizing:border-box;border:1px solid var(--fg2);border-radius:10px}
 .tgl::after{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:var(--fg2)}
 .tgl.on{border-color:var(--brand);background:var(--brand)}
 .tgl.on::after{background:#fff;transform:translateX(20px)}
-.cz-more{align-self:flex-end;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--fg2)}
+.cz-more{align-self:flex-end;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--brand-fg2)}
 .cz-more .ic{width:14px;height:14px}
 .ws-perm{display:flex;align-items:center;gap:10px;padding:3px 0;font-size:13px;line-height:18px}
 .ws-perm > .ic{width:16px;height:16px;color:var(--fg3)}
@@ -673,7 +718,7 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
 .cp-cursor > span{position:absolute;left:20px;top:22px;padding:4px 10px;border-radius:6px;background:#242424;border:1px solid #fff;color:#fff;font-size:12px;font-weight:600;line-height:16px;white-space:nowrap;box-shadow:var(--sh4)}
 /* The prompt while Copilot works: "Working on it. What's next?" and a stop button in place of send. */
-.cpa-send.stop{background:var(--bg1);color:var(--fg1);border:1.5px solid var(--fg2)}
+.cpa-send.stop{background:var(--bg1);color:var(--fg1);border:1px solid var(--stroke1)}
 .cpa-send.stop .ic{width:16px;height:16px}
 /* Office document side by side with the chat */
 /* Document pane: Word (or Excel, PowerPoint) open next to the chat, as the Copilot app shows it.  .cpa-pane-head
@@ -698,9 +743,9 @@ table.grid.compact td{height:36px;padding:0 8px;font-size:13px}
 /* Autopilot overview: the agent's own identity, what it has been doing, what needs you */
 .cpa-over{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:24px;padding:36px 48px 0}
 .cpa-over > *{width:100%;max-width:820px}
-.ap-av{width:52px;height:52px;flex:none;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;background:var(--cp-grad)}
+.ap-av{width:52px;height:52px;flex:none;border-radius:var(--r-xl);display:inline-flex;align-items:center;justify-content:center;background:var(--cp-grad)}
 .ap-av .ic{width:60%;height:60%;fill:#fff}
-.ap-av.sm{width:22px;height:22px;border-radius:7px}
+.ap-av.sm{width:22px;height:22px;border-radius:var(--r-md)}
 .ap-hello{display:flex;align-items:center;gap:18px}
 .ap-hello .cpa-hello{padding-left:0}
 .feed{display:flex;flex-direction:column}

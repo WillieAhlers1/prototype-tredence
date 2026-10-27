@@ -22,6 +22,7 @@ What it flags: script errors (for a packed file, also when played inside the san
 to preview a shared file, on a full pass), network requests, text clipped or spilling out of its box, text smaller than 11 px,
 text on a Tredence frame photo without enough contrast (WCAG 4.5:1, or 3:1 for large text: 24 px, or 18.66 px bold),
 the concept label missing, placeholder or AI-tell wording (including the Tredence voice's banned words), emoji, and notes for still scenes.
+In the Copilot app: a Copilot reply without its Fluent message header (.cp-who) at the start of the chat or after the person's message.
 Tredence frame scenes (.scene.frame): a colour outside the Tredence palette, a tint used as a text colour, text not in
 Poppins, a gradient (other than .td-shade) or a shadow, Bright Orange or white-on-orange text under 24 px, white text
 on Teal or Highlight Orange, Grey text under 28 px, and "TREDENCE" written in capitals in running text.
@@ -135,6 +136,18 @@ AUDIT = r"""() => {
   }
   if (scene.querySelector('.m365 .cp, .tm .cp, .lob .cp, .cp.pane, .mc'))
     out.findings.push('Copilot pane inside an app or the old full-screen shell: start in the Copilot app (.cpa), see shells.html');
+  // Fluent agent UI: in the Copilot app, each Copilot reply opens under its message header (.cp-who), at the start of
+  // the chat and after each message from the person.
+  scene.querySelectorAll('.cpa-chat').forEach(chat => {
+    let open = true;
+    for (const el of chat.children) {
+      if (!vis(el)) continue;
+      if (el.matches('.cp-user,.cp-time,.cp-file')) { open = true; continue; }
+      if (open && el.matches('.work-box,.cp-turn,.cp-status,.acard'))
+        out.findings.push('Copilot reply without its Fluent message header (.cp-who: the Copilot mark, "Copilot", the time) above it: ' + (el.textContent || '').trim().slice(0, 50));
+      open = false;
+    }
+  });
   scene.querySelectorAll('.ai-touched').forEach(el => {
     if (!vis(el)) return;
     const cs = getComputedStyle(el), w = ['Top', 'Right', 'Bottom', 'Left'].map(s => parseFloat(cs['border' + s + 'Width']));

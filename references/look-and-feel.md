@@ -20,7 +20,7 @@ true and note the change in `brief.md`.
 |---|---|---|
 | The app is "Microsoft Copilot" (renamed from Microsoft 365 Copilot); the Copilot app as home: Home with Chat and Cowork, Autopilot (preview), the in-app browser (rolling out) | Microsoft's "new Copilot" positioning (2026-09-25) and Microsoft support, as reported publicly | 2026-10-21 |
 | Autopilot as a digital teammate: own identity, in Teams and Outlook, @mention it like a colleague, works for days on a goal, the owner sets objective and boundaries and stays in control; private preview | Microsoft blog, "Introducing the new Copilot with Home, Code and Autopilot" (2026-09-25) | 2026-10-26 |
-| Copilot's work trace and the Cowork Workspace pane | Screenshots of the product | 2026-10-26 |
+| The agent UI: Copilot's message header, work trace, answer and action cards, the Workspace drawer | Fluent 2 design system (web components and its Copilot patterns), drawn as a Fluent 2 agent UI rather than a copy of Cowork's look; Tredence decision | 2026-10-27 |
 | Cowork skills and plugins, the Customize page | Microsoft Learn: "Build plugins for Copilot Cowork", "Use plugins with Cowork", "Customize Copilot Cowork", "Use Copilot Cowork" | 2026-10-26 |
 | Power BI visual defaults | Microsoft Learn: "Visual defaults in Power BI reports" | 2026-10-21 |
 
@@ -45,8 +45,9 @@ for bad and green for good (traffic lights): it reads as an alarm, and colour-bl
 Never the agent's gradient or `.ai-touched` inside a document: the whole draft is Copilot's, and Word doesn't
 draw one.
 
-**Shape and depth.**  Radius 4 for controls, 8 for cards; the Copilot app is rounder (18 for chat bubbles, 22–26
-for the prompt box, 14 for side panes) and greets in a serif (Sitka), as the product does.  Shadows are soft
+**Shape and depth.**  Radius 4 for controls, 8 for cards; the Copilot app uses the same Fluent 2 shapes (8 for
+Copilot's message cards, the activity card, the prompt and the prompt starters; 12 for the person's message, with a
+4 px corner by the edge it comes from) and Segoe UI throughout, with no serif greeting.  Shadows are soft
 (`--sh2`, `--sh4`); only toasts and dialogs float (`--sh28`).
 
 **Density.**  Real apps are dense and calm: lists of 3–6 items, 32 px controls, 8–16 px gaps.  Fill the shell the
@@ -54,7 +55,7 @@ way the product does (folder pane, list, reading pane) instead of leaving big em
 empty, add realistic secondary content (older mail, timeline items) or remove the pane.
 
 **Icons.**  `<i class="ic" data-icon="mail"></i>` (20 px; `s16`, `s24`, `s28`, `s32`, `s48` for other sizes).
-The kit has 99 Fluent System Icons; `icons.js` lists them.  Need another?  Add it to the prototype's own copy of
+The kit has 103 Fluent System Icons; `icons.js` lists them.  Need another?  Add it to the prototype's own copy of
 `kit/icons.js` from github.com/microsoft/fluentui-system-icons (20 px regular SVG path) and note it in `brief.md`.
 
 **People.**  `<span class="avatar" data-name="Adele Vance"></span>` gives initials and a stable colour.  Sizes
@@ -108,7 +109,7 @@ switch screens only when the beat needs it.
 | Copilot Home, or a Today briefing | Work starts here; Copilot already knows what matters | An opening ask, a morning catch-up |
 | The business at scale (a view you design: the whole book, a map, coverage before and after, the customer's own customers; or a Power BI page of their real data) | This isn't one faster day; the business works differently | The shift at scale, the measure that moves |
 | Copilot answer with sources | It read the right things and shows where | A question answered, a gap found |
-| Cowork plan (Workspace pane) | Multi-step work you can watch, with who acts on each step | A process run end to end |
+| Multi-step plan (Workspace drawer) | Multi-step work you can watch, with who acts on each step | A process run end to end |
 | The customer's own skill (a trace step, Customize, the owner writing it) | It works the way *we* work, and our people decide how | A house method, a review standard, expert judgement shared with the team |
 | Approval card (checks, policy reason) | A person stays in control of what matters | Money, anything sent to a customer, anything hard to undo |
 | Power BI visual | The number is governed and traceable | A trend, a gap, a breakdown in data they really have |
@@ -130,15 +131,15 @@ chrome, write your own content, and design the rest for your story.  The outline
 not what to put in it or in what order.
 
 - Frame cover, with the headline's last phrase in gradient (starter, first scene)
-- Copilot conversation: Copilot's work as the Copilot app shows it (steps, a thinking node, a status line), an
-  answer with citations and source chips, an approval card with checks and the policy reason, a hand-off chip
-  (`shells.html` `chat`)
+- Copilot conversation in the Fluent agent UI: Copilot's message header, its work in an activity card (steps, a
+  thinking node, a latency pill), an answer card with citations, source chips and the message footer, an approval
+  card with checks and the policy reason, a suggestion pill (`shells.html` `chat`)
 - Frame close: what the business could become, what it could be worth, and an ask if there is one (starter, last scene)
 - The business at scale: a view you design, or a full Power BI report of their real data (`shells.html` `report`)
-- Copilot Home with a typed prompt (`shells.html` `home`)
+- Copilot Home with prompt-starter cards and a typed prompt (`shells.html` `home`)
 - A Power BI answer, and the report in the browser pane (`pbi-answer`)
-- A Cowork plan in the Workspace pane (Steps, Output, References, Plugins), with an attachment, a clipped work
-  trace and an input card (`cowork`)
+- A multi-step plan with its Workspace drawer (Steps, Output, References, Plugins), with an attachment, a clipped
+  activity card and an input card (`cowork`)
 - Cowork's Customize page, Skills tab: the customer's own skill next to the built-in ones (`customize`; only when
   the story uses the customer's own way of working, see story-and-data.md)
 - Proof in the browser pane: a business app row and a Dynamics 365 record change (`proof`)
@@ -152,15 +153,17 @@ not what to put in it or in what order.
   a map, a comparison, a board, a notification arriving (see *Need a view the kit doesn't have?* below)
 
 **The Microsoft Copilot app is where employees meet Copilot.**  Most stories spend their agent moments here; the
-other screens show where the work starts, people reached, and proof.
+other screens show where the work starts, people reached, and proof.  The kit draws it as a Fluent 2 agent UI: a
+neutral frame with a NavDrawer, a lighter content layer, and Fluent 2's Copilot patterns for everything Copilot
+says and does.
 
 | Copilot app view | Root | Parts | Use when |
 |---|---|---|---|
-| Window and left panel | `.cpa` (`.nav-off` hides the panel) | `.cpa-title` (`.cpa-win`), `.cpa-side` > `.cpa-brand`, `.cpa-modes` (Home, Code, Autopilot; `on`), `.cpa-nav` (`on`, `hdr`, `sub`, `.lbl`, `.plus`), `.cpa-me`; `.cpa-main` > `.cpa-top` (`.pick`, `.ttl`, `.end`) | Every Copilot scene |
-| Home | `.cpa-home` | `.cpa-hello` (serif greeting), `.cpa-prompt` (`.ph`, `.txt`, `.tools` with `.cpa-switch` Chat/Cowork and `.cpa-send`), `.cpa-chips` | The person asks; the story's first click |
-| Conversation | `.cpa-work` > `.cpa-conv` | `.cpa-chat` > `.cp-time`, `.cp-file`, `.cp-user`, `.work-box` (steps and thinking), `.cp-status`, `.cp-turn` > `.cp-resp`, `.refs`, `.chips`, `.acard`; a docked `.cpa-prompt` | Copilot works, answers with sources, asks for input or approval.  Draw the work as in *Copilot's work, as Copilot shows it* |
-| Cowork Workspace pane | `.cpa-pane.ws` (width `--pane`; about 420) beside `.cpa-conv` | `.cpa-pane-head`, `.cpa-pane-body` > `.ws-sec` (`h4` with `.end`) for Steps (`.ws-count`, `.steps`), Output and References (`.ws-item`), Plugins (`.ws-plug`) | Copilot runs a multi-step process: the plan, what it made, what it was given, what it used |
-| Customize (Cowork) | `.cz` in `.cpa-main` after `.cpa-top` (`.cpa.nav-off`) | `h1`, `.cz-tabs` (Preferences, Plugins, Skills; `on`), `.cz-bar` (`.cz-search`, `.cz-add`), `.cz-sec` > `h3`, `p`, `.cz-row` (`.plug.l` or `.cz-ic` > `.oi`, a `<div>` with `.nm` and `.t-cap`, `.tgl` for plugins, a chevron), `.cz-more` | Where the customer's own skills live, next to the built-in ones.  Skills tab lists: "Your skills", "Built-in".  Plugins tab lists: "Installed" (with toggles), "Discover"; button "Upload plugin".  Approximate (from Learn's screenshot).  A skill's own page and the Skill Report aren't pictured on Learn: don't draw them as product screens |
+| Window and left panel | `.cpa` (`.nav-off` hides the panel) | `.cpa-title` (`.cpa-win`), `.cpa-side` (a Fluent NavDrawer) > `.cpa-brand`, `.cpa-modes` (a TabList: Home, Code, Autopilot; `on` gets the brand underline), `.cpa-nav` (`on` gets the brand selection bar; `hdr`, `sub`, `.lbl`, `.plus`), `.cpa-me`; `.cpa-main` > `.cpa-top` (`.pick` dropdowns, `.ttl`, `.end`) | Every Copilot scene |
+| Home | `.cpa-home` | `.oi.copilot.cpa-logo` (48 px mark), `.cpa-hello` (Fluent title, centred), `.cpa-sub` (one line under it), `.cpa-chips` (prompt-starter cards: an `.ic` in brand blue, a `b` title, the prompt), `.cpa-prompt` (`.ph`, `.txt`, `.tools` with `.cpa-switch` Chat/Cowork toggle buttons and `.cpa-send` with `send_filled`) | The person asks; the story's first click |
+| Conversation | `.cpa-work` > `.cpa-conv` | `.cpa-chat` > `.cp-time`, `.cp-file`, `.cp-user`, `.cp-who` (Copilot's message header), `.work-box` (the activity card), `.cp-status` (latency pill), `.cp-turn` > `.cp-resp` (answer card), `.refs`, `.cp-acts` (message footer), `.chips` (suggestion pills), `.acard`; a docked `.cpa-prompt` | Copilot works, answers with sources, asks for input or approval.  Draw the work as in *Copilot's work, in Fluent* |
+| Workspace drawer | `.cpa-pane.ws` (width `--pane`; about 420) beside `.cpa-conv` | `.cpa-pane-head` (drawer title, close), `.cpa-pane-body` > `.ws-sec` accordion sections (`h4` with `.end`) for Steps (`.ws-count` badge, `.steps`), Output and References (`.ws-item`), Plugins (`.ws-plug` tags) | Copilot runs a multi-step process: the plan, what it made, what it was given, what it used |
+| Customize (Cowork) | `.cz` in `.cpa-main` after `.cpa-top` (`.cpa.nav-off`) | `h1`, `.cz-tabs` (a TabList: Preferences, Plugins, Skills; `on`), `.cz-bar` (`.cz-search`, `.cz-add` split button), `.cz-sec` > `h3`, `p`, `.cz-row` cards (`.plug.l` or `.cz-ic` > `.oi`, a `<div>` with `.nm` and `.t-cap`, `.tgl` switch for plugins, a chevron), `.cz-more` | Where the customer's own skills live, next to the built-in ones.  Skills tab lists: "Your skills", "Built-in".  Plugins tab lists: "Installed" (with toggles), "Discover"; button "Upload plugin".  The lists follow Learn's description; the look is Fluent 2.  A skill's own page and the Skill Report aren't pictured on Learn: don't draw them as product screens |
 | Browser pane | `.cpa-pane` with `.cpa-url` (back, refresh, `.addr` pill: globe, the site, a clear ✕; `.end` expand and close) and `.cpa-page` | Put a `.lob`, `.m365.d3` or `.pbi-app` shell inside `.cpa-page`, without its left nav.  Use `.nav-off` and `--pane:1000px`.  The pane is a full-height split (from the conversation's header row to the window's edges, with a divider), as are document panes; the kit lays it out.  No tab strip: the address pill shows where it is.  While Copilot drives it: `.cp-browsing` (frame and "Copilot is browsing" tab) and `.cp-cursor` (`style="left:…;top:…"`, "Copilot is working") in the page, the prompt's `.ph` "Working on it. What's next?" and `.cpa-send.stop`; hide them all (`data-hide`) when it's done | Proof: the system of record that changed, without leaving Copilot; Copilot doing the work in a site when the doing is the point.  A preview feature: label it in the notes |
 | Document pane | `.cpa-pane` with `.cpa-pane-head` (`.oi.word`, `.oi.excel`, `.oi.powerpoint` file mark, `.doc-name`, then `.end` with `.doc-acts` round comment / edit / share buttons, `.btn.primary` "Open in Word", more, close), `.doc-tabs` (File, Home `on`, Insert, Layout, References, Review, View, Help) and `.cpa-doc` > `.page` | Copilot drafts a Word, Excel or PowerPoint file next to the chat.  The page uses Word's default styles: `h1` Title (large, regular, black), `p.sub` subtitle, `h2` Heading 1 and `h3` Heading 2 (regular, dark blue), `ol` / `ul` with nested `ol` lettered.  Not bold blue titles |
 | Autopilot | `.cpa-over` | `.ap-hello` (`.ap-av` + `.cpa-hello`), `.cpa-prompt`, `.feed` > `.feed-head`, a `<div>` per day with `.feed-day` and `.feed-item` (`.t`, `.dot`, text, `.det`; `need`) | An agent with its own identity keeps working and comes back when it needs the person.  Preview: show a "Preview" badge |
@@ -257,14 +260,14 @@ what the agent does when the story has it act; it doesn't mean a story needs an 
 
 ### The agent's look
 
-- In the Copilot app, Copilot speaks without an avatar, as the product does.  Elsewhere (logs, records, cards),
+- In the Copilot app, each Copilot reply opens under its message header (`.cp-who`: the Copilot mark, "Copilot",
+  the time), as in Fluent 2's Copilot message.  Elsewhere (logs, records, cards),
   the agent's mark is the gradient sparkle: `<span class="cp-mark"><i class="ic grad" data-icon="sparkle_filled"></i></span>`.
   An Autopilot agent gets the `.ap-av` avatar.  Give an agent a plain job name (what it does, then "agent").  No
   mascot, no robot, no Microsoft marketing characters.
 - When Copilot acts as the person (a Teams post, a sent mail), show it as the person's own message with a small
   "Sent with Copilot" caption, not as a bot.
-- Copilot's work trace and the Workspace pane look exactly like the product's: see *Copilot's work, as Copilot
-  shows it* below.
+- Copilot's agent interactions use the kit's Fluent 2 agent UI: see *Copilot's work, in Fluent* below.
 - `.ai-touched` puts the gradient border on the one thing the agent created or changed; `.ai-flag` says so in
   words ("Added by [agent name]").  One per scene.  On a list row (`.tl-item`, `.acard .item`, `.log` row) it
   adds its own side padding and keeps all four edges, even as the first row; don't add inline padding.  Inside a
@@ -273,25 +276,36 @@ what the agent does when the story has it act; it doesn't mean a story needs an 
   flags a highlight that spills outside a clipping container.
 - Answers are short, specific, and cite sources (`.cite` numbers, `.ref` chips).
 
-### Copilot's work, as Copilot shows it
+### Copilot's work, in Fluent
 
-The audience has watched Copilot work.  If its trace or its Workspace looks different from the product, the whole
-demo reads as a mock-up.  So the **shape** below is fixed, and **every word** comes from your story: a different
+The agent's side of the demo is drawn as a Fluent 2 agent UI: Fluent 2's Copilot patterns (a message header with
+the Copilot mark, message cards, an activity card, Fluent cards for input and approval, a drawer for the plan),
+built from Fluent 2 tokens.  It deliberately doesn't imitate Cowork's own look: no serif greeting, no black round
+send button, no avatar-less plain-text replies, no flat grey Workspace panel.  One consistent shape keeps every
+prototype calm and credible, so the **shape** below is fixed, and **every word** comes from your story: a different
 customer, person and task each time.  The markup is in `assets/shells.html` `chat` (conversation) and `cowork`
-(attachment, clipped trace, Workspace).
+(attachment, clipped activity card, Workspace drawer).
 
 **In the conversation, top to bottom:**
 
 | Part | Markup | How it looks and behaves |
 |---|---|---|
 | Time divider (optional) | `.cp-time` | Small grey relative time ("1 min ago") between hairlines |
-| Attachment (optional) | `.cp-file` > `.oi` file mark, `.nm`, `.t-cap` | A rounded card above the person's message, right-aligned: the file they gave Copilot and its type |
-| Header | `.work-box` > `.sum` > `.on-run` ("Working on it"), `.on-done` (`.n` + " complete"), chevron | "Working on it" + chevron while it works; once every item is shown and done the engine swaps in "9 items complete" (it counts and fills `.n`).  Grey, no box, no icon in front.  Keep the words |
-| Step | `.work > li` (`data-beat`, `data-auto`) | A spinner, then a thin check; a hairline joins each item to the next.  No box, no green |
+| Attachment (optional) | `.cp-file` > `.oi` file mark, `.nm`, `.t-cap` | A white Fluent card above the person's message, right-aligned: the file they gave Copilot and its type |
+| The person's message | `.cp-user` | A brand-tinted bubble on the right |
+| Message header | `.cp-who` > `.oi.copilot` + "Copilot" + `.t-cap` (the time) | Opens every Copilot reply: at the start of the chat and after each message from the person.  Give it the same `data-beat` and `data-auto` as the first thing Copilot shows.  The check flags a reply without one |
+| Activity card | `.work-box` > `.sum` > `.on-run` ("Working on it"), `.on-done` (`.n` + " complete"), chevron | A white card.  While it works: a brand spinner, "Working on it" and a thin indeterminate progress bar along the top edge; once every item is shown and done the engine swaps in a filled brand check and "9 items complete" (it counts and fills `.n`).  Keep the words |
+| Step | `.work > li` (`data-beat`, `data-auto`) | A brand spinner, then a filled brand check; a hairline joins each item to the next.  Brand blue, never green |
 | Customer's skill (optional) | `li.skill` > `.plug` (`--plug` colour, a white `.ic` glyph) + "Reviewed custom skill <b>name</b>" | Copilot loading the customer's own skill: the skill's icon in place of the check, the name in bold.  Usually early in the trace.  Only when the story uses it (story-and-data.md) |
-| Thinking | `li.think` > `.lbl` (`.on-run`, `.on-done`, `chevron_right`) + `.thought` (`data-type="words"`, one `<p>` per paragraph); `open` shows it | A small grey dot.  "Thinking…" shimmers while the reasoning streams, then reads "Thought process".  Clicking the label opens or closes it |
-| Show more | `.work-box.clip` + `<button class="more">Show more</button>` | Only the latest items stay in view (`--clip`, default 136 px), faded at the top.  While a thought streams, the window ends at the newest words and the earlier steps scroll up under the fade, as in Copilot (the engine does this).  "Show more" appears once something is really hidden; clicking it shows everything |
-| Status line | `.cp-status` > `.oi.copilot` + `.t` | The Copilot mark and one grey shimmering line under the trace.  Swap the `.t` on later beats as the work moves on; hide the line (`data-hide`) when the answer starts |
+| Thinking | `li.think` > `.lbl` (`.on-run`, `.on-done`, `chevron_right`) + `.thought` (`data-type="words"`, one `<p>` per paragraph); `open` shows it | A lightbulb.  "Thinking…" shimmers while the reasoning streams, then reads "Thought process".  The reasoning sits in a quoted panel (a brand rule on its left).  Clicking the label opens or closes it |
+| Show more | `.work-box.clip` + `<button class="more">Show more</button>` | Only the latest items stay in view (`--clip`, default 136 px), faded at the top.  While a thought streams, the window ends at the newest words and the earlier steps scroll up under the fade (the engine does this).  "Show more" appears as the card's footer once something is really hidden; clicking it shows everything |
+| Latency pill | `.cp-status` > `.oi.copilot` + `.t` | A small white pill under the card: the Copilot mark and one shimmering line.  Swap the `.t` on later beats as the work moves on; hide the pill (`data-hide`) when the answer starts |
+| Answer card | `.cp-turn` > `.cp-resp`, `.refs`, `.cp-acts` | A white card with the answer and `.cite` numbers, the source chips under it, then the message footer: copy, like and dislike buttons and "AI-generated content may be incorrect" |
+| Input and approval | `.acard` (see *Who acts*) | Fluent cards in the flow of the conversation |
+| Suggestion (optional) | `.chips` > `.chip` | A rounded brand-outlined pill: the next thing the presenter clicks |
+
+A long conversation behaves like a real one: the oldest messages scroll up under the fade at the top; nothing
+gets squashed.  Plan the stops so what matters is in view.
 
 **Write them in Copilot's voice** (forms, not content):
 
@@ -301,7 +315,7 @@ customer, person and task each time.  The markup is in `assets/shells.html` `cha
   sources against each other using their names and numbers, notices the one thing that doesn't add up, and ends
   with what it will do next, including why that part needs the person.  This is where the audience sees judgement,
   so put the story's tension here.  Never a recap of the steps, marketing, or "As an AI".
-- **Status line**: a few casual words in the present progressive, about what it's doing right now.
+- **Latency pill**: a few casual words in the present progressive, about what it's doing right now.
 - **The customer's skill**, if the story has one: "Reviewed custom skill" and its kebab-case name, exactly.  Then
   let the work show it: a step or the thinking applies one of its rules by name ("[their rule], so …").
 - As many steps and thinking nodes as the work really has; use `.clip` when the trace gets long.
@@ -310,23 +324,24 @@ Pacing: give a thinking node a `data-auto` of at least the previous step's run t
 finishes before the next appears.  The engine keeps "Thinking…" until the reasoning has streamed.  A thought without
 `open` costs no time; its text is there when someone opens it.
 
-**The Workspace pane (Cowork)** is a flat panel at the right edge, the same colour as the conversation, with a
-"Workspace" header and a close button.  Its sections have no dividers.  Each is a `.ws-sec` whose `h4` holds the
-title and an `.end` (a chevron, plus any buttons):
+**The Workspace drawer** is a Fluent 2 inline drawer at the right edge: a white panel with a "Workspace" title and
+a close button, then accordion sections divided by hairlines.  Each is a `.ws-sec` whose `h4` holds the title and
+an `.end` (a chevron, plus any buttons):
 
 | Section | Markup | What goes in it |
 |---|---|---|
-| Steps | `h4` with an empty `.ws-count` (the engine fills in "done / total"); `.steps` > `li.step` > `.st` > `.st-t` | The plan: three to seven -ing steps as plain grey lines that may wrap.  An outline circle while queued, a dashed one turning while running, ticked when done, blue while waiting for the person.  No mode badges or detail lines here; the input and approval cards in the conversation carry the mode |
+| Steps | `h4` with an empty `.ws-count` (a brand badge; the engine fills in "done / total"); `.steps` > `li.step` > `.st` > `.st-t` | The plan: three to seven -ing steps as plain lines that may wrap.  An outline circle while queued, a brand spinner while running, a filled brand check when done; while waiting for the person, a brand ring and a brand-tinted row.  No mode badges or detail lines here; the input and approval cards in the conversation carry the mode |
 | Output | `.ws-item` > a file mark (`.oi`, or `.ic` `globe` for a web page) + `<div>` with `.nm` and `.t-cap` | What Copilot made, revealed on the beat it makes it, with "Updated" and a date underneath.  For a long file name, cut the middle yourself and keep the extension |
 | References | `.ws-item` rows; a `folder_open` button in the `h4` | What the person gave it: the attachment, a linked file |
-| Plugins | `.ws-plugs` > `.ws-plug` (a `.plug` tile for the customer's own skill or plugin, or the product's `.oi` for a built-in one) | The plugins or skills it used, by plain name |
+| Plugins | `.ws-plugs` > `.ws-plug` tags (a `.plug` tile for the customer's own skill or plugin, or the product's `.oi` for a built-in one) | The plugins or skills it used, by plain name |
 
 **A customer's skill or plugin icon** is a `.plug` tile: a colour that suits the customer (`style="--plug:#…"`) and
 one white kit glyph that says what the skill is about.  Use the same tile everywhere the skill appears (trace,
 Workspace, Customize).  Never a Microsoft product logo, and never the customer's real logo.
 
-Draw it in the kit's light theme even if your reference screenshots are dark, and never mix the two.  The Copilot
-mark on the status line is the official colour icon; don't recolour it to match the grey text.
+Draw it in the kit's light theme, and never mix themes.  The Copilot mark in the message header and the latency
+pill is the official colour icon; don't recolour it.  Restyle these parts in a prototype's `<style>` only to fit
+its story, never back towards Cowork's look.
 
 ## Tredence frame scenes
 
@@ -365,7 +380,7 @@ to be numbered cards.  The product scenes are the proof.
 | "Acme", "John Doe", "Lorem ipsum", "Task 1" | Microsoft fictitious companies and demo personas, specific tasks |
 | Marketing words: unlock, seamless, leverage, supercharge, revolutionise, empower, game-changing | Plain verbs that say what happens |
 | The agent knows everything instantly | Visible steps, sources, a gap it admits, a person who confirms |
-| The agent's work as a boxed checklist of green ticks, or a Workspace you invented | Copilot's own trace and Workspace (§Copilot's work, as Copilot shows it) |
+| The agent's work as a checklist of green ticks you styled yourself, a Workspace you invented, or a copy of Cowork's look (serif greeting, black round send button, avatar-less plain-text replies, flat grey panel) | The kit's Fluent 2 agent UI (§Copilot's work, in Fluent) |
 | The customer's skill in every demo, or a skill that only shows up as a badge | Only when doing it *their* way is the point; then the work visibly follows one of its rules, and a named person owns it |
 | Thinking that narrates the steps ("Now I will read the file") | Reasoning with the story's names and numbers, the thing that doesn't add up, and what it will do next |
 | Everything centred and floating | Product grid alignment: left-aligned, edge-to-edge panes |

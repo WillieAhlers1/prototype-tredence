@@ -124,7 +124,7 @@ and say why in `brief.md`.
   always waits for one (`look-and-feel.md` §Who acts).
 - **Open where the work starts.**  Copilot Home, a phone in the field, an email arriving, a Teams meeting, the
   customer's own app or website: whatever is true for this work.  Employees work with the agent in the Copilot
-  app, with business apps coming to them (sources, the Workspace pane, the browser pane); other apps appear where
+  app, with business apps coming to them (sources, the Workspace drawer, the browser pane); other apps appear where
   the work starts, as proof, or to show people reached.  Two or three supporting views usually beat a tour.
 - **Make it believable.**  The room trusts what it sees happen: what the agent read and checked, its sources, and,
   when it matters, where the result landed (a record, a reply, a calendar, the customer's own screen).  Show the

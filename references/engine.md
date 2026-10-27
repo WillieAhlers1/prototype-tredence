@@ -39,10 +39,11 @@
 | `data-morph="name"` | On an element that hides at beat n and one that appears at beat n: the new one glides from the old one's place (the home prompt becoming the chat prompt). |
 
 Pattern for "user asks, agent works, agent answers" (the shape only; what it looks like and how to write each part
-is in `look-and-feel.md` §Copilot's work, as Copilot shows it):
+is in `look-and-feel.md` §Copilot's work, in Fluent):
 
 ```html
 <div class="cp-user" data-beat="1"><span data-type>[the person's question]</span></div>
+<div class="cp-who" data-beat="2" data-auto="900"><span class="oi copilot"></span>Copilot<span class="t-cap">Just now</span></div>
 <div class="work-box" data-beat="2" data-auto="900"><div class="sum"><span class="on-run">Working on it</span><span class="on-done"><span class="n"></span> complete</span><i class="ic" data-icon="chevron_down"></i></div>
   <ul class="work">
     <li data-beat="2" data-auto="900">[step]</li>
@@ -94,7 +95,7 @@ its state changes on beats:
 |---|---|
 | `data-run-at="n"` | At beat n: spinner, then a check after `data-run` ms (default 1100).  For *Done for you* steps. |
 | `data-wait-at="n"` | At beat n: highlighted and waiting for the person.  For *Needs your input* / *Needs your approval*. |
-| `data-done-at="n"` | At beat n: a check (green; in the Workspace, a ticked circle).  Normally the beat after the click on the input or approval card. |
+| `data-done-at="n"` | At beat n: a check (green; in the Workspace drawer, a filled brand check).  Normally the beat after the click on the input or approval card. |
 | `data-auto="ms"` | Plays its run-at or wait-at beat automatically, as on `data-beat` elements. |
 
 Inside a step, `.on-queued`, `.on-run`, `.on-wait`, `.on-done` show text for one state only ("After you choose" →
@@ -110,7 +111,7 @@ Inside a step, `.on-queued`, `.on-run`, `.on-wait`, `.on-done` show text for one
 <div class="acard" data-beat="4" data-hide="6">... <button class="btn primary" data-go="next" data-cue>Approve and send</button> ...</div>
 ```
 
-In the Copilot app, the steps go in the Cowork Workspace pane (`.cpa-pane.ws` > `.ws-sec`) as plain lines
+In the Copilot app, the steps go in the Workspace drawer (`.cpa-pane.ws` > `.ws-sec`) as plain lines
 (`.st` > `.st-t`, no `.mode` badge or `.st-d`), and the input and approval cards, which carry the mode, appear in the
 conversation.  An empty `.ws-count` in the Steps heading shows "done / total" and updates itself.
 `assets/shells.html` `cowork` has the chrome as an outline: Steps, Output, References, Plugins, and an input card

@@ -144,6 +144,31 @@ class PrototypeTests(unittest.TestCase):
         self.assertTrue(self.page.locator("#cowork .work-box").evaluate("(e) => e.classList.contains('all')"))
         self.assertFalse(self.errors, self.errors)
 
+    def test_fluent_agent_ui(self):
+        self.open()
+        self.page.evaluate("() => proto.go('chat', true)")
+        chat = self.page.locator("#chat")
+        self.assertIn("Copilot", chat.locator(".cp-who").first.inner_text())
+        self.assertEqual(chat.locator(".cp-who .oi.copilot").count(), 1)
+        style = lambda sel, prop: chat.locator(sel).first.evaluate(f"(e) => getComputedStyle(e).{prop}")
+        self.assertNotRegex(style(".cpa", "fontFamily"), "Sitka|Georgia|Times")
+        self.assertEqual(style(".cp-resp", "backgroundColor"), "rgb(255, 255, 255)")
+        self.assertEqual(style(".cp-user", "backgroundColor"), "rgb(235, 243, 252)")
+        self.assertEqual(style(".work-box", "borderTopStyle"), "solid")
+        self.assertEqual(style(".cpa-modes > .on", "fontWeight"), "600")
+        self.assertEqual(chat.locator(".cp-acts .cp-ai").inner_text(), "AI-generated content may be incorrect")
+        self.assertEqual(chat.locator(".cpa-send [data-icon]").get_attribute("data-icon"), "send_filled")
+        findings = self.page.evaluate(CHECK["AUDIT"])["findings"]
+        self.assertFalse([f for f in findings if ".cp-who" in f], findings)
+        chat.locator(".cp-who").first.evaluate("(e) => e.remove()")
+        findings = self.page.evaluate(CHECK["AUDIT"])["findings"]
+        self.assertTrue([f for f in findings if ".cp-who" in f], findings)
+        self.page.evaluate("() => proto.go('cowork', true)")
+        ws = self.page.locator("#cowork .cpa-pane.ws")
+        self.assertEqual(ws.evaluate("(e) => getComputedStyle(e).backgroundColor"), "rgb(255, 255, 255)")
+        self.assertEqual(ws.locator(".ws-count").evaluate("(e) => getComputedStyle(e).backgroundColor"), "rgb(235, 243, 252)")
+        self.assertFalse(self.errors, self.errors)
+
     def test_play_pause_and_existing_mouse_navigation(self):
         self.open("")
         self.page.keyboard.press("Space")

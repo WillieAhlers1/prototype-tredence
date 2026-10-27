@@ -94,12 +94,12 @@ find / -path '*prototype-tredence*/assets/frames.html' 2>/dev/null
   `[[placeholder]]`.  Copy it to start.  **The starter scenes show the styles and the code, not a story or layouts
   to reuse.**  Delete any you don't need; design the rest.
 - `assets/shells.html`: each Microsoft product's chrome as an outline, every word a `[[placeholder]]`: Copilot
-  Home, a chat with a work trace and approval card, a Power BI answer, a Cowork plan, proof in the browser pane, Teams, Autopilot, Outlook mail and calendar,
+  Home, a chat with a work trace and approval card, a Power BI answer, a multi-step plan with its Workspace drawer, proof in the browser pane, Teams, Autopilot, Outlook mail and calendar,
   Dynamics 365, a Word draft, a Power BI report, and the customer's own business app.
 - `assets/frames.html`: each Tredence frame layout as an outline: cover, their world, a from → to matrix, where
   we'd start, the #BeyondPossible chapter break, the solid orange divider, the ask on a photo, the closing.
 - `assets/kit/`: the shared kit every prototype uses, unchanged: `proto-style.js` (Fluent 2 tokens and product
-  shells, the Tredence frame and its chrome), `proto.js` (upstream 1.14.8 scene engine, play/pause, reading floor, driven API and presenter controls), `icons.js` (Fluent
+  shells, the Copilot app drawn as a Fluent 2 agent UI, the Tredence frame and its chrome), `proto.js` (upstream 1.14.8 scene engine, play/pause, reading floor, driven API and presenter controls), `icons.js` (Fluent
   System Icons), `brand/` (official Tredence logos and template chrome), `fonts/` (Poppins), `photos/` (the brand
   photo set, 1920 px).
 - `assets/check_prototype.py`: steps through the prototype like a presenter, screenshots every stop, makes contact
@@ -162,8 +162,9 @@ layouts.  Find the story first; then choose the screens.
    No scene needs a chart.  → `references/story-and-data.md`, `references/look-and-feel.md` §Power BI
 4. **Build scenes** in `prototype.html`, each one for its beat.  Compose from the outlines in `shells.html` and
    the kit's building blocks, or build what the kit doesn't have from its tokens (Fluent in products, `--td-*` on frames).  Give the signature moment a
-   view designed for it.  Copilot's work trace (steps, thinking, status line) and the Cowork Workspace must look
-   exactly like the product's; the words are this story's.  Product scenes use `class="scene zoom"`; the Tredence
+   view designed for it.  Copilot's agent interactions (its message header, work trace, answer card, approval and
+   input cards, and the Workspace drawer) use the kit's Fluent 2 agent UI, not an imitation of Cowork's look; keep
+   their shape and write every word for this story.  Product scenes use `class="scene zoom"`; the Tredence
    frame (`td-` layouts from `frames.html`, Poppins and the closed palette) is for frame scenes (a cover, a chapter break, a close), if the story uses them.
    → `references/tredence-frame.md`, `references/look-and-feel.md` §Components you can draw, §Copilot's work, `references/engine.md`
 5. **Check.**  `python <skill>/assets/check_prototype.py working/<name>/prototype.html`.  Fix each finding, or say
@@ -243,6 +244,11 @@ skill, you've followed it too literally.
 
 - **Real product layouts, real density.**  Use the kit's shells.  Product scenes are mostly neutral greys and
   white; the brand blue appears only where it has a job (primary button, selection, link).
+- **The agent speaks Fluent 2.**  Wherever people interact with Copilot or an agent, draw it with Fluent 2's
+  Copilot patterns from the kit: the Copilot mark and name over each reply, white message cards, brand-tinted
+  messages from the person, an activity card for its work, Fluent cards for input and approval, a Fluent drawer for
+  its plan.  Don't recreate Cowork's look (serif greeting, black round send button, avatar-less plain-text replies,
+  flat grey Workspace panel).  → `look-and-feel.md` §Copilot's work, in Fluent
 - **One AI accent.**  The teal→purple gradient marks the agent and what it touched.  Nowhere else.
 - **Fluent icons only** (`<i class="ic" data-icon="...">`).  Never emoji, never icons from other sets.
 - **Plausible, specific content.**  Real counts, names, dates and sources from the data sheet, never "Complete key
