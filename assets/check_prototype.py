@@ -22,12 +22,14 @@ What it flags: script errors (for a packed file, also when played inside the san
 to preview a shared file, on a full pass), network requests, text clipped or spilling out of its box, text smaller than 11 px,
 text on a Tredence frame photo without enough contrast (WCAG 4.5:1, or 3:1 for large text: 24 px, or 18.66 px bold),
 the concept label missing, placeholder or AI-tell wording (including the Tredence voice's banned words), emoji, and notes for still scenes.
+In the agent app (.cpa): an agent reply without its message header (.cp-who) at the start of the chat or after the person's message,
+and the Microsoft Copilot logo or name used as the custom app's own identity.
 Tredence frame scenes (.scene.frame): a colour outside the Tredence palette, a tint used as a text colour, text not in
 Poppins, a gradient (other than .td-shade) or a shadow, Bright Orange or white-on-orange text under 24 px, white text
 on Teal or Highlight Orange, Grey text under 28 px, and "TREDENCE" written in capitals in running text.
 On a full pass, any double-bracket placeholder left from the starter or shells.html, anywhere in the source.
 Power BI visuals: no title or number format, categories and values that don't line up, a "0%" format given fractions, a chart that drew nothing or
-shows NaN, and a chart in a Copilot answer that doesn't cite its Power BI source.
+shows NaN, and a chart in an agent answer that doesn't cite its Power BI source.
 Look at every screenshot yourself as well.  The script can't tell whether a scene is convincing.
 """
 import base64
@@ -134,14 +136,33 @@ AUDIT = r"""() => {
     });
   }
   if (scene.querySelector('.m365 .cp, .tm .cp, .lob .cp, .cp.pane, .mc'))
-    out.findings.push('Copilot pane inside an app or the old full-screen shell: start in the Copilot app (.cpa), see shells.html');
+    out.findings.push('agent pane inside an app or the old full-screen shell: start in the agent app (.cpa), see shells.html');
+  // The agent app is the customer's own custom-built app: never Microsoft Copilot's logo or name as its identity.
+  scene.querySelectorAll('.cpa .oi.copilot, .cpa .cpa-brand .wm, .cpa .cp-who').forEach(el => {
+    if (!vis(el)) return;
+    const own = Array.from(el.childNodes).filter(n => n.nodeType === 3).map(n => n.nodeValue).join(' ').trim();
+    if (el.matches('.oi.copilot') || /^(Microsoft )?Copilot$/i.test(own))
+      out.findings.push('Microsoft Copilot identity in the custom agent app: use the app\'s own name and the agent\'s sparkle mark (.cp-mark) and name');
+  });
+  // In the agent app, each agent reply opens under its message header (.cp-who), at the start of
+  // the chat and after each message from the person.
+  scene.querySelectorAll('.cpa-chat').forEach(chat => {
+    let open = true;
+    for (const el of chat.children) {
+      if (!vis(el)) continue;
+      if (el.matches('.cp-user,.cp-time,.cp-file')) { open = true; continue; }
+      if (open && el.matches('.work-box,.cp-turn,.cp-status,.acard'))
+        out.findings.push('agent reply without its message header (.cp-who: the sparkle mark, the agent\'s name, the time) above it: ' + (el.textContent || '').trim().slice(0, 50));
+      open = false;
+    }
+  });
   scene.querySelectorAll('.ai-touched').forEach(el => {
     if (!vis(el)) return;
     const cs = getComputedStyle(el), w = ['Top', 'Right', 'Bottom', 'Left'].map(s => parseFloat(cs['border' + s + 'Width']));
     if (Math.min(...w) < 1.5 || Math.max(...w) - Math.min(...w) > 0.5 || parseFloat(cs.paddingLeft) < 6 || parseFloat(cs.paddingRight) < 6)
       out.findings.push('agent highlight (.ai-touched) has a missing edge or content touching its frame: ' + (el.textContent || '').trim().slice(0, 50));
     // A container that clips (overflow other than visible) must hold the whole highlight; corners are matched by the engine.
-    if (el.closest('.cpa-doc .page')) out.findings.push('agent highlight (.ai-touched) inside a document: Word draws none, and the whole draft is Copilot\'s; take it out: ' + (el.textContent || '').trim().slice(0, 50));
+    if (el.closest('.cpa-doc .page')) out.findings.push('agent highlight (.ai-touched) inside a document: Word draws none, and the whole draft is the agent\'s; take it out: ' + (el.textContent || '').trim().slice(0, 50));
     for (let a = el.parentElement; a && a !== scene; a = a.parentElement) {
       const ca = getComputedStyle(a);
       if (ca.overflowX === 'visible' && ca.overflowY === 'visible') continue;
@@ -183,7 +204,7 @@ AUDIT = r"""() => {
     if (!svg || !svg.querySelector('rect.grow, path.ln, circle')) out.findings.push('Power BI visual drew nothing (check data-x and data-series): ' + name);
     else if (/NaN|undefined|Infinity/.test(svg.innerHTML + plot.textContent)) out.findings.push('Power BI visual shows a bad number (NaN): ' + name);
     const turn = f.closest('.cp-turn');
-    if (turn && !turn.querySelector('.ref .oi.bi, .ref .oi.powerbi')) out.findings.push('chart in a Copilot answer without its Power BI source (a .ref with .oi.powerbi): ' + name);
+    if (turn && !turn.querySelector('.ref .oi.bi, .ref .oi.powerbi')) out.findings.push('chart in an agent answer without its Power BI source (a .ref with .oi.powerbi): ' + name);
   });
   return out;
 }"""

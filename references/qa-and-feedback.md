@@ -19,8 +19,9 @@ in order), then open single screenshots where something looks off.
 
 1. **Would a Tredence lead show it?**  Nothing generic, silly or overclaimed.  Read every word aloud as the presenter.
 2. **Looks like the real product?**  Chrome, spacing, type sizes, icon style and colours match the product.
-   Employees meet Copilot in the Copilot app; other apps appear where the work starts, as proof, or to show
-   people reached.  Copilot's work trace and the Workspace follow `look-and-feel.md` §Copilot's work, as Copilot
+   Employees meet the agent in the customer's custom agent app (its own name, never Microsoft Copilot); other apps
+   appear where the work starts, as proof, or to show people reached.  The agent's work trace and the Workspace
+   follow `look-and-feel.md` §The agent's work, in Fluent
    shows it: flat, thin checks, a thinking node whose reasoning uses this story's names and numbers, a status
    line, and Workspace sections with plain step lines.
 3. **One idea per scene, obvious in 3 seconds.**  The eye lands on the agent's moment first.
@@ -85,18 +86,18 @@ Users often give one-line feedback.  Read the intent, fix the cause, and show th
 |---|---|---|
 | "Looks fake", "too AI" | Decoration and generic content | Remove gradients and decoration outside the agent moments, add real product detail and specific content, cut marketing words.  `look-and-feel.md` §AI tells |
 | "Too busy" | Too much competing for the eye | Hide non-essential panes, fewer list rows, one agent moment per scene |
-| "Too many apps" | A tour, not a story | Keep the employee's agent work in Copilot; show other apps only where the work starts, in the browser pane, or as one proof scene |
+| "Too many apps" | A tour, not a story | Keep the employee's agent work in the agent app; show other apps only where the work starts, in the browser pane, or as one proof scene |
 | "They all look the same" | Screens chosen before the story, or the same parts in every build (an approval, a proof scene, a leader's report) | Go back to the beats.  Drop any part this story doesn't need, open where this work really starts, replace stock scenes with views designed for this story, and give the signature moment its own view |
 | "So what?", "think bigger", "is it ambitious?", "it's just a productivity tool", "where's the business impact?" | The story stops at one person's task, ticks off a feature list, or shows the same business doing more of the same | Go back to `story-and-data.md` §Start with the business shift.  Write three new ideas with §Questions that break the frame, take the boldest one their leaders could believe, then rebuild the cover, the close and whatever shows the change across the business around it.  Keep the scenes that still prove it; fold any feature list into one story |
 | "Too slow" | Too many beats, or beats that show nothing new | Cut beats and scenes that don't show something new.  Don't add `data-hold` except at the one moment that matters; the presenter can press → to skip ahead, or pause |
 | "Too fast", "I can't read it" | A stop with a lot on it | The engine already holds text long enough to skim; add `data-hold` at the moment that matters, or `data-hold="pause"` where the presenter will talk (`engine.md` §Presenter controls) |
 | "We want a video of it", "the recording drags" | Play mode is paced for a room | Don't slow or speed play mode for a video.  A recording tool opens it with `?driven` and steps it to its own narration (`engine.md` §Driving it from another tool); `data-note` on a beat gives it a line to start from |
-| "That's not what Copilot looks like", "the thinking looks fake" | A home-made trace or Workspace, or thinking that narrates instead of reasoning | Redraw with the parts in `look-and-feel.md` §Copilot's work, as Copilot shows it, and rewrite the thought: first person, the story's real names and numbers, the thing that doesn't add up, what it will do next |
+| "Looks like Copilot", "looks like Cowork", "doesn't look like a real app", "the thinking looks fake" | Microsoft Copilot's logo, name or look in the custom app, a home-made trace or Workspace, or thinking that narrates instead of reasoning | Give the app the customer's own name and the agent's sparkle and name, redraw with the parts in `look-and-feel.md` §The agent's work, in Fluent, and rewrite the thought: first person, the story's real names and numbers, the thing that doesn't add up, what it will do next |
 | "Jumpy", "not smooth" | Content snapping into place | Run `--motion`; reveal content where it stays, pair replaced elements with `data-morph`, give the warm-up a few seconds on the cover.  `engine.md` §Motion |
 | "I clicked and then it just stopped" | A cue fired one beat early, or nothing to click | Make the beats before the named thing automatic, or add an in-product bridge if the story has one.  `engine.md` §Clicks |
 | "Make it ours" | Not specific enough | Put the customer's industry, roles and real-world artefacts (fictional) into the data sheet, and rebuild the signature moment around their problem |
 | "Can it do X for real?" | A question for the Tredence team | Note it in `brief.md`; don't make the prototype claim it |
-| "How would it know how *we* do it?", "who controls what it does?" | The story doesn't show where the customer's own method lives or who owns it | If their method is the point, weave in their own Cowork skill: one rule from it applied visibly, and the person who owns it.  `story-and-data.md` §The customer's own way of working |
+| "How would it know how *we* do it?", "who controls what it does?" | The story doesn't show where the customer's own method lives or who owns it | If their method is the point, weave in their own skill in the agent app: one rule from it applied visibly, and the person who owns it.  `story-and-data.md` §The customer's own way of working |
 | "That's wrong", "take a step back" | You are patching symptoms | Stop.  Name the root cause in one line and offer 2–4 genuinely different directions with a recommendation |
 | "Doesn't look like Tredence" | The frame drifted, or product styling leaked into it | Use the `td-` layouts and classes from `frames.html`; Poppins and the palette only; the orange key phrase in titles; a brand photo on the cover.  Leave the Microsoft product scenes as they are |
 | "Doesn't look like Microsoft" | Tredence styling leaked into a product scene | Take Poppins, orange and logos out of the product scenes; use the kit's shells as they are |

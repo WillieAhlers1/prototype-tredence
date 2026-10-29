@@ -122,9 +122,9 @@ and say why in `brief.md`.
 - **People stay in charge, visibly.**  The room should see a person decide where it matters: confirm, edit,
   approve, choose, or set the rule the agent follows.  Not every scene needs a decision; anything approval-class
   always waits for one (`look-and-feel.md` §Who acts).
-- **Open where the work starts.**  Copilot Home, a phone in the field, an email arriving, a Teams meeting, the
-  customer's own app or website: whatever is true for this work.  Employees work with the agent in the Copilot
-  app, with business apps coming to them (sources, the Workspace pane, the browser pane); other apps appear where
+- **Open where the work starts.**  The agent app's Home, a phone in the field, an email arriving, a Teams meeting,
+  the customer's own app or website: whatever is true for this work.  Employees work with the agent in the custom
+  agent app built for this customer, with business apps coming to them (sources, the Workspace drawer, the browser pane); other apps appear where
   the work starts, as proof, or to show people reached.  Two or three supporting views usually beat a tour.
 - **Make it believable.**  The room trusts what it sees happen: what the agent read and checked, its sources, and,
   when it matters, where the result landed (a record, a reply, a calendar, the customer's own screen).  Show the
@@ -157,14 +157,14 @@ the scenes:
 
 ### The customer's own way of working (optional)
 
-In Cowork, the customer can teach Copilot how *they* do a task: a **skill**, plain-language instructions their own
-experts write (steps, rules, thresholds, formats, the checks they never skip, what always goes to a person).  The
-Copilot app shows skills, and the plugins that package them, under "Plugins".  Cowork picks a skill up on its own
-when the task fits its description.
+In the custom agent app, the customer can teach the agent how *they* do a task: a **skill**, plain-language
+instructions their own experts write (steps, rules, thresholds, formats, the checks they never skip, what always
+goes to a person).  The app lists skills under Settings › Skills.  The agent picks a skill up on its own when the
+task fits its description.
 
 **Why it can matter to the story.**  It answers the two questions a doubting room asks: "how would it know how *we*
 do it?" (the HOW: it follows the method their people wrote) and "who's in charge?" (the WHERE: people write it, own
-it, change it and decide who gets it, and Copilot still stops for their approval).  Sometimes it *is* the business
+it, change it and decide who gets it, and the agent still stops for their approval).  Sometimes it *is* the business
 shift: the way the best person works becomes the way the whole team works.
 
 **Use it when** the work runs on a house method, a review standard, policy thresholds, a required format, or
@@ -174,26 +174,24 @@ it because the feature exists.  One or two moments are enough.
 
 **Ways to show it** (pick at most one or two; draw them in your own way):
 
-- *In passing*: a step in Copilot's trace ("Reviewed custom skill …", with the skill's own icon), one of its rules
-  applied by name in the thinking, and the skill in the Workspace under Plugins.  Costs no extra scene.
-- *The owner shapes it*: the expert creates it in a Cowork conversation (by asking Cowork, or Customize › Skills ›
-  Add › Create new: a guided conversation that drafts the skill as they talk and saves it to their OneDrive), Cowork
-  says how well it's written, and they share it with their team (Share › Specific users; Re-share after a change).
-  Or *teach it once*: Copilot gets something wrong the house way, the person edits the skill's instructions on its
-  page, and from the next session it's right for everyone it's shared with.
-- *Where it lives*: Customize › Skills, their skill under "Your skills" next to the built-in ones
-  (`assets/shells.html`, `customize`).
+- *In passing*: a step in the agent's trace ("Reviewed custom skill …", with the skill's own icon), one of its
+  rules applied by name in the thinking, and the skill in the Workspace under Plugins.  Costs no extra scene.
+- *The owner shapes it*: the expert creates it in a conversation with the agent (or Settings › Skills › Add: the
+  agent drafts the skill as they talk), the agent says how well it's written, and they share it with their team.
+  Or *teach it once*: the agent gets something wrong the house way, the person corrects the skill's instructions,
+  and from the next session it's right for everyone it's shared with.
+- *Where it lives*: Settings › Skills, their skill under "Your skills" next to the built-in ones
+  (`assets/shells.html`, `skills`).
 
 **Write it in the data sheet**: a short kebab-case name (the way a skill is named), a description that says what it
 does and when to use it, the rules the story relies on, its owner (from the cast), who it's shared with,
 and its icon colour.  Use the rules' exact words everywhere they appear.
 
 **Keep it honest**: the skill in the demo is fictitious, like the data.  A skill is instructions, not a guarantee;
-approvals still stop for a person.  A skill's own page and Cowork's evaluation of a skill (its Skill Report) aren't
-pictured on Learn: if the story needs them, keep them plain (the report as Copilot's reply in the conversation: a
-verdict and one or two improvements) and say in the notes that the layout is illustrative.  Custom skills don't
-work in Cowork on mobile, and an
-organisation may need to approve plugins before people can use them; say so if asked.
+approvals still stop for a person.  If the story needs a skill's own page or a review of how well it's written,
+keep it plain (the review as the agent's reply in the conversation: a verdict and one or two improvements) and say
+in the notes that the layout is illustrative.  Who may publish and share skills is the customer's governance
+decision; say so if asked.
 
 ## Starting from an existing HTML file or app
 
@@ -280,8 +278,11 @@ promotional, no exclamation marks.
   products and accelerators appear only if the user asks, described by what they do, never as a working product.
 - No Tredence client names, client results, quotes or awards, even as background colour.  Proof points belong in a
   `pptx-tredence` deck, sourced and dated, not in a concept demo.
-- Real product names exactly: Microsoft Copilot, Microsoft Teams, Outlook, Dynamics 365 Sales, Copilot Studio,
-  Microsoft Fabric, Power BI, SharePoint.  Never invent product names or features as if they ship.
+- Real product names exactly: Microsoft Teams, Outlook, Dynamics 365 Sales, Copilot Studio, Azure AI Foundry,
+  Microsoft Fabric, Power BI, SharePoint.  Never invent Microsoft product names or features as if they ship.
+- The agent app is the customer's own: give it a believable name for this customer ("Contoso Assist") and its agent
+  a job name ("Order desk agent").  Never call it Microsoft Copilot or Copilot Cowork, and never use a Microsoft
+  product name as its name.  Put both names in the data sheet and use them identically everywhere.
 - Names change; check the current one before you build.  The Microsoft 365 Copilot app became **Microsoft
   Copilot** in August 2026 (copilot.cloud.microsoft): never write "Microsoft 365 Copilot" or "M365 Copilot".
   The Microsoft 365 subscription and Word, Excel, PowerPoint, Outlook and Teams keep their names.

@@ -1,6 +1,6 @@
 ---
 name: prototype-tredence
-description: Tredence prototypes. Build clickable "art of the possible" HTML prototypes that a Tredence team shows a customer, with realistic Microsoft product screens (the Microsoft Copilot app as home, with Teams, Outlook, Dynamics 365 and Power BI as supporting screens, plus the customer's own systems) framed in the Tredence 2026 brand (Bright Orange, Poppins, official logos and template chrome, #BeyondPossible), so the room sees how an agent or AI scenario could change the way their business works and the last-mile decisions people make every day. Nothing works for real; all data is fictitious; everything ships as one self-contained HTML file. Use for any request to prototype, mock up, storyboard, demo, or visualise an AI, agent, or Copilot scenario or workflow for a Tredence customer meeting; to turn a scenario description, notes, or a whiteboard into a clickable Tredence concept; or to change, fix, restyle, or repackage an existing prototype.
+description: Tredence prototypes. Build clickable "art of the possible" HTML prototypes that a Tredence team shows a customer, with a custom-built agent app for the customer (drawn in Fluent 2, built on Microsoft's AI stack) as home, realistic Teams, Outlook, Dynamics 365 and Power BI screens as supporting screens, plus the customer's own systems, framed in the Tredence 2026 brand (Bright Orange, Poppins, official logos and template chrome, #BeyondPossible), so the room sees how an agent or AI scenario could change the way their business works and the last-mile decisions people make every day. Nothing works for real; all data is fictitious; everything ships as one self-contained HTML file. Use for any request to prototype, mock up, storyboard, demo, or visualise an AI, agent, or Copilot scenario or workflow for a Tredence customer meeting; to turn a scenario description, notes, or a whiteboard into a clickable Tredence concept; or to change, fix, restyle, or repackage an existing prototype.
 ---
 
 # Tredence prototypes
@@ -35,7 +35,7 @@ changing because people and agents now work together, and show what that is wort
 
 | Ambition | What the room sees | What they say |
 |---|---|---|
-| Faster task | The same work, done quicker with Copilot | "Nice tool" |
+| Faster task | The same work, done quicker with an assistant | "Nice tool" |
 | Work taken off | Agents gather, check and draft; people decide | "That would save us time" |
 | Same business, run better | The rationing stops: everyone covered, every case checked, ahead of the request | "We could do more of what we do" |
 | **Business reimagined** | Because the work is now fast and cheap, the business becomes what it couldn't be: perhaps it sells what it couldn't deliver, changes its relationship with its customers, redesigns jobs around judgment, or competes on new ground | "We have to do this" |
@@ -93,13 +93,13 @@ find / -path '*prototype-tredence*/assets/frames.html' 2>/dev/null
   optional #beyondpossible sign-off), every word a
   `[[placeholder]]`.  Copy it to start.  **The starter scenes show the styles and the code, not a story or layouts
   to reuse.**  Delete any you don't need; design the rest.
-- `assets/shells.html`: each Microsoft product's chrome as an outline, every word a `[[placeholder]]`: Copilot
-  Home, a chat with a work trace and approval card, a Power BI answer, a Cowork plan, proof in the browser pane, Teams, Autopilot, Outlook mail and calendar,
+- `assets/shells.html`: each screen's chrome as an outline, every word a `[[placeholder]]`: the agent app's
+  Home, a chat with a work trace and approval card, a Power BI answer, a multi-step plan with its Workspace drawer, proof in the browser pane, the agent's Activity view, Skills settings, Teams, Outlook mail and calendar,
   Dynamics 365, a Word draft, a Power BI report, and the customer's own business app.
 - `assets/frames.html`: each Tredence frame layout as an outline: cover, their world, a from → to matrix, where
   we'd start, the #BeyondPossible chapter break, the solid orange divider, the ask on a photo, the closing.
 - `assets/kit/`: the shared kit every prototype uses, unchanged: `proto-style.js` (Fluent 2 tokens and product
-  shells, the Tredence frame and its chrome), `proto.js` (upstream 1.14.8 scene engine, play/pause, reading floor, driven API and presenter controls), `icons.js` (Fluent
+  shells, the custom agent app drawn in Fluent 2, the Tredence frame and its chrome), `proto.js` (upstream 1.14.8 scene engine, play/pause, reading floor, driven API and presenter controls), `icons.js` (Fluent
   System Icons), `brand/` (official Tredence logos and template chrome), `fonts/` (Poppins), `photos/` (the brand
   photo set, 1920 px).
 - `assets/check_prototype.py`: steps through the prototype like a presenter, screenshots every stop, makes contact
@@ -141,7 +141,7 @@ layouts.  Find the story first; then choose the screens.
       considered: <the safer idea> · <the wilder one>", so the user can turn it down or up.
    2. **Whose work shows it:** the people whose work shows the shift, the everyday decision that still
       doesn't change (the last mile), and what's hard for them.
-   3. **The moment to land:** the one thing Copilot or the agent does that makes the room lean in.
+   3. **The moment to land:** the one thing the agent does that makes the room lean in.
    4. **How the work changes:** what disappears or merges, what the agent does on its own, where a person decides.
    5. **What we want to learn from them:** the one guess about how the customer works that the demo tests.
    Make every line specific to this customer and industry, and mark guesses "(my guess)".  If line 1 is the same
@@ -162,10 +162,11 @@ layouts.  Find the story first; then choose the screens.
    No scene needs a chart.  → `references/story-and-data.md`, `references/look-and-feel.md` §Power BI
 4. **Build scenes** in `prototype.html`, each one for its beat.  Compose from the outlines in `shells.html` and
    the kit's building blocks, or build what the kit doesn't have from its tokens (Fluent in products, `--td-*` on frames).  Give the signature moment a
-   view designed for it.  Copilot's work trace (steps, thinking, status line) and the Cowork Workspace must look
-   exactly like the product's; the words are this story's.  Product scenes use `class="scene zoom"`; the Tredence
+   view designed for it.  The agent app (its frame, the agent's message header, work trace, answer card, approval
+   and input cards, and the Workspace drawer) uses the kit's Fluent 2 custom-app design, never Copilot's; keep
+   their shape and write every word for this story.  Product scenes use `class="scene zoom"`; the Tredence
    frame (`td-` layouts from `frames.html`, Poppins and the closed palette) is for frame scenes (a cover, a chapter break, a close), if the story uses them.
-   → `references/tredence-frame.md`, `references/look-and-feel.md` §Components you can draw, §Copilot's work, `references/engine.md`
+   → `references/tredence-frame.md`, `references/look-and-feel.md` §Components you can draw, §The agent's work, `references/engine.md`
 5. **Check.**  `python <skill>/assets/check_prototype.py working/<name>/prototype.html`.  Fix each finding, or say
    why it stays.  Then review the contact sheets against the checklist in `references/qa-and-feedback.md`.  After
    an edit, recheck that scene with `--scene <id>`; finish with one full pass that finds nothing new, then one
@@ -182,33 +183,36 @@ layouts.  Find the story first; then choose the screens.
 
 ## Where the agent shows up
 
-Tredence builds on Microsoft's AI stack (Microsoft Copilot, Copilot Studio, Microsoft Fabric, Power BI), and
-Microsoft positions the Microsoft Copilot app as the place work starts for employees: Home (Chat, and Cowork for
-multi-step work), and Autopilot for agents that keep working on their own.  Prototypes respect that positioning.
-They don't follow a fixed route through it.
+The agent lives in **a custom-built app made for this customer**, not in Microsoft Copilot.  Tredence builds it on
+Microsoft's AI stack (for example Copilot Studio or Azure AI Foundry for the agent, Microsoft Fabric and Power BI for
+the data), but on screen it is the customer's own app: its own name, the agent's sparkle mark and the agent's name,
+drawn in Fluent 2.  Never brand it as Microsoft Copilot, never show the Copilot logo as its identity, and never
+recreate Copilot Cowork's look.  Prototypes don't follow a fixed route through it.
 
-- **Employees meet Copilot in the Copilot app**, not in a Copilot pane inside Outlook or Teams. Dynamics 365's own
-  pane is appropriate when the work happens there. Business data comes to Copilot (Work IQ, Dynamics 365, Fabric
-  and Power BI, the customer's own systems), with sources.
-- **The story opens where the work starts.**  That may be Copilot Home, or the trigger itself: an alert on a phone
+- **Employees meet the agent in the custom agent app** (`.cpa` in the kit), named for this customer
+  ("Contoso Assist", "Fabrikam Planner"): Home, Chat, and Agent mode for multi-step work, with Agents and Activity
+  tabs.  Business data comes to it (Dynamics 365, Fabric and Power BI, the customer's own systems), with sources.
+  Don't put the agent app inside Outlook or Teams.  Dynamics 365's own Copilot pane is Microsoft's product: show it
+  only when the story is about Dynamics 365's built-in Copilot.
+- **The story opens where the work starts.**  That may be the agent app's Home, or the trigger itself: an alert on a phone
   in the field, an email arriving, a live Teams meeting, a record in the customer's own app, or the customer's own
-  customer on a website talking to the company's agent (built in Copilot Studio).  Pick what's true for this person.
+  customer on a website talking to the company's agent.  Pick what's true for this person.
 - **Other apps appear when the story needs them**: where the work begins, people reached (Teams, Outlook), or proof
-  in a system of record (often in Copilot's browser pane).  Business apps come to the person; the person doesn't
-  tour the apps.  No Code-mode scenes for business audiences.
+  in a system of record (often in the agent app's browser pane).  Business apps come to the person; the person doesn't
+  tour the apps.
 - **The customer's own systems and other platforms** (an ERP, a planning tool, a data platform that isn't
   Microsoft's) appear as an unbranded business app (`.lob`) reached through a connector.  Never imitate a real
   non-Microsoft product, including Tredence's partners' products.
-- **Label preview features** where they appear, in the scene and in the presenter notes: Autopilot, and the in-app
-  browser (rolling out; admins turn it on).  Don't show features that haven't been announced.
+- **Don't promise what isn't built.**  The custom app is a concept: say in the presenter notes what it would be
+  built on and that nothing in it exists yet.
 - Never copy Microsoft's or Tredence's marketing characters, or any internal or confidential material, into a
   prototype.
 
-**Lean into Autopilot as a teammate, with people in the loop.**  Microsoft describes it as a digital teammate with
-its own identity, working for one person, that colleagues can @mention in Teams and Outlook like a colleague; it
-keeps going on a goal for days while its owner sets the objective and boundaries and stays in control.  That's
-often how the business changes shape: work runs while people sleep, colleagues work with it directly, people keep
-the decisions.  Show it working with the team.  Preview: label it.  → `look-and-feel.md` §Where the agent shows up
+**Lean into the agent as a teammate, with people in the loop.**  An agent with its own name and identity that
+works for a person or a team, that colleagues can @mention in Teams, and that keeps going on a goal for days while
+its owner sets the objective and boundaries and stays in control.  That's often how the business changes shape:
+work runs while people sleep, colleagues work with it directly, people keep the decisions.  Show it working with
+the team; its Activity view shows what it did and what it left for people.  → `look-and-feel.md` §Where the agent shows up
 
 ## Design for this story
 
@@ -243,6 +247,11 @@ skill, you've followed it too literally.
 
 - **Real product layouts, real density.**  Use the kit's shells.  Product scenes are mostly neutral greys and
   white; the brand blue appears only where it has a job (primary button, selection, link).
+- **The agent app is the customer's own, in Fluent 2.**  Wherever people interact with the agent, draw it with
+  the kit's custom agent app: the app's own name, the agent's sparkle mark and name over each reply, white message cards, brand-tinted
+  messages from the person, an activity card for its work, Fluent cards for input and approval, a Fluent drawer for
+  its plan.  Never brand it as Microsoft Copilot or recreate Copilot Cowork's look (serif greeting, black round send
+  button, avatar-less plain-text replies, flat grey Workspace panel).  → `look-and-feel.md` §The agent's work, in Fluent
 - **One AI accent.**  The teal→purple gradient marks the agent and what it touched.  Nowhere else.
 - **Fluent icons only** (`<i class="ic" data-icon="...">`).  Never emoji, never icons from other sets.
 - **Plausible, specific content.**  Real counts, names, dates and sources from the data sheet, never "Complete key
@@ -254,7 +263,7 @@ skill, you've followed it too literally.
   undo always waits for approval, with pre-checks and the policy reason. When the room needs to believe something
   happened, show where it landed; this does not require a separate proof scene.
   → `look-and-feel.md` §Who acts
-- **No Tredence styling inside a product**: no Poppins, Bright Orange or Tredence logos in Copilot, Teams, Outlook,
+- **No Tredence styling inside a product**: no Poppins, Bright Orange or Tredence logos in the agent app, Teams, Outlook,
   Dynamics 365, Power BI or the customer's app.
 
 **Frame scenes look like Tredence**: the 2026 template, nothing invented.  → `references/tredence-frame.md`
@@ -282,8 +291,8 @@ No AI-default design anywhere: no glassmorphism, neon glows, purple-gradient her
   named on the cover tag only when the user confirms it's allowed; their data inside the scenes is still invented
   and labelled.
 - **Always labelled.**  `<body data-concept="Concept demo · Fictitious data">` stays on, on every scene.
-- **No promises.**  Real product names, used accurately ("Microsoft Copilot", "Dynamics 365 Sales", "Microsoft
-  Teams", "Copilot Studio", "Microsoft Fabric").  Don't invent product names, SKUs, prices, roadmap dates, scope,
+- **No promises.**  Real product names, used accurately ("Dynamics 365 Sales", "Microsoft
+  Teams", "Copilot Studio", "Microsoft Fabric").  The custom agent app's name is the customer's, never a Microsoft product name.  Don't invent Microsoft product names, SKUs, prices, roadmap dates, scope,
   timelines or capability claims; describe the agent by what it does.  Tredence products and accelerators appear
   only if the user asks, described by what they do, never as a working product.
 - **Brand.**  "Tredence" in text, never "TREDENCE".  Frame scenes use the Tredence template, Poppins and the palette
